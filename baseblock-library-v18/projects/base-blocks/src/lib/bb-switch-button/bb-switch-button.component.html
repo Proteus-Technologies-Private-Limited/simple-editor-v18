@@ -1,0 +1,9 @@
+<label class="bb-switch">
+	<input [id]="bbId" [align]="bbAlign" [disabled]="bbDisabled"
+	[name]="bbName"  [type]="bbType" 
+	[required]="bbRequired" [checked]="bbChecked" 
+	[value]="bbValue"  
+	(change)="bbChange.emit($event);" 
+	[(indeterminate)]="bbIndeterminate" />
+	<span class="bb-slider" [ngClass]="{ 'round' : isRounded }"></span>
+</label>

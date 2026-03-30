@@ -1,0 +1,144 @@
+<gridster id="gridsterId" class="gridbody"  [options]="options">
+  <div class="gridbodySub">
+    <div *ngIf="isDrillDown" style="position: absolute; right: 22px;">
+      <div id="{{setCompId}}"*ngIf="isDrillDown" class="closeBtn btnShadow">
+        <span style="color:var(--primaryDark);" class="material-icons pophelp-srch-icon serachColor"
+            (click)="closeDrillDownClose();">
+            close
+        </span>
+      </div>
+    </div>
+  
+    <gridster-item draggable="true" id="gridster_item_ID_{{idx}}" class="gridsters" [ngStyle]="{'margin-top': isDrillDown ?'40px':'0px'}" [item]="item" *ngFor="let item of this.dashboard; let idx=index"
+      (click)="onSelectFeed(item)" (cdkDropListDropped)="onDropSelect($event)" cdkDropList [cdkDropListData]="item">
+      <div cdkDrag class="item-buttons card-header drag-handler dragDiv" (change)="changeFn($event)">
+        <div class="gidsterRow">
+          <div class="col colDiv" id="gridster_{{item['visual']['line_no']}}">
+            <div class="gridHeaderDiv" name="gridsters_Hide_headers_{{item['visual']['line_no']}}_{{item['visual']['dashbrd_id']}}" id="gridsters_Hide_headers_{{item['visual']['line_no']}}_{{dashboardID}}">
+            <div class="gridsterfilterIcon" id="filterIconContainer" title='{{item.visual_name}} - {{item.visual.title}}'>
+              <img class="headerImage" *ngIf="item['visual']['visual_name'] != ''"
+                src="/ibase/Insight/dashbdgnplugin/assets/images/W_{{item['visual']['visual_name']}}">
+            </div>
+            <!-- <div style="display: block; margin-left: 10px;" [ngStyle]="{'width': firstData == undefined ?'calc(100% - 104px':'calc(100% - 234px'}"> -->
+              <div class="dashLinkTitle">
+                <div style="padding-right: 8px; box-sizing: content-box;" [ngStyle]="{'width': showMenuInGridster != true ?'calc(100% - 158px)':'calc(100% - 158px)'}">
+                    <div class="gridsterTitle">{{item['visual']['title']}}</div>
+                  <div *ngIf="item['visual']['sub_title'] != ''" class="gridsterTitle"
+                    style="font-size: 11px !important; opacity: 0.8 !important;">{{item['visual']['sub_title']}}</div>
+                </div>
+                <div class="dashLinkMain" *ngIf= "visualObjLink != undefined">
+                  <div id="errorDivID_{{idx}}" class="errorClass" (mouseover)="showErrorMessage(item['visual']['visual_id'])" (mouseout)="hideErrorMessage()">
+                    <img class="errorIcon" src="/ibase/Insight/dashbdgnplugin/assets/images/svg/error.svg" [title]="getErrorMessagesAsString(item['visual']['visual_id'])">    
+                  </div>
+                  <div class="showLinksMain" *ngFor="let objLink of visualObjLink | keyvalue">
+                    <div *ngIf="objLink.key === item['visual']['visual_id']" class="showLinks">
+                      <!-- <div *ngIf="showMenuInGridster == true && firstData != undefined && firstData != '' && firstData != null" style="right: 32px;margin-right: 20px;" class="dashLinkBtn" > -->
+                      <!-- <div *ngIf="showMenuInGridster == true && objLink.value != undefined && objLink.value[0] != undefined && objLink.value.length > 0" style="right: 32px;margin-right: 20px;" class="dashLinkBtn" > -->
+                        <div *ngIf="showMenuInGridster == true && objLink.value != undefined && objLink.value[0] != undefined && objLink.value.length > 0" class="dashLinkBtn" >
+                          <div *ngIf="objLink.value[0]['Image']" style="height: 25px; width:25px;display: none !important;">
+                            <img src="/{{objLink.value[0]['Image']}}" style="width:36px;"
+                            (error)="handleMissingImage($event)">
+                          </div>
+                          <div *ngIf="objLink.value[0]['LinkTitle']" (click)="performLinkAction(objLink.value[0],item['visual']['visual_data']);" class="dashdoneCursor">{{objLink.value[0]['LinkTitle']}}</div>
+                          <div *ngIf="objLink.value[0]['image']" style="height: 25px; width:25px;display: none !important;">
+                            <img src="/{{objLink.value[0]['image']}}" style="width:36px;"
+                            (error)="handleMissingImage($event)">
+                          </div>
+                          <div *ngIf="objLink.value[0]['title']" (click)="performLinkAction(objLink.value[0],item['visual']['visual_data']);" class="dashdoneCursor">{{objLink.value[0]['title']}}</div>
+                      </div>
+            
+                      <div *ngIf="showMenuInGridster == true && objLink.value != undefined && objLink.value[0] != undefined && objLink.value.length > 0" class="angDashboadLink">
+                        <img src="/ibase/Insight/dashbdgnplugin/assets/images/dashboard_links.png" class="angDashboadLinkImg" [matMenuTriggerFor]="linkMenu">    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>            
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="item.visual_data && displayVisuals == true" id="visual_content_ID_Data_{{idx}}"
+        class="gridster-item-content visualFirstDiv" (mousedown)="stopPropagation($event)"
+        (touchstart)="$event.stopPropagation()"
+        [ngClass]=
+        "{
+          'otherVisualHeight': ['COLUMN', 'BAR', 'LINE', 'SCATTER', 'PIE', 'STACKED COLUMN', 'COLUMN LINE', 'GRID', 'PIVOT'].includes(item.visual_data.visualLayout.ID.toUpperCase()),
+          'customVisual': !['COLUMN', 'BAR', 'LINE', 'SCATTER', 'PIE', 'STACKED COLUMN', 'COLUMN LINE', 'GRID', 'PIVOT'].includes(item.visual_data.visualLayout.ID.toUpperCase())
+        }"
+        [ngStyle]="{'overflow': item.visual_data.visualLayout.ID == 'insight_calendar_feed' ? 'scroll' : 'none','height': item.visual_data.visualLayout.ID == 'cards' && editFlag == 'A' ? 'calc(100% - 25px)' : 'calc(100% - 52px)', 'background-color':showBackgroundColor?'white':'transparent'}">
+        <visual [ngStyle]="{'background-color':showBackgroundColor?'white':'transparent !important'}" *ngIf="item != undefined && item.visual_data != undefined && item.visual_data != '' && item.visual_data.jsonData != undefined && item.visual_data.jsonData.length != undefined" class="visualDiv" [visualData]="item.visual_data" (openDrillDown) = openDrillDown($event) (onRowSelect) = onRowSelect($event) (setRowData) = setRowData($event)></visual>
+      </div>
+
+      <mat-menu #linkMenu="matMenu" xPosition="before"  class="linkPopUpMainDiv">
+        <div *ngIf= "visualObjLink != undefined && visualObjLink[item['visual']['visual_id']]" [ngClass]="visualObjLink[item['visual']['visual_id']].length >= 5  ? 'menuContentMore' : 'menuContentLess'">
+          <div id="visualObjLink_id_1" *ngFor="let link of visualObjLink[item['visual']['visual_id']]" (click)="performLinkAction(link,item['visual']['visual_data']);" class="ang-db-Link" > 
+            <span id = "obj_img" class="menuImg" *ngIf ="link.FormNo">
+              <img *ngIf="link.Image && link.LinkType != 'CL'" #imgRef [src]="link.Image" alt="/ibase/Insight/dashbdgnplugin/assets/images/svg/error_b.svg" 
+              class="actionIcons" title="{{link.LinkTitle}}" (error)="imgRef.style.display='none'; defImgRef.style.display='block'">
+                <div class="ang-Link-Image">
+                  <img class="defaultImg" 
+                    #defImgRef
+                    [style.display]="!link.Image ? 'block' : ''"
+                    [ngClass]="{
+                      'ang-sideEditLblView':link.LinkType == 2,
+                      'ang-sideReportLblView':link.LinkType == 3,
+                      'ang-sideAddLblView':link.LinkType == 4,
+                      'ang-sideProcessLblView':link.LinkType == 6
+                    }"
+                    src="/{{link['Image']}}"
+                    title="{{link.LinkTitle}}"
+                    style="display: flex;align-items: center;justify-content: center;"
+                    alt="/ibase/Insight/dashbdgnplugin/assets/images/svg/error_b.svg">
+                </div>  
+              <span *ngIf="link.LinkType == 'CL' && link.Image" [ngClass]="link.Image" class="def-link-icon"></span>
+            </span>	
+            <span id="{{link.LinkTitle}}_id_1" *ngIf="link.LinkTitle" class="linkTitle scrllMenuItem">{{link.LinkTitle}}</span>          
+            <span id = "action_img" class="menuImg" *ngIf ="link.formNo">
+                <img *ngIf="link.image != undefined" #imgRef [src]="link.image" alt="/ibase/Insight/dashbdgnplugin/assets/images/svg/error_b.svg" 
+                class="actionIcons" title="{{link.title}}" (error)="imgRef.style.display='none'; defImgRef.style.display='block'">
+                  <div class="ang-Link-Image">
+                    <img class="defaultImg" 
+                      #defImgRef
+                      [style.display]="!link.image ? 'block' : ''"		  		  
+                      src="/{{link['image']}}"
+                      title="{{link.title}}"
+                      style="display: flex;align-items: center;justify-content: center;"
+                      alt="/ibase/Insight/dashbdgnplugin/assets/images/svg/error_b.svg">
+                  </div>  
+            </span>	 
+            <span id="{{link.title}}_id_2" *ngIf="link.title" class="linkTitle scrllMenuItem">{{link.title}}</span>     
+          </div>	
+        </div>
+      </mat-menu>
+    </gridster-item>
+  </div>
+</gridster>
+
+<!-- <mat-menu #linkMenu="matMenu" xPosition="before"  class="linkPopUpMainDiv">
+  <div *ngFor="let link of obj_links | slice: 1:firstElemant;" (click)="performLinkAction(link,$event);" class="ang-db-Link"> 
+      <span class="dashboard-link-img" *ngIf ="link.FormNo=='1'">
+      <img *ngIf="link.Image && link.LinkType != 'CL'" #imgRef [src]="link.Image" alt="" class="actionIcons" title="{{link.LinkTitle}}" (error)="imgRef.style.display='none'; defImgRef.style.display='block'">
+        <div class="ang-Link-Image">
+          <img class="defaultImg" 
+                #defImgRef
+                [style.display]="!link.Image ? 'block' : ''"
+              [ngClass]="{
+                      'ang-sideEditLblView':link.LinkType == 2,
+                      'ang-sideReportLblView':link.LinkType == 3,
+                      'ang-sideAddLblView':link.LinkType == 4,
+                      'ang-sideProcessLblView':link.LinkType == 6
+                    }"		  		  
+                src="/{{link['Image']}}"
+                title="{{link.LinkTitle}}"
+                style="display: flex;align-items: center;justify-content: center;"
+                onerror="this.style.display='none'"
+                alt="">
+        </div>
+          
+          <span *ngIf="link.LinkType == 'CL' && link.Image" [ngClass]="link.Image" class="def-link-icon"></span>
+    </span>	      
+      <span class="dashboard-link-title scrllMenuItem">{{link.LinkTitle}}</span>
+  </div>	
+</mat-menu> -->
+

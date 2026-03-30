@@ -1,0 +1,16 @@
+
+<!-- <h2>bb- image component</h2>
+ -->
+ <div *ngIf=" isThumbnail " class="img-mask" [ngClass]="attachType == 'Icon' ? 'img-mask-icon' : ''"> </div>
+
+ <div *ngIf="!attachType" class="img-loading" #loadingImage></div>
+ <div *ngIf="!attachType" class="bb-image" #targetAttachImage></div>
+ 
+<!--  <img *ngIf="attachType == 'Image'" class="bb-image" #targetImage /> -->
+<!--  <img *ngIf="attachType == 'Icon'" [ngClass]="isSmallIcon ? 'bb-small-image-icon' : 'bb-image-icon'" #targetImage /> -->
+
+ <div *ngIf=" attachType == 'Image' " class="bb-image" #targetAttachImage></div>
+ <div *ngIf=" attachType == 'Icon' " [ngClass]="isSmallIcon ? 'bb-small-image-icon' : 'bb-image-icon'" #targetAttachImage></div>		
+
+
+ 

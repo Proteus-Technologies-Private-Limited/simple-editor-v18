@@ -1,0 +1,105 @@
+
+<span [ngSwitch]="uxDesign">
+	<!-- <span *ngSwitchCase="'UX3'" class="mainInputField">  -->
+		<span *ngSwitchCase="'UX3'" >
+			<!-- For BI components -->
+			<div class="mainInputField" *ngIf="isSimpleLayout === true">
+				<div *ngIf="noPlaceholderNotDisable === true && noPlaceholderIsDisable === false">
+					<div *ngIf="bbTextDisabled === true && editFlag !== 'V' && noPlaceholderIsDisable === false" class="disabledFilterIcon">
+						<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+						<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+						</div>
+					</div>
+					<div *ngIf="bbTextDisabled === false && editFlag !== 'V' && noPlaceholderIsDisable === false" class="textFilterIcon" >
+						<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+						<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
+							<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
+							<img *ngIf="bbType == 'number'" src="/ibase/Insight/angplugin/assets/images/svg/number_simple.svg" class="numberIcon">
+						</div>
+					</div>
+				</div>
+				<div *ngIf="noPlaceholderNotDisable === false && noPlaceholderIsDisable === false">
+					<div *ngIf="!noPlaceholderIsDisable && editFlag === 'V' " class="disableTextFilterIcon">
+						<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+						<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+						</div>
+					</div>
+					<div *ngIf="bbTextDisabled === true && !noPlaceholderIsDisable && editFlag !== 'V'" class="disableTextFilterIcon">
+						<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+						<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+						</div>
+					</div>
+					<div *ngIf="bbTextDisabled === false && noPlaceholderIsDisable === false && editFlag !== 'V'" class="textFilterIcon" >
+						<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+						<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
+							<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
+							<img *ngIf="bbType == 'number'" src="/ibase/Insight/angplugin/assets/images/svg/number_simple.svg" class="numberIcon">
+						</div>
+					</div>
+				</div>
+				
+				
+				<div *ngIf="!noPlaceholderIsDisable && value !== undefined && value !== null"  class="mdcMainDiv">
+					<div class="labelMainDiv">
+						<label class="lblText">{{ placeholder }}</label>
+						<div *ngIf="required" class="requireDiv">*</div>
+					</div>
+					<input class="inputClass" matInput #txtEl #textbox="ngModel" [(ngModel)]="value" 
+						[type]="bbType" [required]="required" [disabled]="bbTextDisabled" 
+						[maxlength]="bbMaxlength" [minlength]="bbMinlength" (keyup)="onKeyUp($event)" (keydown)="onKeyDown($event)"
+						[autofocus]="bbAutofocus" (focus)="onFocus($event,inputID)" 
+						(input)="openAutosuggest(fieldName, value, formNo)" (blur)="onBlur($event,inputID)"
+						id="{{ inputID }}" (input)="bbType === 'number' ? checkMaxLengthForNum($event) : null"
+						[style.textAlign]="bbType === 'number' ? 'right' : 'left'" />
+					<bb-autosuggest-transaction #bbAutoSuggest *ngIf="drawPophelp == true && value?.length >= 2"
+						class="bbAutoSuggestDiv"
+						(itemChangeValues)="onItemChangeFromSuggestBox($event)"
+						(preventItemChange)="onPreventItemChange($event)" (onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="currentCompData"
+						[id]="fieldName" [transMode] ="transMode" [formWiseFormatJson]="formWiseFormatJson" (autoSuggestData)="autoSuggestData($event)"
+						[callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID]="tokenID" [jSessionId]="jSessionId">
+					</bb-autosuggest-transaction>
+					<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
+					(click)="openPopHelp(fieldName, value)" class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract"
+					(mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
+					</div>
+				<mat-hint> 
+					<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+				</mat-hint> 
+			</div>
+			<div *ngIf="noPlaceholderIsDisable && value !== undefined && value !== null" class="mdcMainDiv-disabled">
+				<input class="disabledInputField" matInput #txtEl #textbox="ngModel" [(ngModel)]="value" 
+					[type]="bbType" disabled="true" 
+					[maxlength]="bbMaxlength" [minlength]="bbMinlength"
+					id="{{ inputID }}"
+				[style.textAlign]="bbType === 'number' ? 'right' : 'left'" />
+			</div>
+		</div>
+		<!-- For BI components -->
+		<div *ngIf="isSimpleLayout === false">
+			<input matInput #txtEl #textbox="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="placeholder" [required]="required" [disabled]="bbTextDisabled" [value]="value" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (focus)="bbFocus.emit(txtEl);" />
+			<!-- <bb-open-pophelp #popHelp (itemChangeValues)="onItemChangeFromPophelp($event)" (valueSelected)="selectedValueFromPopHelp($event)" [compData]="compData" [paramData]="currentCompData" [positionObj]="positionPopHelp">
+			</bb-open-pophelp> -->
+			<bb-autosuggest-transaction #bbAutoSuggest *ngIf="drawAutoSuggest == true"
+			(itemChangeValues)="onItemChangeFromSuggestBox($event)"
+			(onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="currentCompData"
+			[id]="'cust_code'"></bb-autosuggest-transaction>
+			<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbDisabled || false}"
+				(click)="openPopHelp()" class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+		  	</div>
+			<mat-hint> 
+ 				<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+ 			 </mat-hint> 
+		</div>	
+	</span>
+	
+	<span *ngSwitchCase="'UX2'">
+		<span  [ngClass]="{'labelPostion':bbLabelPostion === 'top'}">{{bbLabel}}</span>
+		<input #txtEl  #textbox="ngModel" [(ngModel)]="value" [type]="bbType" [required]="required" [disabled]="bbTextDisabled" [value]="value" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (focus)="onFocus($event)"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+	
+	<span *ngSwitchCase="'UX1'">
+		<input #txtEl  #textbox="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="required" [disabled]="bbTextDisabled" [value]="value" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (focus)="onFocus($event)"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+</span>	

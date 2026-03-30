@@ -1,0 +1,46 @@
+
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'"  > 
+		<button [autofocus] = "bbAutofocus" [disabled] = "bbDisabled">
+			<ng-container *ngTemplateOutlet="content"></ng-container>
+		</button>
+	</span>
+	
+	<span *ngSwitchCase="'UX2'"  > 
+		<button [autofocus] = "bbAutofocus" [disabled] = "bbDisabled">
+			<ng-container *ngTemplateOutlet="content"></ng-container>
+		</button>
+	</span>
+	
+	<span *ngSwitchCase="'UX3'" [ngSwitch]="appearance">
+	    <span *ngSwitchCase="'fab'"> 
+	      	<button mat-fab [autofocus] = "bbAutofocus" [disabled] = "bbDisabled" [class]="buttonClass" [ngClass]="fontIconClass"  >
+				<ng-container *ngTemplateOutlet="content"></ng-container>	      	
+	      	</button>
+	  	</span>
+		<span *ngSwitchCase="'minifab'"> 
+	      	<button mat-mini-fab [autofocus] = "bbAutofocus" [disabled] = "bbDisabled" [class]="buttonClass" [ngClass]="fontIconClass" >
+				<ng-container *ngTemplateOutlet="content"></ng-container>	      	
+	      	</button>
+	  	</span>
+		<span *ngSwitchCase="'simple'">
+			<button mat-button [autofocus] = "bbAutofocus" [disabled] = "bbDisabled" [class]="buttonClass" [ngClass]="fontIconClass" >
+				<ng-container *ngTemplateOutlet="content" ></ng-container>
+			</button>
+		</span>
+		<span *ngSwitchCase="'raised'">
+			<button mat-raised-button [autofocus] = "bbAutofocus" [disabled] = "bbDisabled" [class]="buttonClass" [ngClass]="fontIconClass" >
+				<ng-container *ngTemplateOutlet="content"></ng-container>
+			</button>
+		</span>	
+		  <span *ngSwitchCase="'icon'"> 
+	     	<button mat-icon-button [autofocus] = "bbAutofocus" [disabled] = "bbDisabled" [class]="buttonClass" [ngClass]="fontIconClass" >
+	     		<mat-icon class="mat-24">
+	     			<ng-container *ngTemplateOutlet="content"></ng-container>
+	     		</mat-icon>
+     	</button>
+ 	</span>	
+	 
+	</span>
+	<ng-template #content><ng-content></ng-content></ng-template>
+</span>

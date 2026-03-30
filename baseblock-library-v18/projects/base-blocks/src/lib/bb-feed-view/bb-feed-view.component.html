@@ -1,0 +1,297 @@
+<button class="popupcloseForTax" (click)="onCancel()">X</button>
+<div class="taxDetailHeading">
+   <div class="headerMainText">
+      <div class="iconContainer">
+         <img src="/ibase/images/menuImages/mob/sorder_header.png">
+      </div>
+
+      <div class="formTitleWrap">
+         <div class="sl-formTitle">{{formTitle}}</div>
+         <div *ngIf="editFlag == 'A'" class="formSubTitle">Adding New</div>
+         <div *ngIf="editFlag == 'E' || editFlag == 'V'" class="formSubTitle">{{primaryKeyField}}</div>
+      </div>
+   </div>
+   <div class="saveBtn" (click)="onDone()">
+      <img src="/ibase/Insight/angplugin/assets/images/Done.svg" style="height: 12px; cursor: pointer;" (click)="onDone()" >
+      <div class="doneCursor">Done</div>
+   </div>
+</div>
+
+<div class="extract-template-content wallPanelBgColor">
+   <div class="mainContentDiv">
+      <div class="formContentDiv">
+         <div *ngIf="yCordGrpMap != undefined && yCordGrpMap != null">
+            <div *ngFor="let grpBoxObject of yCordGrpMap | keyvalue; let i = index;" style="padding: 0px 0px 5px 0px; display: block;"  class="e12GroupBox bbGroupBox" [id]="'bb-feed-view_' + grpBoxObject.value.grpNodeObj.text">
+               <div *ngIf="grpBoxObject.value != undefined && grpBoxObject.value != null && grpBoxObject.value.grpNodeObj && grpBoxObject.value.grpNodeObj.text"
+                  style="display: inline-flex; width: calc(100% - 33px);" class="groupBoxHeaderPnl" 
+                  [ngClass]="{'bb-feed-expandGroupBox': i === 0, 'bb-feed-collapseGroupBox': i !== 0}"
+                  (contextmenu)="onContextMenuClick($event, 'bb-feed-view_' + grpBoxObject.value.grpNodeObj.text)"
+                  (click)="hideShowGroupBtn('bb-feed-view_' + grpBoxObject.value.grpNodeObj.text)">
+                  <div style="width: calc(100% - 20px)" class="groupBxHeaderLbl">
+                     {{ grpBoxObject.value.grpNodeObj.text }}
+                  </div>
+                  <div style="font-size: 25px; color: gray; font-family: 'vision_ui' !important"
+                     [ngClass]="{'vision-ui-arrow_down': i === 0, 'vision-ui-arrow_right': i !== 0}">
+                  </div>
+               </div>
+               <div class="freeFormContentThreeColumn" style="padding: 10px;" 
+                    [ngClass]="{'expandGroupBoxChild': i === 0, 'collapseGroupBoxChild': i !== 0}">
+                  <ng-container *ngFor="let yCordColMap of grpBoxObject.value.grpBox_contents | keyvalue : keyAscOrder; let j = index">
+                     <ng-container *ngFor="let colNodeObj of yCordColMap.value | keyvalue; let j = index">
+                        <!-- Render a ddlb input -->
+                        <ng-container *ngIf="colNodeObj.value != undefined && colNodeObj.value != null && colNodeObj.value.editStyle === 'ddlb'; else date">
+                           <div class="mainInputField">
+                             <div *ngIf="editFlag == 'V' || (colNodeObj.value.disabled != undefined && colNodeObj.value.disabled === true)" class="selectDisabledFilterIcon" id="filterIconContainer" >
+                               <div *ngIf="(feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0" class="disabledOptionIcon">
+                                 {{ feedFormData[colNodeObj.value.name].toString().substring(0,2).toUpperCase() }}
+                               </div> 
+                               <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="disabledOptionIcon"></div> 
+                             </div>
+
+                             <div *ngIf="editFlag != 'V' && colNodeObj.value.disabled != undefined && colNodeObj.value.disabled != true" class="selectFilterIcon" id="filterIconContainer">
+                               <div *ngIf="(feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0" class="optionIcon">
+                                 {{ feedFormData[colNodeObj.value.name].toString().substring(0,2).toUpperCase() }}
+                               </div> 
+                               <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="optionIcon">
+                               </div> 
+                             </div>
+                              <div *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] !== null" class="feedSelectDiv">
+                              <div class="labelMainDiv">
+                                 <div *ngIf="colNodeObj.value.required && (colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes')" class="requiredDiv">*</div>
+                                 <label class="matSelectLblText">{{ labelMapData.get(colNodeObj.value.name + '_t') }}</label>
+                              </div>
+                               <select id="{{'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name}}"
+                                    class="feedSelectField"
+                                    [(ngModel)]="feedFormData[colNodeObj.value.name]"
+                                    [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                    (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                    (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)"
+                                    (blur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)">
+                                 <option *ngFor="let options of optionsMap.get(colNodeObj.value.name) | keyvalue" [value]="options.key">
+                                   {{ options.value }}
+                                 </option>
+                               </select>
+                             </div>
+                           </div>
+                         </ng-container>
+                        <!-- Render a date input -->
+                        <ng-template #date>
+                           <ng-container *ngIf="colNodeObj.value != undefined && colNodeObj.value != null && colNodeObj.value.format && (colNodeObj.value.format === '[shortdate] [time]' || colNodeObj.value.format === 'dd/mm/yy'); else number">
+                              <div class="mainInputField">
+                                 <!-- <div class="feedViewFilterIcon" id="filterIconContainer"[ngStyle]="{'background-color': feedFormData[colNodeObj.value.name] !== '' && feedFormData[colNodeObj.value.name] !== null && feedFormData[colNodeObj.value.name] != undefined || feedFormData[colNodeObj.value.name] === 0 ? '#8FADBE' : 'transparent'}">
+                                 <span *ngIf="feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '' || feedFormData[colNodeObj.value.name] === 0" class="optionIcon">{{feedFormData[colNodeObj.value.name].toString().substring(0,1).toUpperCase()}}</span> 
+                                 </div >  -->
+                                 <div *ngIf="editFlag == 'V' || colNodeObj.value.disabled === true" class="feedViewDisabledFilterIcon" id="filterIconContainer" >
+                                    <div *ngIf="((feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0)" class="disabledOptionIcon" id="{{'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name}}_Icon">
+                                      <span class="day">{{getFirstTwoCharOfDate(feedFormData[colNodeObj.value.name].toString())}}</span>
+		                                <span class="month">{{getMonthOfDate(feedFormData[colNodeObj.value.name].toString() )}}</span>
+                                    </div> 
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="disabledOptionIcon" id="{{'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name}}_Icon"></div> 
+                                 </div>
+     
+                                 <div *ngIf="editFlag != 'V' && colNodeObj.value.disabled != true" class="feedViewFilterIcon" id="filterIconContainer">
+                                    <div *ngIf="((feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0)" class="optionIcon" id="{{'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name}}_Icon" >
+                                      <span class="day">{{getFirstTwoCharOfDate(feedFormData[colNodeObj.value.name].toString() )}}</span>
+		                                <span class="month">{{getMonthOfDate(feedFormData[colNodeObj.value.name].toString() )}}</span>
+                                    </div> 
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="optionIcon" id="{{'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name}}_Icon">
+                                    </div> 
+                                 </div>
+                              <div class="date-picker basicField">
+                                 <bb-day-picker
+                                    [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                    [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                    [label]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                    [value]="feedFormData[colNodeObj.value.name]"
+                                    [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                    [id]="'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name"
+                                    [format]="colNodeObj.value.format" 
+                                    (bbFocus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                    (bbChange)="bbDateChange($event, feedDomId)"
+                                    (bbBlur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                    [isSimpleLayout]="true"
+                                    (bbSetFocusOnError)="bbSetFocusOnError($event)"
+                                    (bbDateBlur)="bbDateBlur($event)"
+                                    [formWiseFormatJson] = "formWiseFormatJson">
+                                 </bb-day-picker>
+                              </div> 
+                              </div>
+                           </ng-container>
+                        </ng-template>
+                        <!-- Render a number input -->
+                        <ng-template #number>
+                           <ng-container *ngIf="colNodeObj.value != undefined && colNodeObj.value != null && colNodeObj.value.format && colNodeObj.value.format === '[number]'; else other">
+                              <div class="mainInputField">
+                                 <!-- <div *ngIf="labelMapData.get(colNodeObj.value.name + '_t') != null" class="feedViewFilterIcon" id="filterIconContainer" [ngStyle]="{'background-color': feedFormData[colNodeObj.value.name] !== '' && feedFormData[colNodeObj.value.name] !== null && feedFormData[colNodeObj.value.name] !== undefined || feedFormData[colNodeObj.value.name] === 0 ? '#8FADBE' : 'transparent'}">
+                                 <span *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '' || feedFormData[colNodeObj.value.name] === 0" class="optionIcon">{{feedFormData[colNodeObj.value.name].toString().substring(0,1).toUpperCase()}}</span> 
+                                 </div >  -->
+                                 <div *ngIf="editFlag == 'V' || colNodeObj.value.disabled === true" class="feedViewDisabledFilterIcon" id="filterIconContainer" >
+                                    <div *ngIf="(feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0" class="disabledOptionIcon">
+                                      {{ feedFormData[colNodeObj.value.name].toString().substring(0,1).toUpperCase() }}
+                                    </div> 
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="disabledOptionIcon"></div> 
+                                  </div>
+     
+                                 <div *ngIf="editFlag != 'V' && colNodeObj.value.disabled != true" class="numberFilterIcon" id="filterIconContainer">
+                                    <div *ngIf="(feedFormData[colNodeObj.value.name] != undefined && feedFormData[colNodeObj.value.name] != null && feedFormData[colNodeObj.value.name] != '') || feedFormData[colNodeObj.value.name] === 0" class="optionIcon">
+                                      {{ feedFormData[colNodeObj.value.name].toString().substring(0,1).toUpperCase() }}
+                                    </div> 
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] == undefined || feedFormData[colNodeObj.value.name] == null || feedFormData[colNodeObj.value.name] === ''" class="optionIcon">
+                                    </div> 
+                                 </div>
+                              <bb-number class="setNumFormLayout" [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                              [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                 [(ngModel)]="feedFormData[colNodeObj.value.name]" [uxDesign]="'UX3'"
+                                 [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                 (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                 (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)" [isSimpleLayout]="true">
+                                 <div *ngIf="popHelpFieldList.includes(colNodeObj.value.name) || popHelpFieldList.includes(getFieldNameBeforeUnderscore(colNodeObj?.value?.name))"
+                                    [ngClass]="{disablePopHelp: editFlag == 'V' || false}"
+                                    (click)="openPopHelp(colNodeObj.value.name,feedFormData[colNodeObj.value.name])"
+                                    class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+                                 </div>
+                              </bb-number>
+                           </div>
+                           </ng-container>
+                        </ng-template>
+                        <!-- Render a general input -->
+                        <ng-template #other>
+                           <ng-container *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] !== null && colNodeObj.value && colNodeObj.value.height && colNodeObj.value.height > 30; else elseBlock">
+                              <div *ngIf="labelMapData.get(colNodeObj.value.name + '_t') === null || labelMapData.get(colNodeObj.value.name + '_t') === undefined || labelMapData.get(colNodeObj.value.name + '_t') === ''" class="noPlaceholderTextArIsDisableDiv">
+                                 <bb-textarea #textarea class="setFormLayout" class="basicField" [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                    [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                    [(ngModel)]="feedFormData[colNodeObj.value.name]" [uxDesign]="'UX3'"
+                                    [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                    (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name, 'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                    (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)"
+                                    [id]="'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name"
+                                    [format]="colNodeObj.value.format"
+                                    (blur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name, 'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                    [noPlaceholderIsDisable]="true" [inputID]="'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name" [isSimpleLayout]="true"
+                                    [formWiseFormatJson] = "formWiseFormatJson"
+                                    [bbTextArHeight]="bbTextArHeight" [limit]="colNodeObj.value.limit"
+                                    [callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID] = "tokenID" [jSessionId] = "jSessionID">
+                                 </bb-textarea>
+                              </div>
+                              <div id="txt2" *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] !== null && labelMapData.get(colNodeObj.value.name + '_t') != null && labelMapData.get(colNodeObj.value.name + '_t') != undefined && labelMapData.get(colNodeObj.value.name + '_t') != ''" class="mainInputField">
+                                 <bb-textarea #textarea class="setFormLayout" class="basicField" [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                    [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                    [(ngModel)]="feedFormData[colNodeObj.value.name]" [uxDesign]="'UX3'"
+                                    [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                    (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name, 'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                    (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)"
+                                    [id]="'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name"
+                                    [format]="colNodeObj.value.format"
+                                    (blur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name, 'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                    [noPlaceholderIsDisable]="false" [inputID]="'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name" [isSimpleLayout]="true"
+                                    [formWiseFormatJson] = "formWiseFormatJson" [limit]="colNodeObj.value.limit"
+                                    [callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID] = "tokenID" [jSessionId] = "jSessionID">
+                                 </bb-textarea>
+                              </div>
+                           </ng-container>
+                           <ng-template #elseBlock>
+                              <ng-container>
+                                 <div style="-WEBKIT-COLUMN-BREAK-INSIDE: AVOID">
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] !== null && (labelMapData.get(colNodeObj.value.name + '_t') === null || labelMapData.get(colNodeObj.value.name + '_t') === undefined || labelMapData.get(colNodeObj.value.name + '_t') === '')" class="noPlaceholderIsDisableDiv">
+                                       <bb-textbox #textbox class="setFormLayout" class="basicField" 
+                                          [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                          [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                          [(ngModel)]="feedFormData[colNodeObj.value.name]" [uxDesign]="'UX3'"
+                                          [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                          [dataType]="colNodeObj.value.dataType"
+                                          (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name,'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                          (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)"
+                                          [id]="'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name"
+                                          [format]="colNodeObj.value.format"
+                                          (blur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name, 'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name, colNodeObj.value.dataType)"
+                                          [drawPophelp]="popHelpFieldList.includes(colNodeObj.value.name) || popHelpFieldList.includes(getFieldNameBeforeUnderscore(colNodeObj?.value?.name))" [popHelpRef]="popHelpRef" [formNo]="feedFormNo"
+                                          [pophelpDataList]="pophelpDataList" [fieldName]="colNodeObj.value.name"
+                                          [ngClass]="{'pophelpNumDetaillignRight' : (colNodeObj.value.dataType === 'decimal' || colNodeObj.value.dataType === 'number') && colNodeObj.value.popHelp === 'true' , 'numDetailAlignRight' : (colNodeObj.value.dataType === 'decimal' || colNodeObj.value.dataType === 'number') && colNodeObj.value.popHelp === '', hideCellData : (colNodeObj.value.isVisible && colNodeObj.value.isVisible == '0')}"
+                                          [compData]="compData" [paramData]="feedFormData" (itemChangeValues)="onItemChangeFromSuggestBox($event)"
+                                          (onChangeValue)="setEmitValue($event,colNodeObj.value.name)" [transMode]="transMode" [formWiseFormatJson]="formWiseFormatJson" primaryKey="false"
+                                          [noPlaceholderIsDisable]="true" [inputID]="'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name" [isSimpleLayout]="true" [limit]="colNodeObj.value.limit"
+                                          [callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+                                          [domID]="feedDomId" [index]="feedIndex" (autoSuggSelectedData)="onAutoSuggSelectedData($event)">
+                                       </bb-textbox>
+                                    </div>
+                                    <div *ngIf="feedFormData[colNodeObj.value.name] !== undefined && feedFormData[colNodeObj.value.name] !== null && labelMapData.get(colNodeObj.value.name + '_t') != null && labelMapData.get(colNodeObj.value.name + '_t') != undefined && labelMapData.get(colNodeObj.value.name + '_t') != ''" class="mainInputField">
+                                       <bb-textbox #textbox class="setFormLayout" class="basicField"
+                                          [required]="colNodeObj.value.required === 'true' || colNodeObj.value.required === 'yes'"
+                                          [placeholder]="labelMapData.get(colNodeObj.value.name + '_t')"
+                                          [(ngModel)]="feedFormData[colNodeObj.value.name]" [uxDesign]="'UX3'"
+                                          [disabled]="feedFormData[colNodeObj.value.name + '_protect'] === '1' || (feedFormData[colNodeObj.value.name + '_protect'] == '0' ? (editFlag === 'V' || colNodeObj.value.disabled === true) : false)"
+                                          [dataType]="colNodeObj.value.dataType"
+                                          (focus)="setFocusFormNo(feedFormNo, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                          (change)="callLocalItemChange(colNodeObj.value.name, feedFormData[colNodeObj.value.name], feedFormNo, feedDomId)"
+                                          [id]="'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name"
+                                          [format]="colNodeObj.value.format"
+                                          (blur)="setSelectedText($event, 'Detail' + feedFormNo + '.' + feedDomId + '.' + colNodeObj.value.name)"
+                                          [drawPophelp]="popHelpFieldList.includes(colNodeObj.value.name) || popHelpFieldList.includes(getFieldNameBeforeUnderscore(colNodeObj?.value?.name))" [popHelpRef]="popHelpRef" [formNo]="feedFormNo"
+                                          [pophelpDataList]="pophelpDataList" [fieldName]="colNodeObj.value.name"
+                                          [ngClass]="{'pophelpNumDetaillignRight' : (colNodeObj.value.dataType === 'decimal' || colNodeObj.value.dataType === 'number') && colNodeObj.value.popHelp === 'true' , 'numDetailAlignRight' : (colNodeObj.value.dataType === 'decimal' || colNodeObj.value.dataType === 'number') && colNodeObj.value.popHelp === '', hideCellData : (colNodeObj.value.isVisible && colNodeObj.value.isVisible == '0')}"
+                                          [compData]="compData" [paramData]="feedFormData" (itemChangeValues)="onItemChangeFromSuggestBox($event)"
+                                          (onChangeValue)="setEmitValue($event,colNodeObj.value.name)" [transMode]="transMode" [formWiseFormatJson]="formWiseFormatJson" primaryKey="false"
+                                          [noPlaceholderIsDisable]="false" [inputID]="'Detail' + feedFormNo + '-' + feedDomId + '-' + colNodeObj.value.name" [isSimpleLayout]="true" [limit]="colNodeObj.value.limit"
+                                          [callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+                                          [domID]="feedDomId" [index]="feedIndex" (autoSuggSelectedData)="onAutoSuggSelectedData($event)">
+                                       </bb-textbox>
+                                    </div>
+                                 </div>
+                              </ng-container>
+                           </ng-template>
+                        </ng-template>
+                     </ng-container>
+                  </ng-container>
+               </div>
+            </div>
+         </div>
+      </div>
+       <!-- added by mayuri on 13 feb 2024 start -->
+   <div class="extDatabasefooterBtn">
+      <div *ngIf="editFlag != 'V'">
+         <div class="extDatabaseSelectTab extDatabasebtnShadow"
+            (click)="deleteDetail()">
+            <img src="/ibase/Insight/angplugin/assets/images/svg/DeleteSmall.svg"
+               style="height: 12px;cursor: pointer;padding-bottom:1px">
+            <div class="extDatabaseslectTableLabel">Delete</div>
+         </div>
+      </div>
+   </div>
+   <!-- added by mayuri on 13 feb 2024 end -->
+   </div>
+   <!-- Hidden context menu source for cloning to document.body -->
+   <div id="bb-Feedview-ContextMenu" style="display: none;">
+        <span id="collapseET" style="display: flex; align-items: center;">
+          <img class="actionIcons" style="float: none; margin: 4px 6px;" src="/ibase/images/Collapse.svg" width="20" height="20"
+            onerror=" this.src= 'images/errMenu.png' ">
+          <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Collapse</div>
+        </span>
+        <span id="expandET" style="display: flex; align-items: center;">
+          <img class="actionIcons" style="float: none; margin: 4px 6px;" src="/ibase/images/Expand.svg" width="20" height="20"
+            onerror=" this.src= 'images/errMenu.png' ">
+          <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Expand</div>
+        </span>
+        <span id="collapseAllET" style="display: flex; align-items: center;">
+          <img class="actionIcons" style="float: none; margin: 4px 6px;" src="/ibase/images/CollapseV.svg" width="20" height="20"
+            onerror=" this.src= 'images/errMenu.png' ">
+          <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Collapse all</div>
+        </span>
+        <span id="expandAllET" style="display: flex; align-items: center;">
+          <img class="actionIcons" style="float: none; margin: 4px 6px;" src="/ibase/images/ExpandV.svg" width="20" height="20"
+            onerror=" this.src= 'images/errMenu.png' ">
+          <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Expand all</div>
+        </span>
+   </div>
+   <ng-template #popupTemp>
+      <div role="dialog" class="item-code-pophelp-panel">
+         <bb-pophelp [dataSource]="dataSource"
+                  [filterName]="filterName"
+                  [multi_opt]="multi_opt"
+                  [filterValue]="filterValue"
+                  (onClose)="closePohelp();"
+                  (onSelect)="setValue($event);"
+                  (onSelectPophelpDetails)="onItemChange($event);">
+         </bb-pophelp>
+      </div> 
+   </ng-template> 
+</div>

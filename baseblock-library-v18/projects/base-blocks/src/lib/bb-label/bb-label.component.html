@@ -1,0 +1,5 @@
+<label [ngClass]="{'labelPostion':align === 'top'}">
+	<ng-container *ngTemplateOutlet="content"></ng-container>
+</label>
+
+<ng-template #content><ng-content></ng-content></ng-template>

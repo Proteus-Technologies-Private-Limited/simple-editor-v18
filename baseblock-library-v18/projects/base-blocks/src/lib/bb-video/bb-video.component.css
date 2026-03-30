@@ -1,0 +1,34 @@
+
+
+.video-controls{
+    /*height: 60vh !important;*/
+    width: 100%;
+}
+
+.bb-video-player{
+    border-bottom: 1px solid #2f202f0a;
+}
+
+.video-crossOrign{
+    /*height: 60vh !important;*/
+    width: 100%;
+}
+.downloadBtnOption
+{
+    justify-content: center;
+    height: 50px;
+    cursor: pointer;
+    line-height: 64px;
+    position: relative;
+    width: 22px;
+}
+.noDownloadBtnOption
+{
+    justify-content: center;
+    height: 50px;
+    cursor: pointer;
+    line-height: 64px;
+    position: relative;
+    width: 22px;
+    pointer-events: none;
+}

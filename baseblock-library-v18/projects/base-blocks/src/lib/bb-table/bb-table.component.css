@@ -1,0 +1,415 @@
+.bb-table-main-content{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    height: calc(100% - 1px);
+}
+.bb-table-main-content .mat-form-field {
+    font-size: 12px;
+    width: calc(100% - 8px);
+    padding: 0 4px;
+}
+.bb-table-main-content .mat-form-field .mat-input-element{
+    margin-left: 2px;
+}
+.bb-table-main-content .mat-paginator{
+    margin-top: 1px;
+}
+
+.table-container table {
+    /*width: 100%;*/
+    width: inherit;
+}
+
+.hide-paginator,
+.hide-filter{
+    display:none !important;
+}
+/* Removed as suggested by Bipinraj -Start*/
+/* .no-paginator,
+.no-filter{
+    height: calc(100% - 56px);
+} 
+ .no-filter.no-paginator{
+    height: 100% !important;
+}
+ */
+/* Removed as suggested by Bipinraj -End*/
+
+th.rotate {
+    white-space: nowrap;
+}
+th.rotate > div {
+    transform: rotate(270deg);
+    width: 150px;
+}
+  
+.mat-cell:nth-child(1)
+{
+    border-right: 1px solid #e0e0e0;
+}
+.mat-cell
+{
+    border-right: 1px solid #e0e0e0;
+}
+.stickyClass
+{
+    top: 0px;
+    z-index: 1 !important;
+    position: sticky;
+    width: 100px;
+    font-weight: 600;
+    background: inherit;
+}
+.stickyClass_
+{
+    top: 0px;
+    z-index: 1 !important; 
+    position: sticky;
+    width: 100px;
+    background: inherit;
+}
+.lastChildRight
+{
+  	background-color: #fbf9ef !important; /*By Amey W 10/04/2020*/
+    right: 0px;
+    border-left: 1px solid #e0e0e0;
+    font-weight: 600;
+}
+
+.bb-txtCss {
+   background-color: white;
+   background-color: -moz-field;
+   font: -moz-field;
+   border-bottom-style: inset !important;
+   font: -webkit-small-control;
+   margin-top: 5px;
+   height: 28px;
+}
+
+.td.mat-cell, td.mat-footer-cell, th.mat-header-cell
+{
+    color: rgba(0,0,0,.87);
+    /* border-right: 1px solid #e0e0e0; */
+}
+
+td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type
+{
+    padding-left:0px !important; 
+    min-width: 100px;
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell
+{
+    background: white;
+}
+/*--------  Editable Cells  --------*/
+.selected {
+    border: 1px solid #698ad8;
+  }
+  .unselected {
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+  }
+  /*---- Remove default browser behaviour after selecting cells ----*/
+  .selected, .unselected {
+    -webkit-user-select: none; /* Webkit  */
+    -moz-user-select:    none; /* Firefox */
+    -ms-user-select:     none; /* IE 10   */
+    -o-user-select:      none; /* Currently not supported in Opera but will be soon */
+    user-select:         none;
+  }
+  /*--------End Editable Cells--------*/
+
+  .bb-hidden-col
+  {
+    display: none;
+  }
+  .button-div
+  {
+    padding: 8px 0px 0px 0px;
+    padding-right: 6px;
+    display: inline-block;
+    float: right;
+  }
+  /* .bb-input-text-field
+  {
+    width: calc(100% - 4px)!important;
+    padding: 0 2px;
+    color: #252525;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    cursor: text !important;
+    font-family: roboto !important;
+  }
+   */
+   /*Changed by Sainath T. on 7-Feb-2020 As Suggested by Bipin*/
+  .bb-input-text-field 
+  {
+   	width: calc(100% - 4px)!important;
+   	padding: 0 3px;
+   	color: #252525;
+    text-align: right;
+    margin: 0;
+    border-radius: 0 !IMPORTANT;
+    border-style: none !IMPORTANT;
+    font-weight: 400;
+    font-size: 14px;
+    background-color: transparent;
+    cursor: text!important;
+    height: 36px;
+  }
+  th.mat-header-cell {
+    text-align: center !important;
+  }
+
+  .bb-table-header {
+    font-size: 14px;
+    text-align: center !important;
+    justify-content: center;
+    border: 1px solid #EFEFEF;
+    background-color: white;
+    font-weight: 600;
+  }
+  
+  .bb-table-td
+  {
+    font-size: 14px;
+    padding: 0px 6px 1px 3px !important;
+  }
+  .bb-text
+  {
+    float: left;
+  }
+  .bb-button-input
+  {
+    border-style: none;
+    padding: 3px 5px;
+    min-width: 60px;
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 400;
+    border-radius: 3px;
+    box-shadow: 3px 3px 8px -2px rgba(0,0,0,.3);
+    cursor: pointer;
+  }
+  /* 16Jan */
+  .bb-fix-colum
+  {
+    border-right: 2px solid #e0e0e0 !important;
+  }
+  /* Added by Sainath on 25-01-2020-start */
+  .bb-common
+  {
+    min-width: 80px;
+    font-size: 12px !important;
+    position: sticky; /* to resolve rupee symbol issue: rupee sign goes out of table on resize */
+  }
+  .bb-rupee-span
+  {
+    width: 10%;
+    float: left;
+    color: #777474;
+    font-size: 14px;
+  }
+  td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:last-of-type
+  {
+    padding-right: 0px !important;
+    border-left: 2px solid #ddd;
+  }
+  /* .bb-row-total
+  {
+    font-weight: 500 !important;
+    color: #252525 !important;
+  } */
+   /* Added by Sainath on 25-01-2020-end */
+  .table-container
+  {
+    height: calc(100% - 40px);
+    margin: auto;
+    min-height: 100px;
+    overflow: auto;
+    box-shadow: 0 0 1px 1px #ccc
+  }
+  .bb-number
+  {
+    float: right;
+    color: #757575;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+.bb-cell-action {
+    height: 28px;
+    width: 28px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0px;
+    display: inline-block;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: #fff;
+    background-color: var(--primary);
+    border-radius: 50px;
+    line-height: 28px;
+}
+
+.bb-input-text-field.actiontext {
+    width: calc(100% - 38px)!important;
+    padding-right: 30px;
+}
+
+.bb-disable-actions {
+    position: absolute;
+    height: 25px;
+    width: 98%;
+    line-height: 25px;
+    text-align: center;
+    color: var(--primary);
+    background-color: rgba(255,255,255,.6);
+    font-size: 12px;
+    font-weight: 700;
+    float: left;
+    z-index: 1;
+}
+/* 6 Feb 2020 */
+.mat-table
+{
+  background: none !important;
+}
+.bb-disabled-cell
+{
+  background-color: #f1f1f1 !important;
+}
+.bb-editable-text
+{
+  color: #252525;
+}
+.bb-editable-cell
+{
+  background-color:white !important;
+}
+.bb-fix-header-col
+{
+  z-index: 2 !important; 
+}
+.bb-unfix-header-col
+{
+  z-index: 1 !important;
+}
+/*Added by Sainath T. on 2-Mar-20 [Css chnages for total column in table] START*/
+.bb-footer-txt
+{
+	text-align: left !important;
+	color: #757575;
+	font-weight: 700;
+	font-size: 16px !important;
+	padding-left: 10px!important;
+}
+.bb-footer-number
+{
+	text-align: right !important;
+	color: #757575;
+	font-weight: 700;
+	font-size: 16px !important;
+}
+.bb-footer
+{
+	border-right: 1px solid #e0e0e0;
+}
+/*Added by Sainath T. on 2-Mar-20 [Css chnages for total column in table] END*/
+/*By Sainath T, on 10/04/2020*/
+.bb-sticky-cell
+{
+position: sticky;
+}
+.bb-differ-background
+{
+  background: #e4e4e4 !important;
+}
+/*By Pooja S, on 10/04/2020*/
+.disable-Submit
+{
+  background-color: #6fabd8;
+}
+/* Changed by Amey W. [ Css chnages for total column in table ] on 8-4-2020 */
+.totalBackground
+{
+  background-color: #fbf9ef !important;
+  color: #252525;
+  border-top: 2px solid #ddd;
+}
+.bb-table-header-color
+{
+  background-color: #fbf9ef !important;
+}
+/* Added by shrutika on 27-10-2020 [Start] for Service handler4 relted data*/
+.SearchMenu-header
+{
+    width: 100%;
+    display: flex;
+    padding: 0;
+    background: var(--themeColor);
+    color: #fff;
+    align-items: center;
+    font-size: 1em;
+    position: relative;
+    box-shadow: 0px 0px 0px 1px rgba(0,0,0,.1);
+}
+.SearchMenu-cancel
+{
+    position: relative;
+    vertical-align: middle;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.input[type="checkbox"]
+{
+    height: 15px !important;
+}
+.search-val-inp
+{
+    height: 44px;
+    border: none;
+    background: #f3f2f2;
+    padding: 0 10px;
+    width: calc(100% - 200px);
+    display: inline-block;
+}
+.pophelp-srch-icon
+{
+    color: #666;
+    vertical-align: middle;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.ang-pophelp-header-cont
+{
+    box-shadow: 0px 0px 0px 1px rgba(0,0,0,.1);
+    background-color: #f3f2f2;
+}
+.pophelpTitle
+{
+    width: calc(100% - 88px);
+    font-size: 16px;
+    text-align: center;
+    color: #666;
+}
+.bb-table-main-contentPophelpView{
+    width: 363px;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    height: 470px;
+    overflow: auto;
+}
+/* Added by shrutika on 27-10-2020 [End] for Service handler4 relted data*/

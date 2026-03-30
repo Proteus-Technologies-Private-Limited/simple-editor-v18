@@ -1,0 +1,106 @@
+<div id = "chipInputID1" *ngIf="!isChipValue" >
+<mat-form-field class="demo-chip-list">
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let data of dataList" 
+             [removable]="removable" 
+             (removed)="remove(data)">
+      {{data.display}}
+    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+    <input matInput    		
+    		[type]="bbType" 
+    		[placeholder]="bbPlaceholder" 
+    		[required]="bbRequired" 
+    		[disabled]="bbDisabled" 
+    		 [value]= ''    		
+    		[readOnly]="bbReadOnly"
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           [matChipInputAddOnBlur]="addOnBlur"
+           (matChipInputTokenEnd)="add($event)"/>
+    <input name="seletedValue" #textbox="ngModel" [(ngModel)]="value" [type]="'hidden'" />
+    <input name="inputValue" #textbox="ngModel" [(ngModel)]="inputValue" [type]="'hidden'" /> <!-- added by Pravin K  -->
+    <mat-hint>       
+    <validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+    </mat-hint>
+  </mat-chip-list>
+</mat-form-field>
+</div>
+<div id = "chipInputID2" *ngIf="isChipValue" >
+<mat-form-field id = "chipInputID3" class="demo-chip-list">
+  <mat-chip-list id = "chipInputID4" #chipList>
+    <mat-chip id = "chipInputID5" *ngFor="let data of dataList" [removable]="removable" (removed)="remove(data)">
+    <div *ngIf="data != undefined && data.display != undefined">
+    	{{data.display}}
+    </div>
+    <mat-icon id = "chipInputID6" matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip> 
+    <input id = "chipInputID7" matInput 
+    	   #fruitInput
+   		   [type]="bbType" 
+   		   [placeholder] = "bbPlaceholder"
+   		   [value] = ''
+   		   [required]="bbRequired" 
+   		   [readOnly]="bbReadOnly"
+   		   [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           (matChipInputTokenEnd)="add($event)"
+           [matAutocomplete]="suggestAuto" 
+           [formControl]="suggestCtrl"
+           [(ngModel)]="chipValue"
+           (change) = "onValueChange()"
+           (paste) = "validateData($event);">
+	    <mat-hint>       
+	    	<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	    </mat-hint>
+	</mat-chip-list>
+	</mat-form-field>
+	<mat-autocomplete id = "chipInputID8" #suggestAuto="matAutocomplete" style="width: 343em !important;">
+		<mat-option id = "chipInputID11" *ngFor="let suggestObj of suggestDatavalue | async" [value]="suggestObj.value" (onSelectionChange)="addValue(suggestObj.value, $event)">
+		     <div id = "tamplateInputID2" class="suggestOption">
+		     <ng-container id = "tamplateInputID3" *ngTemplateOutlet=" imageTemplt; context:{$implicit: suggestObj, classSuffix: 'Capsule'}"></ng-container>
+		     	<span class="capsuleTextChip">{{ suggestObj.value }}</span>
+		     </div>
+		</mat-option>
+	</mat-autocomplete>
+</div>
+<ng-template id = "tamplateInputID1" suggestOptTemplt let-suggestDatavalue >
+  <div id = "tamplateInputID2" class="suggestOption">
+    <ng-container id = "tamplateInputID3" *ngTemplateOutlet=" imageTemplt; context:{$implicit: suggestDatavalue, classSuffix: 'Capsule'}"></ng-container>
+    <span class="capsuleTextChip">{{ suggestDatavalue.value }}</span>
+  </div>
+</ng-template>
+<ng-template id = "tamplateInputID4" #imageTemplt let-imageData let-classSuffix='classSuffix' >
+    <span *ngIf="imageData.image == 'ERROR'" class="iconChip{{classSuffix}}">
+        {{ imageData.value.trim().charAt(0) }}
+    </span>
+    <img *ngIf="imageData.image" class="imageChip{{classSuffix}}" src="{{HOST_URL}}{{imageData.image}}" (error) = "imageData.image = 'ERROR'; iconImg.nativeElement.style = 'display:none';" #iconImg />
+</ng-template>
+
+<!-- <mat-form-field class="demo-chip-list"> -->
+<!--   <mat-chip-list #chipList> -->
+<!--     <mat-chip *ngFor="let data of dataList"  -->
+<!--              [removable]="removable"  -->
+<!--              (d)="remove(data)"> -->
+<!--       {{data.display}} -->
+<!--     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+<!--     </mat-chip> -->
+<!--     <input matInput   -->
+<!--     		[type]="bbType"  -->
+<!--     		[placeholder]="bbPlaceholder"  -->
+<!--     		[required]="bbRequired"  -->
+<!--     		[disabled]="bbDisabled"  -->
+<!--     		[value]= '' -->
+<!--     		[maxlength]="bbMaxlength"  -->
+<!--     		[minlength]="bbMinlength"  -->
+<!--     		[readOnly]="bbReadOnly" -->
+<!--            [matChipInputFor]="chipList" -->
+<!--            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" -->
+<!--            [matChipInputAddOnBlur]="addOnBlur" -->
+<!--            (matChipInputTokenEnd)="add($event)"/> -->
+<!-- <input #textbox="ngModel" [(ngModel)]="value" [type]="'hiddenhidden'" /> -->
+<!--     <mat-hint>        -->
+<!--     <validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation> -->
+<!--     </mat-hint> -->
+<!--   </mat-chip-list> -->
+<!-- </mat-form-field> -->

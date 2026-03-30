@@ -1,0 +1,121 @@
+<bb-select    placeholder="Site Code"  [(ngModel)]="selected"  (bbChange)="dropDownSelect()"  class="site" >
+		<bb-option value="1">Site Code In</bb-option><!-- 1.LL005,P0001 -->
+		<bb-option value="2">Site Code All</bb-option><!-- 2.login_code -->
+		<bb-option value="3">Site Code of Financial entity</bb-option><!-- 3.financial_entity -->
+		<bb-option value="4">Site Code of Facility</bb-option><!-- 4.facilityCode -->
+		<bb-option value="5">Site Code Range</bb-option> <!-- 5.login_code, S0001, S0005 -->
+</bb-select>
+
+<div *ngIf = " selected == '1'"  class="filterType8" >
+		<bb-textbox  *ngIf = "multi_opt != '1'"
+					 class="batteryStatus" 
+				    [(ngModel)]="filterValue"
+				    [value]="filterValue"
+					[uxDesign]="'UX3'" 
+					[required]="filterMandatory"
+					[readOnly]="readOnly"					
+					name="{{filterName}}"
+					id="{{filterId}}"
+					(change) = "changeValue();">
+		</bb-textbox>
+
+ 		<bb-chip-input  *ngIf = "multi_opt == '1'" 
+					class="chipField" 
+					[(ngModel)]="filterValue" 
+					[required]="filterMandatory" 
+					(dataChange) = "changeChipValue($event);"
+					[dataList]="chipData1"
+					(change) = "changeValue();">						
+		</bb-chip-input>  
+
+	<i *ngIf="isPopHelp" (click)="openPophelp(11);" class="material-icons ang-pophelp-icon">&#xE315;</i>
+</div>
+
+<div *ngIf = " selected == '2' || selected == '3' ||  selected == '4'"  class="filterType7" >
+		<bb-textbox 
+					 class="batteryStatus" 
+				    [(ngModel)]="textValue"
+				    [value]="textValue"
+					[uxDesign]="'UX3'" 
+					[required]="filterMandatory"
+					[readOnly]="readOnly"	
+					[disabled]="true"					
+					name="{{filterName}}"
+					id="{{filterId}}"
+					(change) = "changeValue();">
+		</bb-textbox>
+  
+</div>
+<!-- 
+<div *ngIf=" selected == '5'"  class="filterType7">
+    <span class="autosuggest1">
+		<bb-autosuggest [dataSource]='dataSource' [chipValue]="filterValue1"
+			[chipEnable]="false" [placeholder]="'Site Code From'"
+			[minlength]="'0'" (onChangeValue)="onChangeValue1($event, 0)" (onSelectionChange)="onChangeValue1($event,0);"
+			[HOST_URL]="HOST_URL" [isPophelp]="true"> </bb-autosuggest>
+	</span>
+	<span class="autosuggest2">
+		<bb-autosuggest [dataSource]='dataSource' [chipValue]="filterValue2"
+			[chipEnable]="false" [placeholder]="'Site Code To'" [minlength]="'0'"
+			(onChangeValue)="onChangeValue2($event, 1)" (onSelectionChange)="onChangeValue2($event,1);" [HOST_URL]="HOST_URL"
+			[isPophelp]="true"> </bb-autosuggest>
+	</span>
+</div>
+ -->
+ 
+ <div *ngIf = " selected == '5'"  >
+  		<span class="filterType8">
+			<bb-textbox
+						 class="batteryStatus" 
+					    [(ngModel)]="filterValue1"
+					    [value]="filterValue1"
+						[uxDesign]="'UX3'" 
+						[required]="filterMandatory"
+						[readOnly]="readOnly"	
+						[placeholder]="'Site Code From'"				
+						name="{{filterName}}"
+						id="{{filterId}}"
+						(change) = "onChangeValue1();">
+			</bb-textbox>
+
+			<i *ngIf="isPopHelp" (click)="openPophelp(51);" class="material-icons ang-pophelp-icon">&#xE315;</i>
+		</span>
+		
+  		<span class="filterType8">
+			<bb-textbox 
+						 class="batteryStatus" 
+					    [(ngModel)]="filterValue2"
+					    [value]="filterValue2"
+						[uxDesign]="'UX3'" 
+						[required]="filterMandatory"
+						[readOnly]="readOnly"	
+						[placeholder]="'Site Code To'"				
+						name="{{filterName}}"
+						id="{{filterId}}"
+						(change) = "onChangeValue2();">
+			</bb-textbox>
+
+			<i *ngIf="isPopHelp" (click)="openPophelp(52);" class="material-icons ang-pophelp-icon">&#xE315;</i>
+		</span>
+	
+</div>
+<ng-template #portal>
+	 <div role="dialog" class="ang-pophelp-panel">
+		<bb-pophelp [dataSource]="dataSource"
+		             [filterName]="filterName"
+					 [multi_opt]="multi_opt"
+					 [filterValue]="filterVal"
+					 [refId]="refId"
+					 [layout]="layout"
+					 [filterExprInput]="filterExprInput"
+					 (onClose)="closePohelp();"
+					 (onSelect)="setValue($event);">
+		 </bb-pophelp>
+	 </div>
+</ng-template>
+
+
+
+
+
+

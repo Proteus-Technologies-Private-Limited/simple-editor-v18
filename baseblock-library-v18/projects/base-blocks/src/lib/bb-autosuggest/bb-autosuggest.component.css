@@ -1,0 +1,387 @@
+/* .mat-input-flex {
+    display: inline-block !important;
+}
+ */
+.mat-input-prefix {
+white-space: normal !important;
+}
+
+.custom-chip{
+    border-radius: 5px !important;
+    cursor: pointer;
+    border: 1px solid var(--primary);
+    background-color: #fff !important;
+    padding: 0 !important;
+    margin: 3px 6px !important;
+}
+
+.custom-chip:focus{
+  background-color: var(--primary) !important;
+  color: #fff !important;
+}
+
+.imageChip {
+    border-radius: 4px;
+    height: 48px;
+    width: 48px;
+    float: left;
+}
+.textChip {
+    width: auto;
+    position: relative;
+    display: inline-block;
+    padding-left: 10px;
+    
+    
+}
+
+.contentChip {
+    height: 48px;
+    font-size: 16px;
+    line-height: 48px;
+}
+.custom-chip:focus .iconChip {
+	 background-color: #fff;
+	 color: var(--primary);
+}
+.iconChip {
+    float: left;
+    top: 8px;
+    background-color: var(--primary);
+    border-radius: 100%;
+    padding: 0;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    position: relative;
+    line-height: 32px;
+    margin-left: 5px;
+    color:#fff;
+}
+.closeChip {
+    float: right;
+    top: 12px;
+    position: relative;
+    padding-left: 15px;
+    padding-right: 5px;
+    visibility: hidden;
+}
+
+.custom-chip:hover .closeChip {
+visibility: visible;
+}
+
+
+
+
+.mat-form-field{
+width : inherit;	
+}
+
+.capsule-chip{
+    cursor: pointer;
+    border: 1px solid var(--primary);
+    background-color: #fff !important;
+    padding: 0 !important;
+    margin: 3px 6px !important;
+}
+
+
+.capsule-chip:focus{
+  background-color: var(--primary) !important;
+  color: #fff !important;
+}
+.capsuleChip
+{
+   display: inline-block;
+    padding: 0 25px;
+    height: 32px;
+    font-size: 18px;
+    line-height: 35px;
+    border-radius: 47px;
+    
+}
+.imageChipCapsule{
+    border-radius: 50px;
+    height: 32px;
+    width: 32px;
+    float: left;
+    top: 0px;
+   /*  padding: 0; */
+    text-align: center;
+    line-height: 32px;
+    color: #fff;
+    border-radius: 50px;
+    height: 32px;
+    width: 32px;
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin: 8px 0 0 0!important;
+}
+.capsule-chip:focus .iconChipCapsule {
+	 background-color: #fff;
+	 color: var(--primary);
+}
+.iconChipCapsule{
+	top: 0px;
+    /*background-color: darkgray;*/
+    background-color: var(--primary);
+    padding: 0;
+    margin: 8px;
+    text-align: center;
+    line-height: 32px;
+    color: #fff;
+    border-radius: 50px;
+    height: 32px;
+    width: 32px;
+    position: relative;
+    display: inline-block;
+    float: left;
+/*     margin: 0px 0px 0px -25px !important; */
+}
+
+.capsuleTextChip{
+    width: 90%;
+    height: inherit;
+    line-height: 48px;
+    position: relative;
+    /*display: inline-block;*/
+    padding: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;    
+    padding-left: 10px;
+}
+/*
+.closeCapsuleChip{
+	float: right;
+    top: -4px;
+    position: relative;
+    padding-left: 15px;
+    padding-right: 5px;
+    margin: 0px -34px 0px -11px;
+    size: 41px !important;
+    font-size: 40px;
+}
+*/
+.closeCapsuleChip {
+float: right;
+top: 4px;
+position: relative;
+padding: 0;
+margin: 0;
+margin-left: 25px;
+margin-right: -25px;
+visibility: hidden;
+}
+
+
+.capsule-chip:hover .closeCapsuleChip {
+visibility: visible;
+}
+
+/*.highlight{
+background: var(--primary);
+color : #fff;
+}
+*/
+h2 {
+    margin-left: 20px;
+}
+input{
+	
+}
+
+.container {
+    margin-left: 20px;
+}
+
+.capsule-flat-chip{
+	cursor: pointer;
+ /*  border: 1px solid var(--primary);*/
+    background-color: #fff !important;
+    padding: 0 !important;
+    margin: 3px 6px !important;
+}
+
+
+.capsuleFlatChip
+{
+   display: inline-block;
+    padding: 0 25px;
+    height: 32px;
+    font-size: 18px;
+    line-height: 35px;
+    border-radius: 47px;
+    background-color: rgba(241, 241, 241, 0.54);
+}
+
+md-chip.selected:last-child .capsuleFlatChip {
+    box-shadow: inset 0 0 2px 0px #f9a803;
+}
+.closeCapsuleFlatChip{
+	float: right;
+	top: 6px;
+	position: relative;
+	padding: 0;
+	margin: 0;
+	margin-left: 10px;
+	margin-right: -18px;
+/*background-color: rgba(241, 241, 241, 0.54);*/
+/* color: orange;
+ */font-size: 20px;
+
+}
+
+.capsuleTextFlatChip{
+	width: auto;
+    position: relative;
+    display: inline-block;
+    padding-left: 10px;
+    margin-left: -20px;
+    
+}
+.mat-input-placeholder {
+	/* color: orange;  */
+}
+
+.mat-focused .mat-input-placeholder
+{
+	 /* color: orange !important; */
+}
+
+.mat-form-field-underline{
+	/* background-color: orange !important; */
+}
+.mat-input-ripple {
+/* 	background-color: orange !important;
+ */}
+
+md-placeholder{
+    color:pink !important;
+}
+
+
+.suggestOption {
+    display: inline-block;
+    position: relative;
+    height: 48px;
+    /*width: 100%; */
+/*     margin: 0 -25px;
+ */
+  /*commented by SAITEJ D */
+   /* margin: 0 -8px; */
+   /*  width: 122%; */
+    
+    /*ADDED by SAITEJ D */
+     width :100%;
+     
+}
+
+.mat-option:hover:not(.mat-option-disabled) {
+/*     background: #f9a803 !important; */
+background: var(--primary);
+}
+
+.mat-option:hover:not(.mat-option-disabled) .capsuleTextChip {
+    color: #fff;
+}
+
+
+
+.errChip {
+    box-shadow: inset 0 0 0px 2px #fd3c31;
+}
+/* div#cdk-overlay-0 {
+    width: 222px !important;
+}
+div#cdk-overlay-3 {
+    width: 375px !important;
+} */
+/*
+.cdk-overlay-pane {
+ width: 375px !important; 
+    width: auto !important;
+} 
+*/
+
+mat-autocomplete-panel.mat-autocomplete-visible {
+    visibility: visible;
+    width: 375px !important ;
+    max-width:390px !important
+}
+
+
+.columns .mat-form-field {
+     width: auto !important; 
+}
+/*Added by nikhil on 02-08-2022 for multi-input field for 'IN' operator*/
+/*Changed by nikhil on 23-08-2022 to set criteria input field */
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding-top: 4px !important;
+}
+
+/* Addded by Kaustubh Nandankar on 19-March-2025 */
+.custom-input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  
+  .custom-input-container.disabled {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+  }
+  
+  .chip-container {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+  }
+  
+  .custom-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 5px;
+    background: transparent;
+  }
+  
+  .custom-input:disabled {
+    color: #888;
+    background: transparent;
+  }
+  
+  .edit-icon {
+    cursor: pointer;
+    font-size: 14px;
+    color: #007bff;
+    margin-left: 5px;
+  }
+  
+  .suggestions {
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+  }
+  
+  .suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .suggestion-item:hover {
+    background: #f0f0f0;
+  }
+  
+/* Ends here */

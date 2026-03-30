@@ -1,0 +1,59 @@
+.spinner__loading {
+  /* display: flex; */
+  justify-content: center;
+  position: absolute;
+  z-index: 999999;
+  top: 290px;
+}
+
+.example-h2 {
+  margin: 10px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 0 10px;
+}
+
+.example-card {
+  margin-bottom: 10px;
+}
+
+.loadingMsg
+{
+  color: #fff;
+  font-size: smaller;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  font-family: Arial Unicode MS, Arial, sans-serif !important;
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: white !important;
+  stroke-width: 3% !important;
+}
+
+::ng-deep .mat-progress-spinner svg {
+  position: absolute !important;
+  transform: rotate(-90deg) !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform-origin: center !important;
+  overflow: visible !important;
+  height: 40px !important;
+  width: 40px !important;
+}
+
+::ng-deep .example-margin {
+  margin: 0 10px !important;
+  width: 40px !important;
+  height: 40px !important;
+}

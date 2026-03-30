@@ -1,0 +1,528 @@
+/* Added padding by vikas on 22-09-23 */
+.gridbody {
+  /* width: calc(100% - 9px) !important;
+  margin-left: 3px !important; */
+  background-color: transparent !important;
+  height: 100% !important;
+  /* display: block; */
+  /* bottom: 9px;
+
+  padding: 10px;*/
+    grid-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  /* grid-gap: 20px; */
+  /* display: flex; */
+  /* display: table; */
+  /* flex-wrap: wrap; */
+  width: 100%;
+  z-index: 0;
+  padding:10px !important;
+}
+.visualDiv {
+  height: 100%;
+  width: 100%;
+  /* background: white; */
+}
+
+.visualFirstDiv{
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+  width: 100%;
+  /*margin-top: 9px; */
+ /* height: calc(100% - 56px)!important;*/
+}
+
+.headerImage{
+  height: 32px !important;
+}
+
+.colDiv{
+  /* margin: 10px 0px 0px 10px; */
+  display: flex;
+  align-items: center;
+  /* width:calc(100% - 0px); */
+  width: 100%;
+  /* padding:7px; */
+  /* box-shadow: 0px 1px 0px 0px rgba(0,0,0,.1); */
+}
+
+.dragDiv{
+  height: auto;
+}
+
+.gridsters {
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: .3s;
+  /* background: #e4f1f3; */
+  /* background: transparent; */
+  background: #fff6;
+  -webkit-user-select: text;
+  user-select: text;
+  /* border-radius: 24px !important; */
+  border-radius: 12px !important;
+  /* box-shadow: -2px -2px 10px #ffffff, 1px 1px 3px #aabbc9b0; */
+  /* z-index: 1;
+  display: block;
+  transform:none; */
+
+  z-index: 1;
+    display: block;
+    transform: translate3d(0px, 0px, 0px);
+    width: 100%;
+    /* height: calc(100% - 16px); */
+    height: 1000px;
+    margin-bottom: 10px;
+  
+  /* display: none; */
+  /* transform: translate3d(0px, 0px, 0px); */
+  /* width: 49%!important;
+  height: 590px!important; */
+  /* position: absolute; */
+  /* max-height: 450px!important;
+  min-width: 450px!important; */
+  box-shadow: -1px -1px 3px #f2f2f2, 1px 1px 3px #aabbc97a, 0px 0px 0px 1px #ffffff;   
+}
+
+p {
+  font-family: Lato;
+}
+
+/* .gridster-item-content {
+  padding: 1em;
+  height: 466px;
+} */
+
+.gridsterTitle 
+{
+    color: #334669!important;
+    font-size: 15px!important;
+    text-transform: capitalize;
+    /* width: auto; */
+    width: -webkit-fill-available;    ;
+    height: 17px;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 8px;
+    font-weight: 200;
+    white-space: nowrap;
+    overflow: hidden;
+    padding-right: 8px;
+}
+
+.gridsterfilterIcon {
+  border-radius: 6px;
+  background-color: var(--primary);
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #33476b4d;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #33466999;
+}
+.gidsterRow
+{
+  /* max-width: 75rem; */
+  margin-right: auto;
+}
+
+.ang-db-Link {
+    cursor: pointer;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    height: 35px;
+    grid-gap: 4px;
+    align-items: center;
+	/* cursor: pointer;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  height: 35px; */
+}
+.dashboard-link-img {
+	display:  inline-block;
+}
+.ang-Link-Image
+{
+  /* overflow: hidden;
+  float: left;
+  margin: 5px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+  border-radius: 50%;
+  width: 30px!important;
+  height: 30px!important;
+  padding: 5px !important;
+  background-color: transparent !important;
+  background-position: center; */
+
+  display: flex;
+    /* overflow: hidden; */
+    /* float: left; */
+    /* margin: 8px 5px!important; */
+    align-items: center;
+    justify-content: center;
+    /* border-radius: 50%; */
+    width: 30px!important;
+    height: 30px!important;
+    /* padding: 5px!important; */
+    background-color: transparent!important;
+    background-position: center;
+}
+.defaultImg {
+	/* display: none; */
+  display: none; 
+  height: 18px!important;
+}
+
+.angDashboadLinkImg {
+  height: 21px;
+  width: 21px;
+  cursor: pointer;
+}
+
+
+.dashsaveBtn 
+{ 
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 60px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--primaryDark);
+    box-shadow: 0px 0px 0px 1px var(--primaryDark);
+    line-height: 35px;
+}
+/* .dashsaveBtn
+{
+    background: linear-gradient(90deg, #1e9454, #1e886d);
+} */
+
+/* Changed by vikas on 04-10-23 for link button */
+.dashdoneCursor 
+{
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--primaryDark);
+    line-height: 30px;
+    padding: 0 10px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 94px;
+}
+/* Changed by vikas on 22-09-23 for dashboard save button */
+.dashsaveBtn 
+{
+  color: #ffffff !important;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 60px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.dashsaveBtn .dashdoneCursor
+{
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 35px;
+  color: #fff !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* .cdk-overlay-connected-position-bounding-box 
+{
+  top: 114px !important;
+  right: 30.3125px !important;
+  height: 292px !important;
+  width: 766.688px !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+}  */
+.plus
+{
+  color: var(--primaryDark);
+  padding: 0px 0px 0px 7px;
+}
+.dashsaveBtn .plus
+{
+  color: #fff; 
+  padding: 0px 0px 0px 7px;
+}
+.scrllMenuItem{
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: normal;
+  text-shadow: none;
+  background: transparent;
+  border: none;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 150px;
+  overflow: hidden;
+}
+
+.closeBtn {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+  width: 32px;
+  border-radius: 20px;
+  background: #fff;
+  cursor: pointer;
+
+}
+
+.btnShadow {
+  box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+}
+
+/* Added by Samruddhi on 14-08-2023 for updated UI related changes */
+gridster .gridster-column 
+  {
+  border-left: 0px !important;
+  border-right: 0px !important;
+    border-left: 1px solid white !important;
+    border-right: 1px solid white !important;
+}
+
+gridster .gridster-row {
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+  border-top: 1px solid white !important;
+    border-bottom: 1px solid white !important;
+  }
+
+gridster .gridster-item-resizable-handler
+{  
+  position: absolute;  
+  z-index: 2;
+}
+
+gridster .gridster-item-resizable-handler.handle-e
+{
+  cursor: ew-resize;
+  width: 2px;
+  bottom: 0;
+  right: 0;
+  top: 0;
+}
+
+gridster .scrollVertical
+{
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* gridster .gridster-item-resizable-handler
+{
+    cursor: ne-resize !important;
+    width: 2px !important;
+    height: 10px !important;
+    right: 0 !important;
+    top: 0 !important;
+} */
+
+/* Changed by vikas for link button on 04-10-23 */
+.dashLinkBtn 
+{ 
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  /* min-width: 60px; */
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--primaryDark);
+  box-shadow: 0 0 0 1px var(--primaryDark);
+  line-height: 35px;
+}
+
+.linkPopUpMainDiv
+{
+  /* max-height: 200px;
+  margin-top: 9px; */
+  /* height: 30vh !important; */
+  top: 0px;
+  position: relative;
+  right: 6px;
+}
+
+.mat-elevation-z4 {
+  box-shadow: 0px 13px 24px -4px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+}
+.gridHeaderDiv
+{
+  display: flex;
+  align-items: center;
+  /* width: 100%; */
+  box-shadow: inset 0 -1px #0000001a;
+  padding: 8px;
+  width: calc(100% - 16px);
+  /* justify-content: space-evenly; */
+  /* width:calc(100% - 20px); */
+  /* padding:10px;
+  box-shadow: 0px 1px 0px 0px rgba(0,0,0,.1); */
+}
+
+.cardHeightVisualOnHideHeader
+{
+  height: calc(100% - 0px) !important;
+}
+
+.cardHeightVisual
+{
+  height: calc(100% - 52px) !important;
+}
+
+.otherVisualHeightOnHideHeader
+{
+  height: calc(100% - 16px) !important;
+}
+
+.otherVisualHeight
+{
+  height: calc(100% - 52px) !important;
+}
+
+.errorClass{
+  /* display: flex; */
+  align-items: center;
+  display: none;
+  margin: 4px;
+}
+.errorNextClass{
+  display: flex;
+  align-items: center;
+  /* display: block; */
+  padding-right: 10px;
+}
+.errorIcon
+{
+  height: 18px;
+  width: 18px;
+  /* padding-right: 10px; */
+}
+
+/* .menuContent
+{
+  height: 100%;
+  display: flex;
+} */
+
+.menuImg
+{
+  align-items: center;
+  display: flex;
+}
+
+.linkTitle
+{
+  padding: 0px !important;
+  display: flex;
+  align-items: center;
+}
+
+.menuContentMore
+{
+  height: 26vh;
+}
+
+.menuContentLess
+{
+  height: auto;
+}
+.dashLinkMain
+{
+  width: auto;
+  justify-content: end;
+  display: flex;
+  max-width: 158px;
+  flex-direction: row;
+}
+.gridbodySub
+{
+  display: flex; 
+  width: 100%; 
+  flex-direction: column;
+}
+.showLinks
+{
+  display: flex; 
+  align-items: center;
+  justify-content: end;
+}
+.angDashboadLink
+{
+  padding: 7.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  right: 0px;
+}
+.showLinksMain
+{
+  display: flex;
+}
+.dashLinkTitle
+{
+  display: flex;
+  width: calc(100% - 32px);
+  justify-content: space-between;
+}
+
+
+.customVisual
+{
+  height: calc(100% - 57px) !important;
+}

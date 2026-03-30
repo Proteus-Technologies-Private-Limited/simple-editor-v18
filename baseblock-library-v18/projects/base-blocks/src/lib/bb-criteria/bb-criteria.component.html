@@ -1,0 +1,143 @@
+
+<ng-container *ngTemplateOutlet="deviceType === 'BROWSER' ? browser : mobile "></ng-container>
+
+<ng-template #browser>
+  <!-- Changed by Samruddhi on 22-Sept-2021 to set criteria pop up window height -->
+	<div class="filter-container-browser" id = "bb-filter-container">
+	   <!--  <div class="filter-header-container-browser"> -->
+       <div [ngClass]="metadataName === 'BI-FILTER' ? 'bi-filter-header' : 'filter-header-container-browser'">
+			<!-- <table cellspacing="2" cellpadding="0" class="filterdivHeading-browser" >
+				<tbody>
+					<tr [ngClass]="metadataName === 'BI-FILTER' ? 'bi-header-row-css' : ''" >
+						<td align="left" style="vertical-align: top;"  [ngStyle]="{'width': (metadataName === 'BI-FILTER') ? '75%' : ''}" >
+							<table cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td align="left" style="vertical-align: top;">
+											<img  *ngIf=" metadataName != 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/analysis_scope.png" class="gwt-Image" style="height: 30px;">
+                                            <img  *ngIf=" metadataName === 'BI-FILTER'"  src="assets/images/analysis_scope.png" class="gwt-Image" style="height: 30px;">
+										</td>
+						  			</tr>
+								</tbody>
+							</table>
+						</td>
+						<td align="left" style="vertical-align: top;">
+							<table cellspacing="0" cellpadding="0" align="right">
+								<tbody>
+									<tr>
+										<td align="left" style="vertical-align: top;">
+								    		<img *ngIf=" metadataName != 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/check.png" class="cursor" style="height: 25px;" (click)="applyFilter($event);">
+                                            <img *ngIf=" metadataName === 'BI-FILTER'" src="assets/images/check.png" class="cursor" style="height: 25px;" (click)="applyFilter($event);">
+										</td>
+										<td align="left" style="vertical-align: top;">
+										    <img *ngIf=" metadataName != 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/close.png" class="imgalignment" style="height: 25px;" (click)="closeFilter($event);">
+                                            <img *ngIf=" metadataName === 'BI-FILTER'" src="assets/images/close.png" class="imgalignment" style="height: 25px;" (click)="closeFilter($event);">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table> -->
+
+            <!-- <header class="bireport-filter-header" *ngIf=" metadataName === 'BI-FILTER'">
+                <img src="assets/images/analysis_scope.png" 
+                    onerror=" this.src= 'assets/images/err-image.png' " 
+                    class='bireport-filter-image'>
+                <span>Data Source Criteria</span>
+                <img src="assets/images/check.png" class="bireport-filter-image" title="Apply Data Source Criteria" (click)="applyFilter($event);" />
+            </header>  -->
+
+            <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [Start] -->
+            <div class="closeBtn btnShadow">
+                <img *ngIf=" metadataName != 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/Close.svg" class="imgalignment" style="height: 12px; width: 12px; margin: 0px;" (click)="closeFilter($event);">
+                <img *ngIf=" metadataName === 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/Close.svg" class="imgalignment" style="height: 12px; width: 12px; margin: 0px;" (click)="closeFilter($event);">
+            </div>
+            <div>
+                <div class = "headTitle">Criteria</div>
+                <div class = "subTitle">Please enter criteria below</div>
+            </div>
+            <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [End] -->
+	 	</div>
+		<div class="filter-body-container">
+		  <div *ngFor = " let filter of filters" style="display: flex; align-items: flex-start; width: 100%; margin-bottom: 15px;"> 
+           <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [Start]-->
+           <!-- Changed by Samruddhi for hidden field in criteria component -->
+          <!-- Added by Sujan for between operator [Start]-->
+            <div *ngIf = "filter['operator'] == 'between'" style="width: 100%" >
+                <div style="display: flex;"> 
+                  <div *ngIf = "filter['hidden'] != 'Y'" class="filterIcon" id="filterIconContainer">
+                    <img [src]="getImgSrc(filter['type'],filter['multi_opt'])" style="height: 32px; width: 32px; margin: 0px;" [hidden]="!getImgSrc(filter['type'],filter['multi_opt'])">
+                  </div>
+                  <div style="width: 100%">
+			              <bb-criteria-input [placeHolderPrefix]="'From'" [filterInfo]= 'filter' [metadataName]="metadataName" [fromDate]="fromDateInput"  [toDate]="toDateInput" [dateFormat]="dateFormat"  [filterExprInput]="filterExprInput" [fiterExprParam]="fiterExprParam" (valueChange)="updateFilterParam($event);" (populateExprData)="onPophelp($event);" style="width: calc(100% - 42px);" [isCriteriaPopUp]="isCriteriaPopUp" (emitFromFieldValue)="emitFromFieldValue($event)" [toInputFieldVal]="toInputFieldVal" [fromInputFieldVal]="fromInputFieldVal"></bb-criteria-input>
+                  </div>
+                </div>
+                <div style="display: flex;"> 
+                    <div *ngIf = "filter['hidden'] != 'Y'" class="filterIcon" id="filterIconContainer">
+                      <img [src]="getImgSrc(filter['type'],filter['multi_opt'])" style="height: 32px; width: 32px; margin: 0px;" [hidden]="!getImgSrc(filter['type'],filter['multi_opt'])">
+                  </div>
+                  <div style="width: 100%">
+                    <bb-criteria-input [placeHolderPrefix]="'To'" [filterInfo]= 'filter' [metadataName]="metadataName" [fromDate]="fromDateInput"  [toDate]="toDateInput" [dateFormat]="dateFormat"  [filterExprInput]="filterExprInput" [fiterExprParam]="fiterExprParam" (valueChange)="updateFilterParam($event);" (populateExprData)="onPophelp($event);" style="width: calc(100% - 42px);" [isCriteriaPopUp]="isCriteriaPopUp" (emitToFieldValue)="emitToFieldValue($event)" [fromInputFieldVal]="fromInputFieldVal" [toInputFieldVal]="toInputFieldVal"></bb-criteria-input>
+                  </div>
+                </div>
+             </div>
+          <!-- Added by Sujan for between operator [Start]-->
+            <div  style="display: flex; width: 100%;" *ngIf = "filter['operator'] != 'between'">
+                  <div *ngIf = "filter['hidden'] != 'Y'" class="filterIcon" id="filterIconContainer">
+                      <img [src]="getImgSrc(filter['type'],filter['multi_opt'])" style="height: 32px; width: 32px; margin: 0px;" [hidden]="!getImgSrc(filter['type'],filter['multi_opt'])">
+                   </div>
+             <!-- Changed by Sujan S on 13-04-2023 for criteria input fields not displaying properly in pop up window -->
+            <!-- <bb-criteria-input [filterInfo]= 'filter' [metadataName]="metadataName" [fromDate]="fromDateInput"  [toDate]="toDateInput" [dateFormat]="dateFormat"  [filterExprInput]="filterExprInput" (valueChange)="updateFilterParam($event);" (populateExprData)="onPophelp($event);" style="height: 30px; width: calc(100% - 42px);" [isCriteriaPopUp]="isCriteriaPopUp"></bb-criteria-input> -->
+            <bb-criteria-input [filterInfo]= 'filter' [metadataName]="metadataName" [fromDate]="fromDateInput"  [toDate]="toDateInput" [dateFormat]="dateFormat"  [filterExprInput]="filterExprInput" [fiterExprParam]="fiterExprParam" (valueChange)="updateFilterParam($event);" (populateExprData)="onPophelp($event);" style="width: calc(100% - 42px);" [isCriteriaPopUp]="isCriteriaPopUp"></bb-criteria-input>
+      </div>
+		  </div>
+		</div>
+        <div class="footerBtn">
+            <div class="doneBtn btnShadow">
+                <img *ngIf=" metadataName != 'BI-FILTER'" src="/ibase/Insight/angplugin/assets/images/Done.svg" class="cursor" style="height: 12px;" (click)="applyFilter($event);">
+                <img *ngIf=" metadataName === 'BI-FILTER'" src="assets/images/Done.svg" class="cursor" style="height: 12px;" (click)="applyFilter($event);">
+                <div (click)="applyFilter($event);" class="doneCursor">Done</div>
+            </div>
+        </div>
+        <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [End] -->
+	</div>
+</ng-template>
+
+<ng-template #mobile>
+  <div class="filter-container">
+	<div class="filter-header-container">
+    <span class="filter-title">
+      Search Scope
+    </span>
+   </div>
+  <div class="filter-body-container-mobile">
+    <div *ngFor = " let filter of filters" > 
+      <bb-criteria-input [filterInfo]= 'filter' [metadataName]="metadataName"  [fromDate]="fromDateInput"  [toDate]="toDateInput" [dateFormat]="dateFormat" (valueChange)="updateFilterParam($event);"></bb-criteria-input>
+    </div>
+  </div>
+  <div class = "filter-footer-container">
+    <table style="width: 100%;">
+      <tr>
+        <td align="left" width="20%">
+          <bb-button class = "filter-Buttons" [uxDesign]="'UX3'" [appearance]="'simple'" (click)="closeFilter($event);">
+              <mat-icon><i class="material-icons filter-action filter-Buttons" >close </i> </mat-icon> 
+              Cancel
+          </bb-button>
+        </td>
+        <td align="center" width="60%">&nbsp;</td>
+        <td align="right" width="20%">
+          <bb-button class = "filter-Buttons" [uxDesign]="'UX3'" [appearance]="'simple'" (click)="applyFilter($event);">
+              <mat-icon><i class="material-icons filter-action filter-Buttons"> check </i> </mat-icon> 
+              Apply
+          </bb-button>          
+          </td>
+      </tr>
+    </table>
+  </div>
+</div>
+</ng-template> 
+          
+          
+          

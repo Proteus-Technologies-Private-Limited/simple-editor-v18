@@ -1,0 +1,41 @@
+<mat-form-field *ngIf="isSimpleLayout === false">
+  <mat-label>{{ label }}</mat-label>
+  <input matInput 
+      [matDatepicker]="picker" 
+      [(ngModel)]="valueDate"
+      [id]="bbId"
+      [value]="valueDate"
+      [disabled]="bbDisabled" 
+      (dateChange)="bbChange.emit()" 
+      (blur)="bbBlur.emit()" 
+      (focus)="bbFocus.emit()"
+      [format]="bbFormat"
+      [required]="bbRequired">
+  <mat-datepicker-toggle matSuffix *ngIf="!bbDisabled" [for]="picker" ></mat-datepicker-toggle>
+  <mat-datepicker #picker ></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field *ngIf="isSimpleLayout === true">
+  <!-- <mat-label>{{ label }}</mat-label> -->
+  <div class="labelMainDiv">
+    <label class="lblText">{{ placeholder }}</label>
+    <div *ngIf="bbRequired" class="requireDiv">*</div>
+  </div>
+  <input matInput class="inputClass"
+      [matDatepicker]="picker"
+      [(ngModel)]="valueDate"
+      [id]="bbId"
+      [disabled]="bbDisabled"
+      (blur)="onBlur(valueDate, bbId)"
+      (focus)="onFocus()"
+      [attr.format]="bbFormat"
+      [required]="bbRequired"
+      primaryKey="false"
+      #datepickerInput>
+  <mat-datepicker-toggle matSuffix *ngIf="!bbDisabled" [for]="picker" ></mat-datepicker-toggle>
+  <mat-datepicker #picker
+  [disabled]="bbDisabled"
+  (opened)="onDatepickerOpened()"
+  (closed)="onDatepickerClosed(valueDate, bbId)" >
+  </mat-datepicker>
+</mat-form-field>

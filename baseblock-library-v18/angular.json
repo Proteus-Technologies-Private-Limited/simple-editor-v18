@@ -1,0 +1,114 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-treeview": {
+      "projectType": "library",
+      "root": "projects/ngx-treeview",
+      "sourceRoot": "projects/ngx-treeview/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-treeview/tsconfig.lib.json",
+            "project": "projects/ngx-treeview/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-treeview/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-treeview/src/test.ts",
+            "tsConfig": "projects/ngx-treeview/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-treeview/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-treeview/tsconfig.lib.json",
+              "projects/ngx-treeview/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "base-blocks": {
+      "projectType": "library",
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/base-blocks",
+      "sourceRoot": "projects/base-blocks/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/base-blocks/tsconfig.lib.json",
+            "project": "projects/base-blocks/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/base-blocks/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/base-blocks/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+            },
+            "development": {
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/base-blocks/src/test.ts",
+            "tsConfig": "projects/base-blocks/tsconfig.spec.json",
+            "karmaConfig": "projects/base-blocks/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/base-blocks/tsconfig.lib.json",
+              "projects/base-blocks/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "d72f8e33-2b90-4c1d-92f1-318ba516dfd9"
+  }
+}

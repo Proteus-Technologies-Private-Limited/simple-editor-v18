@@ -1,0 +1,18 @@
+/*a.disabled {
+   pointer-events: none;
+   cursor: not-allowed; 
+}
+*/
+a.roleDisabled{
+ pointer-events: none;
+ cursor: not-allowed; 
+ color: rgba(0, 0, 0, 0.38);
+  
+}
+
+a.buttonDisabled{
+ pointer-events: none;
+ cursor: not-allowed; 
+ color: rgba(0, 0, 0, 0.38);
+ background-color: rgba(0, 0, 0, 0.12); 
+}

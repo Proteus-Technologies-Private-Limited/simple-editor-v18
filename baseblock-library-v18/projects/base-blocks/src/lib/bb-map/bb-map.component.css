@@ -1,0 +1,196 @@
+.mapContainer agm-map 
+{
+    height: 150px;
+}
+.mapContainer > agm-map 
+{
+    height: 150px;
+}
+
+.makerMapContainer agm-map 
+{
+	 height: 500px;
+}
+
+.form-group
+{
+	position: relative;	
+}
+.pickCurrLoc
+{
+    /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAAGXRFW…zIVVtKnolQEV0gENCl7JloMplOQx+VyYyVpfqp/0eAAQCGBTt3RgSROwAAAABJRU5ErkJggg==); */
+    position: absolute;
+    margin: -27px 1px 1px;
+    /* height: 26px; */
+    /* width: 26px; */
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
+    right: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.agm-map-container-inner.sebm-google-map-container-inner {
+    border: 1px solid lightgray;
+    margin: -1px;
+}
+.agm-map-container-inner .sebm-google-map-container-inner
+{
+	border: 1px solid lightgray;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.4em 0px;
+    margin: -1px;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: #55595c;
+    background-color: #fff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    outline: none;
+    box-shadow: none;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.form-control:focus
+{
+	border-bottom: 1px solid blue !important;
+}
+.AddressDisplay
+{
+    padding: 5px 0px;
+    font-size: 14px;
+}
+.agmInfoAddressClass
+{
+    max-width: 400px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 1px;
+    margin-bottom: 10px;
+    color: rgba(0,0,0,.87);
+    text-align: left;
+}
+::ng-deep .locationLbl
+{
+	color:rgba(0, 0, 0, .54) !important;
+	font-size: 11px !important;
+}
+::ng-deep .mat-dialog-title
+{
+	margin: -15px 0 15px !important;
+}
+
+::ng-deep .mat-dialog-actions
+{
+	float: right;
+    padding-top: 25px !important;
+}
+
+::ng-deep .confDialogCancel
+{
+	padding: 0px 15px;
+    color: #687285;
+    cursor: pointer;
+    font-weight: bold !important;
+} 
+::ng-deep .confDialogConfirm
+{
+	color: #687285;
+	cursor: pointer;
+	font-weight: bold !important;
+}
+:host ::ng-deep .gm-style-iw 
+{
+    top: 0px !important; 
+/*    	background-color: #fff; */
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: none !important;
+}
+
+
+.agm-map-none
+{
+  pointer-events: none;
+}
+.agm-map-fix
+{
+/* 	 position: absolute; */
+}
+/* :host ::ng-deep .gm-style-iw {
+	width: 350px !important;
+	top: 15px !important;
+	left: 0px !important;
+	background-color: #fff;
+	box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+	border: 1px solid rgba(72, 181, 233, 0.6);
+	border-radius: 2px 2px 10px 10px;
+}
+
+:host ::ng-deep #map-canvas {
+	margin: 0;
+	padding: 0;
+	height: 400px;
+	max-width: none;
+}
+:host ::ng-deep #map-canvas img {
+	max-width: none !important;
+}
+:host ::ng-deep .gm-style-iw {
+	width: 350px !important;
+	top: 15px !important;
+	left: 0px !important;
+	background-color: #fff;
+	box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+	border: 1px solid rgba(72, 181, 233, 0.6);
+	border-radius: 2px 2px 10px 10px;
+}
+:host ::ng-deep #iw-container {
+	margin-bottom: 10px;
+}
+:host ::ng-deep #iw-container :host ::ng-deep.iw-title {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 22px;
+	font-weight: 400;
+	padding: 10px;
+	background-color: #48b5e9;
+	color: white;
+	margin: 0;
+	border-radius: 2px 2px 0 0;
+}
+:host ::ng-deep #iw-container :host ::ng-deep.iw-content {
+	font-size: 13px;
+	line-height: 18px;
+	font-weight: 400;
+	margin-right: 1px;
+	padding: 15px 5px 20px 15px;
+	max-height: 140px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+:host ::ng-deep.iw-content img {
+	float: right;
+	margin: 0 5px 5px 10px;	
+}
+:host ::ng-deep .iw-subTitle {
+	font-size: 16px;
+	font-weight: 700;
+	padding: 5px 0;
+}
+:host ::ng-deep .iw-bottom-gradient {
+	position: absolute;
+	width: 326px;
+	height: 25px;
+	bottom: 10px;
+	right: 18px;
+	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+} */

@@ -1,0 +1,25 @@
+<ng-container *ngIf="isOpen">
+	<div class="suggest-box" id="autoTemplate" *ngIf="filteredOptions && filteredOptions.length > 0" [ngStyle]="dropdownStyle">
+		<ul class="suggestions" tabindex="0">
+			<li *ngFor="let option of filteredOptions; let i = index" [value]="option.value" (mousedown)="onSuggestionClick(option)" 
+			[class.selected]="selectedIndex === i && hoverIndex === null"
+			[class.hovered]="hoverIndex === i"
+			(mouseover)="onMouseOver($event, i)" (mouseout)="onMouseOut($event)">
+				<div class="imgTag">
+					<img class="feedImg"
+						src="{{ custImage1 +option['value']+ custImage2 + option['value'] + custImage3 + option['value'] + custImage4}}">
+					<div class="autoSuggestFeed">
+						<div class="autoSuggestVal">
+							<!-- {{option.value}} -->
+							{{option.detail.label}}
+						</div>
+						<!-- <div class="feedLeftValue"> -->
+							<!-- {{option.displayChipText}} -->
+							<!-- {{option.value}}
+						</div> -->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</ng-container>

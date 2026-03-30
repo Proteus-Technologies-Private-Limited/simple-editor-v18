@@ -1,0 +1,159 @@
+<ng-container *ngIf="feedData">
+    <div *ngFor="let feedArr of feedData; let i = index;">
+        <div *ngIf = "!isGroupsArray" id="currentFeedId" class="currentFeed">
+            <!-- <div *ngFor="let leftTp of feedArr['leftTop']" class="imgDiv"> -->
+            <div *ngFor="let leftTp of feedArr['firstRowLeft']">
+                <div *ngIf = "leftTp['isIcon'] == 'true'" class="imgDiv">
+                    <img class="feedImg" src="{{custImage1 + leftTp['value'] + custImage2 + leftTp['tableName'] + custImage3 + leftTp['tableName'] + custImage4}}">
+                </div>
+            </div>
+            <!-- Changed by Samruddhi on 30-08-21-->
+            <div class="feedPanelGrp">
+                <div class="feedLeft">
+                    <div class="feeLeftVal">
+                        <div *ngFor="let firstRowLft of feedArr['firstRowLeft']">
+                            <div *ngIf="firstRowLft['isDrillDown'] == undefined && firstRowLft['col_type'] != undefined && firstRowLft['col_type'] =='T'" class="feedLeftTop">{{ firstRowLft['value'] }}&nbsp;</div>
+                            <div *ngIf="firstRowLft['isDrillDown'] == undefined && firstRowLft['col_type'] != undefined && firstRowLft['col_type'] !='T'" class="feedLeftTop">{{ firstRowLft['value'] }}&nbsp;&nbsp;</div>
+                            <div #ftRowLftRef *ngIf="firstRowLft['isDrillDown'] != undefined && firstRowLft['isDrillDown'] == 'yes'" class="feedLeftTop" (click)="_onDrillDown(feedArr, firstRowLft['drillDownColumn'],firstRowLft['link_metadata'])" style="cursor:pointer" >{{ firstRowLft['value'] }}&nbsp;&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="feedLeftBottom">
+                        <div *ngFor="let secondRowLft of feedArr['secondRowLeft']" >
+                            <div *ngIf="secondRowLft['isDrillDown'] == undefined && secondRowLft['col_type'] != undefined && secondRowLft['col_type'] =='T'" class="secondRow">{{ secondRowLft['value'] }}&nbsp;</div>
+                            <div *ngIf="secondRowLft['isDrillDown'] == undefined && secondRowLft['col_type'] != undefined && secondRowLft['col_type'] !='T'" class="secondRow">{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                            <div #scRowLftRef *ngIf="secondRowLft['isDrillDown'] != undefined && secondRowLft['isDrillDown'] == 'yes'" class="secondRow" (click)="_onDrillDown(feedArr, secondRowLft['drillDownColumn'],secondRowLft['link_metadata'])" style="cursor:pointer" (mouseover)='scRowLftRef.style.textDecoration= "underline"'
+                            (mouseout)='scRowLftRef.style.textDecoration= "none"'>{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                            <div #scRowLftRef *ngIf="secondRowLft['isDrillDown'] == undefined" class="secondRow" style="cursor:pointer">{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="feedLeftBottom">
+                        <div *ngFor="let thirdRowLft of feedArr['thirdRowLeft']">
+                            <div *ngIf="thirdRowLft['isDrillDown'] == undefined && thirdRowLft['col_type'] != undefined && thirdRowLft['col_type'] =='T'" class="thirdRow">{{ thirdRowLft['value'] }}&nbsp;</div>
+                            <div *ngIf="thirdRowLft['isDrillDown'] == undefined && thirdRowLft['col_type'] != undefined && thirdRowLft['col_type'] !='T'" class="thirdRow">{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                            <div #tdRowLftRef *ngIf="thirdRowLft['isDrillDown'] != undefined && thirdRowLft['isDrillDown'] == 'yes'" class="thirdRow" (click)="_onDrillDown(feedArr, thirdRowLft['drillDownColumn'],thirdRowLft['link_metadata'])" style="cursor:pointer" (mouseover)='tdRowLftRef.style.textDecoration= "underline"'
+                            (mouseout)='tdRowLftRef.style.textDecoration= "none"'>{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                            <div #tdRowLftRef *ngIf="thirdRowLft['isDrillDown'] == undefined" class="thirdRow" style="cursor:pointer">{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feedRight">
+                    <div class="feedRightVal">
+                        <div *ngFor="let firstRowRgt of feedArr['firstRowRight']">
+                            <div *ngIf="firstRowRgt['isDrillDown'] == undefined && firstRowRgt['col_type'] != undefined && firstRowRgt['col_type'] =='T'" class="feedRightTop">&nbsp;{{ firstRowRgt['value'] }}</div>
+                            <div *ngIf="firstRowRgt['isDrillDown'] == undefined && firstRowRgt['col_type'] != undefined && firstRowRgt['col_type'] !='T'" class="feedRightTop">&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                            <div #ftRowRgtRef *ngIf="firstRowRgt['isDrillDown'] != undefined && firstRowRgt['isDrillDown'] == 'yes'" class="feedRightTop" (click)="_onDrillDown(feedArr, firstRowRgt['drillDownColumn'],firstRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='ftRowRgtRef.style.textDecoration= "underline"'
+                            (mouseout)='ftRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                            <div #ftRowRgtRef *ngIf="firstRowRgt['isDrillDown'] == undefined" class="feedRightTop" style="cursor:pointer">&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                        </div>
+                    </div>
+                    <div class="feedRightBottom">
+                        <div *ngFor="let secondRowRgt of feedArr['secondRowRight']">
+                            <div *ngIf="secondRowRgt['isDrillDown'] == undefined && secondRowRgt['col_type'] != undefined && secondRowRgt['col_type'] =='T'" class="secondRow">&nbsp;{{ secondRowRgt['value'] }}</div>
+                            <div *ngIf="secondRowRgt['isDrillDown'] == undefined && secondRowRgt['col_type'] != undefined && secondRowRgt['col_type'] !='T'" class="secondRow">&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                            <div #scRowRgtRef *ngIf="secondRowRgt['isDrillDown'] != undefined && secondRowRgt['isDrillDown'] == 'yes'" class="secondRow" (click)="_onDrillDown(feedArr, secondRowRgt['drillDownColumn'],secondRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='scRowRgtRef.style.textDecoration= "underline"'
+                            (mouseout)='scRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                            <div #scRowRgtRef *ngIf="secondRowRgt['isDrillDown'] == undefined" class="secondRow" style="cursor:pointer">&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                        </div>
+                    </div>
+                    <div class="feedRightBottom">
+                        <div *ngFor="let thirdRowRgt of feedArr['thirdRowRight']">
+                            <div *ngIf="thirdRowRgt['isDrillDown'] == undefined && thirdRowRgt['col_type'] != undefined && thirdRowRgt['col_type'] =='T'" class="thirdRow">&nbsp;{{ thirdRowRgt['value'] }}</div>
+                            <div *ngIf="thirdRowRgt['isDrillDown'] == undefined && thirdRowRgt['col_type'] != undefined && thirdRowRgt['col_type'] !='T'" class="thirdRow">&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                            <div #tdRowRgtRef *ngIf="thirdRowRgt['isDrillDown'] != undefined && thirdRowRgt['isDrillDown'] == 'yes'" class="thirdRow" (click)="_onDrillDown(feedArr, thirdRowRgt['drillDownColumn'],thirdRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='tdRowRgtRef.style.textDecoration= "underline"'
+                            (mouseout)='tdRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                            <div #tdRowRgtRef *ngIf="thirdRowRgt['isDrillDown'] == undefined"  class="thirdRow" style="cursor:pointer">&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <div *ngIf = "isGroupsArray">
+        <div *ngFor="let key of objectKeys(feedArr);let i = index; first as isFirst">
+            <mat-accordion multi>
+                <mat-expansion-panel *ngIf = "key != 'isGroupBoxIcon' && key != 'tableName'" class="groupMainPanel">
+                    <mat-expansion-panel-header id="grpHeader">
+                        <div *ngIf = "feedArr['isGroupBoxIcon'] == true" class = "imgDivGrp" id = grpIcon>
+                            <img *ngIf = "key == 'Not Found'" class="feedImg" src="{{ custImage1 + '?' + custImage2 + feedArr['tableName'] + custImage3 + feedArr['tableName'] + custImage4}}">
+                            <img *ngIf = "key != 'Not Found'" class="feedImg" src="{{ custImage1 + key + custImage2 + feedArr['tableName'] + custImage3 + feedArr['tableName'] + custImage4}}">
+                        </div>
+                        <span *ngIf = "key != 'isGroupBoxIcon' && key != 'tableName'" class="feedGrpVal">{{ key }}</span>
+                    </mat-expansion-panel-header>
+                    <!-- Changed by Samruddhi on 30-08-21-->
+                    <div *ngFor="let mainDataArr of feedArr[key]" id ="mainFeedId" class="mainFeedTag">
+                        <div *ngIf = "key != 'isGroupBoxIcon' && key != 'tableName'" class = "currentFeedGrp" id = "mainFeedIcon">
+                            <!-- <div *ngFor="let leftTp of mainDataArr['leftTop']" class="imgDivGrpFeed"> -->
+                            <div *ngFor="let leftTp of mainDataArr['firstRowLeft']" class="imgDivGrpFeed">
+                                <div *ngIf = "leftTp['isIcon'] == 'true'" class="imgTag">
+                                    <img class="feedImg" src="{{custImage1 + leftTp['value'] + custImage2}}">        		
+                                </div>
+                            </div>
+                        <!-- Changed by Samruddhi on 30-08-21-->
+                            <div class="feedPanelGrp">
+                                <div class="feedLeftGrp">
+                                    <div class="feeLeftValGrp">
+                                        <div *ngFor="let firstRowLft of mainDataArr['firstRowLeft']" >
+                                            <div *ngIf="firstRowLft['isDrillDown'] == undefined && firstRowLft['col_type'] != undefined && firstRowLft['col_type'] =='T'" class="feedLeftTopGrp">{{ firstRowLft['value'] }}&nbsp;</div>
+                                            <div *ngIf="firstRowLft['isDrillDown'] == undefined && firstRowLft['col_type'] != undefined && firstRowLft['col_type'] !='T'" class="feedLeftTopGrp">{{ firstRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #frtRowLftRef *ngIf="firstRowLft['isDrillDown'] != undefined && firstRowLft['isDrillDown'] == 'yes'" class="feedLeftTopGrp" (click)="_onDrillDown(feedArr, firstRowLft['drillDownColumn'],firstRowLft['link_metadata'])" style="cursor:pointer" (mouseover)='frtRowLftRef.style.textDecoration= "underline"'
+                                            (mouseout)='frtRowLftRef.style.textDecoration= "none"'>{{ firstRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #frtRowLftRef *ngIf="firstRowLft['isDrillDown'] == undefined" class="feedLeftTopGrp"  style="cursor:pointer">{{ firstRowLft['value'] }}&nbsp;&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="feedLeftBottomGrp">
+                                        <div *ngFor="let secondRowLft of mainDataArr['secondRowLeft']">
+                                            <div *ngIf="secondRowLft['isDrillDown'] == undefined && secondRowLft['col_type'] != undefined && secondRowLft['col_type'] =='T'" class="secondRowGrp">{{ secondRowLft['value'] }}&nbsp;</div>
+                                            <div *ngIf="secondRowLft['isDrillDown'] == undefined && secondRowLft['col_type'] != undefined && secondRowLft['col_type'] !='T'" class="secondRowGrp">{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #secRowLftRef *ngIf="secondRowLft['isDrillDown'] != undefined && secondRowLft['isDrillDown'] == 'yes'" class="secondRowGrp" (click)="_onDrillDown(feedArr, secondRowLft['drillDownColumn'],secondRowLft['link_metadata'])" style="cursor:pointer" (mouseover)='secRowLftRef.style.textDecoration= "underline"'
+                                            (mouseout)='secRowLftRef.style.textDecoration= "none"'>{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #secRowLftRef *ngIf="secondRowLft['isDrillDown'] == undefined" class="secondRowGrp" style="cursor:pointer">{{ secondRowLft['value'] }}&nbsp;&nbsp;</div>
+                                        </div>
+                                    </div>
+                                    <div class="feedLeftBottomGrp">
+                                        <div *ngFor="let thirdRowLft of mainDataArr['thirdRowLeft']">
+                                            <div *ngIf="thirdRowLft['isDrillDown'] == undefined && thirdRowLft['col_type'] != undefined && thirdRowLft['col_type'] =='T'" class="thirdRowGrp">{{ thirdRowLft['value'] }}&nbsp;</div>
+                                            <div *ngIf="thirdRowLft['isDrillDown'] == undefined && thirdRowLft['col_type'] != undefined && thirdRowLft['col_type'] !='T'" class="thirdRowGrp">{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #trdRowLftRef *ngIf="thirdRowLft['isDrillDown'] != undefined && thirdRowLft['isDrillDown'] == 'yes'" class="thirdRowGrp" (click)="_onDrillDown(feedArr, thirdRowLft['drillDownColumn'],thirdRowLft['link_metadata'])" style="cursor:pointer" (mouseover)='trdRowLftRef.style.textDecoration= "underline"'
+                                            (mouseout)='trdRowLftRef.style.textDecoration= "none"'>{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                                            <div #trdRowLftRef *ngIf="thirdRowLft['isDrillDown'] == undefined" class="thirdRowGrp" style="cursor:pointer">{{ thirdRowLft['value'] }}&nbsp;&nbsp;</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="feedRightGrp">
+                                    <div class="feedRightValGrp">
+                                        <div *ngFor="let firstRowRgt of mainDataArr['firstRowRight']">
+                                            <div *ngIf="firstRowRgt['isDrillDown'] == undefined && firstRowRgt['col_type'] != undefined && firstRowRgt['col_type'] =='T'" class="feedRightTopGrp">&nbsp;{{ firstRowRgt['value'] }}</div>
+                                            <div *ngIf="firstRowRgt['isDrillDown'] == undefined && firstRowRgt['col_type'] != undefined && firstRowRgt['col_type'] !='T'" class="feedRightTopGrp">&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                                            <div #fstRowRgtRef *ngIf="firstRowRgt['isDrillDown'] != undefined && firstRowRgt['isDrillDown'] == 'yes'" class="feedRightTopGrp" (click)="_onDrillDown(feedArr, firstRowRgt['drillDownColumn'],firstRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='fstRowRgtRef.style.textDecoration= "underline"'
+                                            (mouseout)='fstRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                                            <div #fstRowRgtRef *ngIf="firstRowRgt['isDrillDown'] == undefined" class="feedRightTopGrp" style="cursor:pointer">&nbsp;&nbsp;{{ firstRowRgt['value'] }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="feedRightBottomGrp">
+                                        <div *ngFor="let secondRowRgt of mainDataArr['secondRowRight']">
+                                            <div *ngIf="secondRowRgt['isDrillDown'] == undefined && secondRowRgt['col_type'] != undefined && secondRowRgt['col_type'] =='T'" class="secondRowGrp">&nbsp;{{ secondRowRgt['value'] }}</div>
+                                            <div *ngIf="secondRowRgt['isDrillDown'] == undefined && secondRowRgt['col_type'] != undefined && secondRowRgt['col_type'] !='T'" class="secondRowGrp">&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                                            <div #secRowRgtRef *ngIf="secondRowRgt['isDrillDown'] != undefined && secondRowRgt['isDrillDown'] == 'yes'" class="secondRowGrp" (click)="_onDrillDown(feedArr, secondRowRgt['drillDownColumn'],secondRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='secRowRgtRef.style.textDecoration= "underline"'
+                                            (mouseout)='secRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                                            <div #secRowRgtRef *ngIf="secondRowRgt['isDrillDown'] == undefined" class="secondRowGrp" style="cursor:pointer">&nbsp;&nbsp;{{ secondRowRgt['value'] }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="feedRightBottomGrp">
+                                        <div *ngFor="let thirdRowRgt of mainDataArr['thirdRowRight']">
+                                            <div *ngIf="thirdRowRgt['isDrillDown'] == undefined && thirdRowRgt['col_type'] != undefined && thirdRowRgt['col_type'] =='T'" class="thirdRowGrp">&nbsp;{{ thirdRowRgt['value'] }}</div>
+                                            <div *ngIf="thirdRowRgt['isDrillDown'] == undefined && thirdRowRgt['col_type'] != undefined && thirdRowRgt['col_type'] !='T'" class="thirdRowGrp">&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                                            <div #trdRowRgtRef *ngIf="thirdRowRgt['isDrillDown'] != undefined && thirdRowRgt['isDrillDown'] == 'yes'" class="thirdRowGrp" (click)="_onDrillDown(feedArr, thirdRowRgt['drillDownColumn'],thirdRowRgt['link_metadata'])" style="cursor:pointer" (mouseover)='trdRowRgtRef.style.textDecoration= "underline"'
+                                            (mouseout)='trdRowRgtRef.style.textDecoration= "none"'>&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                                            <div #trdRowRgtRef *ngIf="thirdRowRgt['isDrillDown'] == undefined" class="thirdRowGrp" style="cursor:pointer">&nbsp;&nbsp;{{ thirdRowRgt['value'] }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</div>
+</ng-container>

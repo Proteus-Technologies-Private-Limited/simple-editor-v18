@@ -1,0 +1,202 @@
+.demo-chip-list {
+  width: 100% !important;
+}
+/*Added by nikhil on 02-08-2022 for multi-input field for 'IN' operator [Start]*/
+.imageChip {
+    border-radius: 4px !important;
+    height: 48px !important;
+    width: 48px !important;
+    float: left !important;
+}
+.suggestOption {
+    /* display: inline-block !important; */
+    position: relative !important;
+    width :100% !important;
+    display: flex !important;
+     
+}
+.capsuleTextChip{
+    width: 90% !important;
+    height: inherit !important;
+    line-height: 48px !important;
+    position: relative !important;
+    padding: 0 !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;    
+    padding-left: 10px !important;
+}
+.capsuleChip
+{
+   display: inline-block !important;
+    padding: 0 25px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+    line-height: 35px !important;
+    border-radius: 47px !important;
+    
+}
+.imageChipCapsule
+{
+    border-radius: 50px !important;
+    height: 32px !important;
+    width: 32px !important;
+    /* float: left !important; */
+    top: 0px !important;
+    text-align: center !important;
+    line-height: 32px !important;
+    color: #fff !important;
+    border-radius: 50px !important;
+    height: 32px !important;
+    width: 32px !important;
+    position: relative !important;
+    display: inline-block !important;
+    margin: 8px 0 0 0!important ;
+}
+/*.imageChipCapsule {
+    float: left;
+    top: 8px;
+    background-color: var(--primary);
+    border-radius: 100%;
+    padding: 0;
+    height: 32px;
+    width: 32px;
+    text-align: center;
+    position: relative;
+    line-height: 32px;
+    margin-left: 5px;
+    color:#fff;
+} */
+/*:host ::ng-deep .mat-input-element {
+    margin-top: 0.9375em !important;
+}
+:host ::ng-deep .mat-chip-list-wrapper
+{
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    margin: 2px !important;
+}*/
+/*Important class*/
+:host ::ng-deep .mat-chip-list-wrapper
+{
+     flex-direction: row !important;
+     flex-wrap: wrap !important;
+     align-items: center !important;
+     margin: 0px !important;
+}
+
+/*:host ::ng-deep .capsule-chip:focus .iconChipCapsule {
+	 background-color: #fff !important;
+	 color: var(--primary) !important;
+}*/
+
+.iconChipCapsule{
+	top: 0px;
+    /*background-color: darkgray;*/
+    background-color: var(--primary);
+    padding: 0 !important;
+    margin: 8px !important;
+    text-align: center !important;
+    line-height: 32px !important;
+    color: #fff;
+    border-radius: 50px !important;
+    height: 32px !important;
+    width: 32px !important;
+    position: relative !important;
+    display: inline-block !important;
+    float: left !important;
+/*     margin: 0px 0px 0px -25px !important; */
+}
+
+:host ::ng-deep .mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    margin: 4px;
+}
+:host ::ng-deep .mat-standard-chip.mat-chip-with-trailing-icon {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-right: 8px;
+    padding-left: 12px;
+}
+
+:host ::ng-deep ._mat-animation-noopable.mat-standard-chip {
+    transition: none;
+    animation: none;
+}
+:host ::ng-deep .mat-chip.mat-standard-chip {
+    background-color: #e0e0e0;
+    color: rgba(0, 0, 0, .87);
+}
+:host ::ng-deep .mat-standard-chip {
+    display: inline-flex;
+   border-radius: 16px;
+    align-items: center;
+    cursor: default;
+    min-height: 32px;
+    height: 1px;
+}
+:host ::ng-deep .mat-chip {
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    transform: translateZ(0);
+    border: none;
+    -webkit-appearance: none;
+}
+
+:host ::ng-deep .mat-chip {
+    font-size: 13px;
+    line-height: 18px;
+}
+:host ::ng-deep .mat-standard-chip .mat-chip-remove.mat-icon, .mat-standard-chip .mat-chip-remove .mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+:host ::ng-deep .mat-chip.mat-standard-chip .mat-chip-remove {
+    color: rgba(0, 0, 0, .87);
+    opacity: .4;
+}
+
+:host ::ng-deep .mat-standard-chip .mat-chip-remove, .mat-standard-chip .mat-chip-trailing-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+:host ::ng-deep .mat-standard-chip .mat-chip-remove, .mat-standard-chip .mat-chip-trailing-icon {
+    cursor: pointer;
+}
+:host ::ng-deep .mat-standard-chip .mat-chip-remove {
+    border: none;
+    -webkit-appearance: none;
+    padding: 0;
+    background: none;
+}
+:host ::ng-deep .mat-icon {
+    user-select: none;
+    display: inline-block;
+    fill: currentColor;
+}
+:host ::ng-deep .material-icons {
+    font-family: 'Material Icons' !important;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+}
+:host ::ng-deep .mat-chip-ripple {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: hidden;
+}
+/*Added by nikhil on 02-08-2022 for multi-input field for 'IN' operator [End]*/

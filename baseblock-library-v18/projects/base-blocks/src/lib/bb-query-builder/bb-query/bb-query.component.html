@@ -1,0 +1,6 @@
+<ng-container *ngFor="let r of query.rules">
+	<mat-chip *ngIf="!r.condition && (r.value || r.operator.includes('null'))" color="primary" selected>
+		{{ r.field }} {{ r.operator }} {{ r.value }}
+    </mat-chip>
+    <bb-query *ngIf="r.condition" [query]="r"></bb-query>
+</ng-container>

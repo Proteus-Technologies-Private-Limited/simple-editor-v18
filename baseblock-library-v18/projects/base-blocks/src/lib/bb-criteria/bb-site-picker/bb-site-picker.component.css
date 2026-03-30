@@ -1,0 +1,129 @@
+.filterLabel{
+	font-size: 20px;
+    padding-right: 40px;
+}
+
+.filterType1,
+.filterType4,
+.filterType7{
+    display: flex;
+    padding: 0 10px;
+    max-width: 300px;
+}
+.filterType2
+{
+    display: grid;
+    padding: 0 12px;
+    max-width: 300px;
+    padding-bottom: 12px;
+    padding-top: 8px;
+}
+.filterType3{
+    padding: 0 12px;
+    max-width: 300px;
+    padding-bottom: 12px;
+    padding-top: 8px;
+}
+
+.filterName{
+	font-size: 14px;
+    position: relative;
+    bottom: 10px;
+}
+
+.filterType1,.filterType7 bb-textbox span span md-form-field,
+.filterType4 md-form-field{
+    width: 100%;
+}
+:host ::ng-deep .batteryStatus{
+	width:100% !important;
+}
+
+:host ::ng-deep .mat-form-field{
+   width:100% !important;
+   max-width: 285px;
+}
+
+.ang-pophelp-icon {
+/* 	padding: 10px 0; */
+/* 	cursor: pointer; */
+	
+    margin: 10px 15px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    cursor: pointer;
+    left: 260px;
+    color: #666666;
+}
+
+.ang-pophelp-panel {
+	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0
+		rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+	background: white;
+	position: inherit;
+/*     overflow-y: auto; */
+/*     height: 520px; */
+    width: 350px;
+}
+
+.ang-filter-input {
+	width: 100%;
+}
+
+:host ::ng-deep .iconChipCapsule {
+    background-color: #a9a8a8 !important;
+}
+
+:host ::ng-deep .mat-option:hover:not(.mat-option-disabled) {
+    background: rgba(176, 176, 176, 0.65) !important;
+}
+
+:host ::ng-deep .mat-option {
+	padding: 0;
+} 
+
+.date-picker
+{
+	padding-left: 11px;
+    display: grid;
+    position: relative;
+}
+.desc
+{
+	font-size: 11px;
+    color: dimgray;
+    position: relative;
+    top: 14px;
+}
+.chipField{
+    width: 100%;
+}
+
+:host ::ng-deep .mat-input-element {
+    width: calc(100% - 30px);
+    text-overflow: ellipsis;
+}
+
+ :host ::ng-deep .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+   transform: translateY(-1.28125em) scale(1) perspective(100px) translateZ(0) !important;
+   font-size: 14px !important;
+ }
+ 
+
+.site
+ {
+ 	padding: 0 10px;
+ }
+.autosuggest1{
+ 	max-width: 136px !important;
+ }
+.autosuggest2{
+	max-width: 136px !important;
+    padding: 0 10px;
+ }
+ .filterType8{
+  	display: flex;
+    padding: 0 10px;
+ }
+

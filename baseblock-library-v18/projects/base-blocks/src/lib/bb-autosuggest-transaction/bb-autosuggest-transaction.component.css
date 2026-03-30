@@ -1,0 +1,120 @@
+:host {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+}
+
+.suggest-box {
+  width: 100%;
+}
+
+  ul.suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    width: 100%;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+    z-index: 999;
+    /* background: #fff; */
+    max-height: 244px;
+    min-width: 400px;
+    box-shadow: 0px 5px 5px -2px rgb(0 0 0 / 20%);
+  }
+
+  ul.suggestions li {
+    cursor: pointer;
+    width: calc(100% - 5px);
+    overflow: hidden;
+    border-radius: inherit;
+    position: relative;
+    height: 38px;
+    display: flex;
+    background-color: #f2f2f2;
+    padding-top: 5px;
+    padding-left: 5px;
+    /* min-width: 400px; */
+    overflow: hidden;
+    margin: 0px;
+    padding-bottom: 5px;
+    color: #000;
+  }
+  
+  /* ul.suggestions li:hover */
+  ul.suggestions li.hovered
+  { 
+    /* background-color: #f0f0f0; */
+    background-color: var(--primaryDark);
+    color: #fff;
+  }
+  
+  ul.suggestions li.selected {
+    background-color: var(--primaryDark);
+    color: #fff;
+  }
+  .imgTag
+  {
+      display: flex;
+      padding-top: 5px;
+      color: inherit;
+  }
+  .feedImg 
+  {
+      border-radius: 50%;
+      align-items: right;
+      justify-content: center;
+      height: 30px;
+      width: 30px;
+  }
+  .columnFeedData{
+    border-radius: inherit;
+    position: relative;
+    height: 40px;
+    display: flex;
+    background-color: #fff;
+    width: 100%;
+    cursor: pointer;
+}
+.autoSuggestFeed {
+  display: block;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-right: 4px;
+  padding-left: 6px;
+  color: inherit;
+}
+.autoSuggestVal {
+  display: flex;
+  font-size: 13px;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+  /* white-space: nowrap; */
+}
+.feedLeftValue {
+  display: flex;
+  font-size: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.suggestions li.selected {
+  background-color: #cceeff; 
+}
+/* .selected { 
+  background-color: #0b5eb8; 
+  color: white; 
+} */
+
+/* .suggestions li.selected { 
+  background-color: #0b5eb8; 
+  color: white !important;
+} */
+
+  

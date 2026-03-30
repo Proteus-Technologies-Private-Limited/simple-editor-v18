@@ -1,0 +1,60 @@
+<ng-container *ngTemplateOutlet="criteriaSelectTable"></ng-container>
+  <ng-template #criteriaSelectTable id="criteriaSelectID"  class="criteriaDiv"> 
+  <div id="criteriaSelect70" class="filter-container-browser">
+   <div class="filter-header-container-browser">
+      <div class="closeBtn btnShadow">
+         <span style="color:var(--primaryDark);"class="material-icons pophelp-srch-icon serachColor" (click)="closeTabWithListPopup($event);">
+            close
+        </span>
+      </div>
+      <div>
+         <div class = "headTitle">{{selectTableData['popupName']}}</div>
+         <div class = "subTitle">{{selectTableData['popupDescription']}}</div>
+      </div>
+   </div>
+   <div class="filter-body-container">
+      <div class="allTabs">
+          <input id="hiddenCheckBox" type="checkbox" style="display:none" [(ngModel)]="currenSelectedTab.checked" name="hiddenCheckBox" />
+          <label for="hiddenCheckBox" class="forhiddenCheckBoxLbl forselectDot" > 
+          <mat-icon [ngStyle]="{'display': currenSelectedTab.checked ?'block':'none'}" class="checkImage">check_circle</mat-icon>
+           <div class="tabImgDiv"> 
+           <img src="{{currenSelectedTab['imgPath']}}" style="width:36px;">
+           </div>
+                <div class="tabName">{{currenSelectedTab['name']}}
+            </div> 
+          </label> 
+      </div>
+        <div  class="ang-pophelp-header-cont">
+	        <i class="material-icons pophelp-srch-icon serachColor">search</i>
+	        <input #search class="search-val-inp" type="text" placeholder="Search Table"  [(ngModel)]="likeValue" [autofocus]="true" (keyup.enter)="onSelectTable();">
+            <!-- <i class="material-icons pophelp-srch-icon serachColor">sort</i>
+            <i class="material-icons pophelp-srch-icon serachColor">filter_list</i> -->
+        </div>
+    <div class="tableListDiv">
+      <div *ngFor = "let tableData of tableDetailArray let idex = index" class="tableFeedDiv">
+          <div *ngIf = "oldSlectedTableDataArray.includes(tableData['TABLE_NAME'])" (onload)="changeCheckBox(tableData)"></div>
+             <input id="hiddenCheckBox_{{idex}}" type="checkbox"  style="display:none" [(ngModel)]="tableData.checked" name="hiddenCheckBox_{{idex}}" (ngModelChange) = "onSelectTableFeed(tableData,idex)" />
+                <label for="hiddenCheckBox_{{idex}}" class="forselectDot">
+                    <span id="tableDataMatIcon_{{idex}}" [ngStyle]="{'display': tableData.checked ?'block':'none'}" class="checkCircle"></span>
+                        <div class="imgTag">
+                            <img class="feedImg" [ngClass]="{ 'selectedFeed' : tableData.checked }" src="{{custImage1 + tableData['TABLE_NAME'] + custImage2 + tableData['TABLE_NAME'] + custImage3 + tableData['TABLE_NAME'] + custImage4}}"> 
+                        </div>
+                </label>
+            <div class="feedLeft">
+                <div class="feeLeftVal">
+                    <span class="feedLeftTop"><b>{{ tableData['TABLE_NAME']+" " }}</b></span>
+                </div>
+            </div>
+        </div> 
+     </div>
+   </div>
+   <div class="footerBtn">
+      <div>
+         <div class="doneBtn btnShadow" (click)="onDoneSelectTable($event);">
+            <img src="/ibase/Insight/angplugin/assets/images/Done.svg" style="height: 12px;"> 
+            <div class="doneCursor">Done</div>
+         </div>
+      </div>
+   </div>
+</div>
+</ng-template>

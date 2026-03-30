@@ -1,0 +1,43 @@
+<div *ngIf="!crossOriginControlsFucnt ; else controls">
+    <div *ngIf="videoItem" class="bb-video-player">
+        <vg-player (onPlayerReady)="onPlayerReady($event)" vg-responsive="true">
+            <vg-overlay-play></vg-overlay-play>
+            <vg-controls [vgAutohide]="true" [vgAutohideTime]="3">
+                <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+
+                <vg-scrub-bar [vgSlider]="true">
+                    <vg-scrub-bar-current-time [vgSlider]="true"></vg-scrub-bar-current-time>
+                </vg-scrub-bar>
+
+                <vg-time-display vgProperty="left" vgFormat="mm:ss"></vg-time-display>
+                <div *ngIf="videoItem.CACHE_OPT && videoItem.CACHE_OPT == '2'" class="downloadBtnOption" (click)="downloadVideos();">
+                    <img src="{{downloadVidImg}}">
+                </div>
+                <div *ngIf="videoItem.CACHE_OPT && videoItem.CACHE_OPT == '0'" class="noDownloadBtnOption">
+                    <img src="{{noDownloadVidImg}}">
+                </div>
+                <vg-mute></vg-mute>
+                <vg-volume></vg-volume>
+                <span (click)="onfullScreenClick();">
+                <vg-fullscreen></vg-fullscreen>
+                </span>
+            </vg-controls>
+
+            <vg-buffering></vg-buffering>
+            <video class="video-crossOrign" #media oncontextmenu="return false;" [vgMedia]="media" [src]="hostUrl+videoItem.videoPath"
+               [ngStyle]="{'height': this.onfullScreen  ? 'inherit' : '60vh'}" id="video1" preload="auto" crossorigin>
+            </video>
+        </vg-player>
+    </div>
+</div>
+
+<ng-template #controls>
+    <div *ngIf="videoItem" class="bb-video-player">
+        <vg-player (onPlayerReady)="onPlayerReady($event)" vg-responsive="true">
+            <video class="video-controls" #media oncontextmenu="return false;" controlsList="nodownload" [vgMedia]="media"
+                [style.height]="videoItem.height || '60vh'" [src]="hostUrl+videoItem.videoPath" id="video1" preload="auto"
+                controls>
+            </video>
+        </vg-player>
+    </div>
+</ng-template>

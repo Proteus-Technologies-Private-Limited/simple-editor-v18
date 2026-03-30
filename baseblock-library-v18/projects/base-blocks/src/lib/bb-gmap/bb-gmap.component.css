@@ -1,0 +1,83 @@
+bb-gmap-search {
+    /* position: absolute;
+    top: 10px; */
+    position: relative;
+    top: -1px;
+    z-index: 2;
+    width: 100%;
+    left: 0;
+}
+
+.mapContainer agm-map {
+    height: 150px;
+}
+
+.mapContainer>agm-map {
+    height: 150px;
+}
+
+.makerMapContainer agm-map {
+    height: 500px;
+}
+
+.agm-map-container-inner.sebm-google-map-container-inner {
+    border: 1px solid lightgray;
+    margin: -1px;
+}
+
+.agm-map-container-inner .sebm-google-map-container-inner {
+    border: 1px solid lightgray;
+}
+
+.AddressDisplay {
+    padding: 5px 0px;
+    font-size: 14px;
+}
+
+.agmInfoAddressClass {
+    max-width: 400px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 1px;
+    margin-bottom: 10px;
+    color: rgba(0, 0, 0, .87);
+    text-align: left;
+}
+
+::ng-deep .locationLbl {
+    color: rgba(0, 0, 0, .54) !important;
+    font-size: 11px !important;
+}
+
+::ng-deep .mat-dialog-title {
+    margin: -15px 0 15px !important;
+}
+
+::ng-deep .mat-dialog-actions {
+    float: right;
+    padding-top: 25px !important;
+}
+
+::ng-deep .confDialogCancel {
+    padding: 0px 15px;
+    color: #687285;
+    cursor: pointer;
+    font-weight: bold !important;
+}
+
+::ng-deep .confDialogConfirm {
+    color: #687285;
+    cursor: pointer;
+    font-weight: bold !important;
+}
+
+:host ::ng-deep .gm-style-iw {
+    top: 0px !important;
+    /*    	background-color: #fff; */
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: none !important;
+}
+
+.agm-map-none {
+    pointer-events: none;
+}

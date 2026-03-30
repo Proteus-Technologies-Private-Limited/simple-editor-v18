@@ -1,0 +1,11 @@
+<ng-template #spinnerTemp id="spinnerTemp">
+  <div *ngIf="loading">
+    <div class="spinner__loading">
+      <div>
+        <mat-progress-spinner class="example-margin" [color]="color" [mode]="mode" [value]="value">
+        </mat-progress-spinner>
+      </div>
+      <div class="loadingMsg">Loading...</div>
+    </div>
+  </div>
+</ng-template>

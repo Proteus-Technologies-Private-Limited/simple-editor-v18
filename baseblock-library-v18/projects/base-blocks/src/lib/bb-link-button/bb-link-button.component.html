@@ -1,0 +1,34 @@
+
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'" [ngSwitch]="role">
+	      <span *ngSwitchCase="'link'"> 
+   			<a [href]="!bbDisabled ? link : '#'" [class.roleDisabled]="bbDisabled" >
+   			  <ng-container *ngTemplateOutlet="label"></ng-container>
+   			</a>
+	      </span>	
+	      
+	      <span *ngSwitchCase="'button'"> 
+	         <a  [href]="!bbDisabled ? link : '#'"  >
+	            <button [disabled]="bbDisabled"  [class.buttonDisabled]="bbDisabled">
+	         		<ng-container *ngTemplateOutlet="label"></ng-container>
+	         	</button>
+	         </a>
+	      </span>
+	</span> 
+	
+	<span *ngSwitchCase="'UX3'" [ngSwitch]="role">
+	      <span *ngSwitchCase="'link'"> 
+   			<a [href]="!bbDisabled ? link : '#'" [class.roleDisabled]="bbDisabled" >
+   			  <ng-container *ngTemplateOutlet="label"></ng-container>
+   			</a>
+	      </span>	
+	      
+	      <span *ngSwitchCase="'button'"> 
+	         <a mat-raised-button [href]="!bbDisabled ? link : '#'" [class.buttonDisabled]="bbDisabled" >
+	         	<ng-container *ngTemplateOutlet="label"></ng-container>
+	         </a>
+	      </span>
+	</span> 
+	
+	<ng-template #label><ng-content></ng-content></ng-template>
+</span>

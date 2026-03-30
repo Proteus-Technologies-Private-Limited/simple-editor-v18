@@ -1,0 +1,20 @@
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'">  
+	</span>
+	
+	<span *ngSwitchCase="'UX3'">
+  		<mat-button-toggle #toggBtn [checked]="bbChecked" [disabled]="bbDisabled">
+  			<ng-container *ngTemplateOutlet="content"></ng-container>
+  		</mat-button-toggle>
+	
+		<ng-template #content>
+			<ng-content></ng-content>
+			<span *ngIf = "toggBtn.checked" >
+				<ng-content select="bb-onstate"></ng-content>
+			</span>
+			<span *ngIf = "!toggBtn.checked" >
+				<ng-content select="bb-offstate"></ng-content>
+			</span>	
+		</ng-template>
+	</span>
+</span>

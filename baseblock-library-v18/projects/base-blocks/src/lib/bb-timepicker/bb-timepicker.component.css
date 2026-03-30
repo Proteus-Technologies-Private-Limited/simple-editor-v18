@@ -1,0 +1,499 @@
+.inputTypeTime
+{
+	border-width: 0 0 1px;
+	border-color: lightgrey;
+	outline: none;
+    box-shadow: none;
+    background-color: white;
+    display: inline-block;
+    font-size: 15px;
+}
+.standerdClock
+{
+	top:5px !important;
+	display: inline-block;
+}
+
+input::-webkit-datetime-edit{ color: transparent; }
+input:focus::-webkit-datetime-edit{ color: #000; }
+input:valid::-webkit-datetime-edit{ color: #000; }
+
+.text_field_block {
+	position: relative;
+	height: 28px;
+	top:15px;
+}
+
+.text_field {
+	border: 0;
+	border-bottom: 1px solid #ddd;
+	outline: none;
+	transition: 0.1s;
+	width: 100%;
+	display: block;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	background: transparent;
+	box-shadow: none;
+	height: inherit;
+}
+
+.text_field:focus, .text_field:valid {
+	width: 100%;
+	background: transparent;
+}
+.text_field:focus
+{
+/* 	border-color:blue; */
+	border-color:var(--primary);
+
+}
+
+.text_field:focus ~ label, .text_field:valid ~ label, .text_label_fixed,
+	.text_field:read-only ~ label {
+	font-size: 11px !important;
+	/* color: rgb(51, 153, 255) !important; */
+	top: -15px !important;
+	outline: none;
+	width: 100%;
+}
+
+.text_label {
+	color: #12bb85;
+	top: 0px;
+	position: absolute;
+	transition: 0.2s;
+	pointer-events: none;
+}
+
+
+
+.timeInputFld
+{
+	-webkit-order: 2;
+    -ms-flex-order: 2;
+    /* order: 2; */
+    display: block;
+    margin-top: 0;
+    background: 0 0;
+    border-width: 0 0 1px;
+    line-height: 20px;
+    height: 20px;
+    -ms-flex-preferred-size: 26px;
+    border-radius: 0;
+    border-style: solid;
+    box-sizing: border-box;
+    float: left;
+    outline: none;
+    box-shadow: none;
+    border-color: lightgrey;
+      width: 28px;
+}
+
+.timeInputFld::placeholder 
+{
+    font-size: 10px;
+}
+
+.md-up-arrow, .md-down-arrow {
+    position: absolute;
+    height: 0;
+    top: 1px;
+    right: 7px;
+    color: rgba(0,0,0,.54);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none;
+    box-shadow: none;
+    display: none;
+}
+
+.md-up-arrow:after {
+    content: '\25B2';
+    top: -6px;
+}
+.md-down-arrow:after {
+    content: '\25BC';
+    top: 3px;    
+}
+.timeSeparator
+{
+	display: inline-block;
+    line-height: 30px;
+    position: absolute;
+    left: 19px;
+    top: -6px;
+    font-weight: bold;
+}
+.md-up-arrow:after, .md-down-arrow:after {
+    display: block;
+    position: relative;
+    speak: none;
+    font-size: 13px;
+    transform: scaleY(.5) scaleX(1);
+    outline: none;
+    box-shadow: none;
+}
+.time-picker-container
+{
+    display: inline-block;
+    position: relative;
+    text-align: left;
+ 	vertical-align: middle;
+ 	float: left;
+ 	height: 40px;
+ 	width: 100%;
+}
+.timePickerPlaceHolder
+{
+	color: rgba(0,0,0,.54);
+}
+
+.hhTimeDiv, .mmTimeDiv, .ssTimeDiv
+{
+	display: inline-block;
+	position: relative;
+	margin-right: -3px;
+}
+.mmTimeDiv
+{
+    margin-left: -2px;
+}
+.timePickerPopUp
+{
+    border: 1px solid lightgray;
+    height: 235px;
+    width: 170px;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+}
+.timePickerPopUpHdr
+{
+	height: 25px;
+	width: 100%;
+	text-align: center;
+	background-color: #5676bd;
+	color: white;
+	padding: 4px 0px;
+}
+.timePickerPopUpBody
+{
+	height: 150px;
+	width: 100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid lightgrey; 
+}
+.selectedSpan
+{
+	background-color: #5676bd;
+    color: white;
+    border-radius: 100%;
+    display: inline-block;
+}
+.timePickerValSpan
+{
+	cursor: pointer;
+	font-size: 12px;
+	width: 18px;
+	height: 18px;
+}
+.leftSideElemt
+{
+	float: left;
+	
+}
+.rightSideElemt
+{
+	float: right;
+}
+.hourPicker, .minPicker
+{
+	background-color:  rgba(204, 204, 204, 0.35);
+    border-radius: 100%;
+    padding: -39px;
+    width: 140px;
+    margin: auto;
+    height: 140px;
+    padding: 5px;
+}
+.hpl1,.hpl2,.hpl3,.hpl4,.hpl5,.hpl6,.hpl7
+{
+	text-align: center;
+}
+
+.hpl2 div span, .hpl3 div span, .hpl4 div span, .hpl5 div span, .hpl6 div span 
+{
+	
+}
+
+.hpl1
+{
+	width: 100%;
+	height: 13px;
+    padding-top: 3px;
+}
+.hpl2
+{
+	height: 20px;
+}
+.hpl2 div
+{
+	display: inline-block;
+	width: 31%;
+}
+.hpl3
+{
+	
+}
+.hpl3 div
+{
+	display: inline-block;
+	width: 45%;
+}
+.hpl4
+{
+	 height: 27px;
+}
+.hpl4 div
+{
+	display: inline-block;
+	width: 50%;
+}
+.hpl5
+{
+	height: 20px;
+}
+.hpl5 div
+{
+	display: inline-block;
+	width: 45%;
+}
+.hpl6
+{
+	height: 13px;
+}
+.hpl6 div
+{
+	display: inline-block;
+	width: 29%;
+}
+[class*="mml"] {
+ 	text-align: center;
+}
+.mml
+{
+	text-align: center;
+}
+.numberDiv
+{
+	text-align: center;
+	display: inline-block;
+}
+.dotNumDiv
+{
+	height:1px;
+	/* display: none; */
+}
+.displayDotForNum
+{
+	/* background-color: black; */
+    height: 1px;
+    width: 4px;
+    display: inline-block;
+    color: rgba(204, 204, 204, 0.35);
+}
+.rightSideDotElemt
+{
+	float:right;
+}
+.leftSideDotElemt
+{
+	float:left;
+}
+.mml1,.mml2,.mml3,.mml4,.mml6,.mml7,.mml8,.mml9,.mml11,.mml12,.mml13,.mml14,.mml16,.mml17,.mml18,.mml19,.mml21,.mml22,.mml23,.mml24,.mml26,.mml27,.mml28,.mml29
+{
+	height:2px;
+	margin: auto;
+	position: relative;
+	top:3px;
+}
+.mml10,.mml15,.mml30
+{
+	height: 16px;
+}
+.mmlF
+{
+	height: 10px;
+}
+.mmlL
+{
+	height: 10px;
+    position: relative;
+    margin-top: -7px;
+    left: 28px;
+}
+.mml5,.mml20
+{
+	height: 12px;
+}
+.mml25
+{
+	height: 14px;
+}
+.mml1, .mml29
+{
+	width:26%;
+}
+.mml2 , .mml28
+{
+	width:33%;
+}
+.mml3 , .mml27 
+{
+	width:39%;
+}
+.mml4 , .mml26 
+{
+	width:45%;
+}
+.mml5 .numberDiv, .mml25 .numberDiv
+{
+	width:31%;
+}
+.mml6 , .mml24 
+{
+	width:65%;
+}
+.mml7 , .mml23 
+{
+	width:68%;
+}
+.mml8 , .mml22 
+{
+	width:71%;
+}
+.mml9 , .mml21 
+{
+	width:73%;
+}
+.mml10 .numberDiv, .mml20 .numberDiv
+{
+	width:45%;
+}
+.mml11 , .mml19 
+{
+	width:85%;
+}
+.mml12 , .mml18 
+{
+	width:85%;
+}
+.mml13 , .mml17 
+{
+	width:85%;
+}
+.mml14 , .mml16 
+{
+	width:85%;
+}
+.mml15 .numberDiv, .mml15 .numberDiv
+{
+	width:48%;
+}
+
+.timePickerPopUpFtr
+{
+	height: 25px;
+	width: 100%;
+	text-align: center;
+}
+
+.closePopUpBtn, .setClockValBtn
+{
+	height: 20px;
+	width: 42%;
+	text-align: center;
+	color: #5676bd;
+	display: inline-block;
+	padding: 5px;
+	cursor: pointer;
+}
+.displayTime
+{
+	cursor: pointer;
+	color: grey;
+	font-weight: bold;
+    padding: 5px;
+}
+
+.selectedMode
+{
+	color: white;
+}
+
+.clock {
+  position:relative;
+  transform:scale(1);
+  border-radius:50%;
+  border:1px solid gray; 
+  width:15px;
+  height:15px;
+  position:relative;
+  top:-3px;
+  left: -3px;
+  display: inline-block;
+}
+
+.clock:after {
+    position: absolute;
+    width: 7px;
+    height: 15px;
+    display: block;
+    border-top: 1px solid gray;
+    content: '';
+    left: 6px;
+    top: 8px;
+ /*  animation-duration: 1s; */
+}
+
+.clock:before {
+    position: absolute;
+    width: 0px;
+    height: 6px;
+    display: block;
+    border-left: 1px solid gray;
+    content: '';
+    left: 6px;
+    top: 3px;
+   /*  -webkit-animation-duration: 60s; */
+    /* animation-duration: 60s; */
+}
+
+.clock:before,.clock:after {
+  transform-origin: bottom;
+  animation-name: dial;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.focusedPlaceHolder
+{
+/* 	color: blue; */
+/* 	color: var(--primary); */
+	color:gray;
+
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@keyframes dial {
+    0%   {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}

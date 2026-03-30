@@ -1,0 +1,231 @@
+.mat-icon-button {
+    outline: none;
+  }
+  
+  .mat-arrow-icon {
+    outline: none;
+    line-height: 32px;
+  }
+  
+  .mat-form-field {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .text-input {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .text-area {
+    width: 300px;
+    height: 100px;
+  }
+  
+  .output {
+    width: 100%;
+    height: 375px;
+  }
+  
+  ::ng-deep .mat-select-panel { 
+      min-width: 100% !important;
+      background: #fff;
+      box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+      overflow: hidden auto !important;
+      transform: translate(17px, 23px) !important;
+  }
+  
+  ::ng-deep .mat-autocomplete-panel {
+      box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+  }
+  
+  ::ng-deep .ul {
+      width: 100%;
+  }
+  
+  .dropHere{
+      border: 1px dashed silver;
+      border-radius: 12px;
+      text-align: center;
+      margin: 16px auto 8px auto;
+      width: 90%;
+      padding: 0 0 16px 0;
+  }
+  
+  .dropHereElem1{
+      justify-content: center;
+      display: flex;
+  }
+  
+  .dropHereIcon{
+      color: #c0c0c0;
+      font-size: 30px;
+      height: 40px;
+      width: 40px;
+      align-items: flex-end;
+      display: flex;
+  }
+  
+  .dropHereElem2{
+      color: #c0c0c0;
+      font-size: 14px;
+  }
+  
+  .displayNone
+  {
+      /* change by shrutika on 29-07-21 for hide set and condition in view mode*/
+      display: none !important;
+  }
+
+  ::ng-deep .mat-form-field-infix{
+      width: 100% !important;
+  }
+  
+  ::ng-deep .mat-card{
+      display: block;
+      position: relative;
+      padding: 0 !important;
+  }
+  
+  /* Changed by Samruddhi on 01/07/21 to remove space between 2 lines in sql-editor component where condition add in criteria.*/
+  .half-form-field{
+      width: 49% !important;
+      --primary: auto !important;
+      margin: -20px 0px 0px 33px;
+  }
+  
+  /* Changed by Samruddhi on 01/07/21 to remove space between 2 lines in sql-editor component where condition add in criteria.*/
+  .full-form-field{
+      width: calc(100% - 42px) !important;
+      --primary: auto !important;
+      margin: -20px 0px 0px 33px;
+      position: relative;
+  }
+  
+  /* Changed by Samruddhi on 01/07/21 to remove space between 2 lines in sql-editor component where condition add in criteria.*/
+  .form-field-container{
+      /* width: 100% !important; */
+      display: flex;
+      align-items: center;
+  }
+  
+  ::ng-deep .textarea.mat-input-element {
+      padding: 0px 0;
+  }
+  
+  ::ng-deep .mat-button{
+      padding: 0 8px !important;
+  }
+  
+  .bb-query-input{
+      padding: 0 5px; 
+      height: 40px; 
+      border-bottom: 1px solid #6666;
+  }
+  
+  ::ng-deep .mat-option-text {
+      white-space: normal !important;
+      line-height: 1 !important;
+  }
+  
+  ::ng-deep .mat-option{
+      padding: 10px !important;
+      height: auto !important;
+      min-height: 30px !important;
+  }
+  
+  .bb-mat-select-panel{
+      overflow: auto !important; 
+      transform: translate(0px, 0px) !important; 
+      max-height: 216px !important;
+  } 
+  
+  .bb-mat-option{
+      height: auto !important; 
+      min-height: 30px !important; 
+      padding: 10px !important;
+  }
+
+/* Added by samruddhi on 10/06/21 for when change option fixed to prompt then add by default column value and label as column name without underscore. */
+   .displayBlock
+  {
+      display: block;
+  }
+  
+/* Added by Samruddhi on 22-06-21 for in operator */
+ .example-chip-list {
+ width: 100%;
+ }
+ 
+ /* Added by Samruddhi on 01/07/21 to remove space between 2 lines in sql-editor component where condition add in criteria. [Start]*/
+ ::ng-deep .mat-select-arrow {
+    border-left: 15px solid transparent !important;
+    border-right: none !important;
+    border-top: 15px solid transparent !important;
+    /* border-image-source: url('/ibase/Insight/angplugin/assets/images/Right_Arrow.svg') !important; */
+    border-image-repeat: stretch !important;
+}
+
+.fieldIcon{
+    border-radius: 6px; 
+    height: 30px; 
+    width: 30px; 
+    /* background: var(--primary);
+    background-color: var(--primary); */
+    background-color: var(--primaryGradient);
+    /* color: var(--primary); */
+    padding: 0px !important;
+    display: block;
+    margin-right: 6px;
+}
+
+.optionIcon
+{
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #fff; 
+    font-size: 15px; 
+    font-weight: bold; 
+    height: 29px;
+    width: 29px;
+}
+
+.operatorIcon
+{
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #fff; 
+    font-size: 15px; 
+    font-weight: bold; 
+    height: 28px;
+}
+/* Added by Samruddhi on 01/07/21 to remove space between 2 lines in sql-editor component where condition add in criteria. [End]*/
+
+::ng-deep.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 1.25em !important;
+    width: 100% !important;
+    height: 50px !important;
+}
+
+:host ::ng-deep.mat-select-arrow-wrapper
+{
+    display: table-cell !important;
+    vertical-align: baseline !important;
+}
+
+:host ::ng-deep.mat-select-value
+{
+    color: #000 !important;
+    /* max-width: 100% !important; */
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    /* display: flex !important; */
+    height: 40px !important;
+    display: table-cell !important;
+    max-width: 0 !important;
+}

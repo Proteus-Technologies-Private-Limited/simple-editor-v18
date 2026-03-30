@@ -1,0 +1,266 @@
+<ng-container *ngTemplateOutlet="columnPropertiesPanel"></ng-container>
+<ng-template #columnPropertiesPanel>
+    <div class="columnprop-container-browser" id="bb-columnproperties-container;" style="overflow: hidden auto;">
+        <div class="columnprop-header-container-browser">
+            <div class="closeColumnPropBtn columnpropbtnShadow" (click)="closeFilterColumnProp($event);"
+                style="cursor: pointer;">
+                <img src="/ibase/Insight/angplugin/assets/images/svg/Close_G.svg" style="height: 12px; width: 12px; margin: 0px;">
+                <!-- <svg viewBox="0 0 14 14" style="width: 10px; fill: var(--primaryDark);">
+                    <path d="M13.71,12.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L7,8.42,1.71,13.71a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L5.58,7,.29,1.71A1,1,0,0,1,1.71.29L7,5.58,12.29.29a1,1,0,1,1,1.42,1.42L8.42,7Z"></path>
+                </svg> -->
+            </div>
+            <div class="filtercolumnPropIcon">
+                <img src="/ibase/Insight/angplugin/assets/images/svg/Properties_W.svg" class="columnPropVisualImg">
+            </div>
+            <div>
+                <div class="headerTitle">Column Properties</div>
+                <div class="subheaderTitle">{{currentColName}}</div>
+            </div>
+        </div>
+
+        <div class="columnprop-body-container"
+            [ngStyle]="{'height': editFlag != 'V' ?'calc(100% - 176px)':'calc(100% - 102px)'}">
+            <div *ngFor="let group of currentVisual.ColumnGroups; let i=index; first as isFirst"
+                style="align-items: flex-start; width: 100%;">
+                <div *ngIf="currentGroupName == group['GroupName']">
+                    <div *ngFor="let column of group['COLUMNS']"
+                        id="{{column['tableName'] + '%SEP%' + column['NAME']}}">
+                        <div *ngIf="columnName == column['NAME']">
+                            <!--Added by pranjali for change column heading 29-06-2023[start]-->
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                         <input matInput placeholder="Column Heading :" [(ngModel)]="column['content']" class="form-field-input" [disabled]="editFlag == 'V'">
+                     </mat-form-field> -->
+
+                            <div class="input-container">
+                                <label>Column Heading: </label>
+                                <input [(ngModel)]="column['content']" [disabled]="editFlag == 'V'">
+                            </div>
+                            <!-- Ends here -->
+
+
+                            <!--Added by pranjali for change column heading 29-06-2023[End]-->
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <mat-label>Function :</mat-label>
+                                <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="column['FUNCTION']"
+                                    (ngModelChange)="setExpressioncolumn(column)" disableOptionCentering>
+                                    <mat-option *ngFor="let option of funcArrcolumnprop" [value]="option['value']">
+                                        {{ option['name'] }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                            <div class="dropdown-container">
+                                <label>Function: </label>
+                                <select [disabled]="editFlag == 'V'" [(ngModel)]="column['FUNCTION']"
+                                    (ngModelChange)="setExpressioncolumn(column)" disableOptionCentering>
+                                    <option *ngFor="let option of funcArrcolumnprop" [value]="option['value']">
+                                        {{ option['name'] }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by KAustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field" appearance="standard">
+                                <mat-label>Expression :</mat-label>
+                                <textarea rows="2" data-min-rows="2" class="matTxtArea" matInput
+                                    [(ngModel)]="column['expression']" [disabled]="editFlag == 'V'">
+                           </textarea>
+                            </mat-form-field> -->
+
+                            <div class="textarea-container">
+                                <label>Expression: </label>
+                                <textarea rows="2" data-min-rows="2" [(ngModel)]="column['expression']"
+                                    [disabled]="editFlag == 'V'"></textarea>
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <mat-label>Advance Formating :</mat-label>
+                                <textarea rows="2" data-min-rows="2" class="matTxtArea" [disabled]="editFlag == 'V'"
+                                    matInput [(ngModel)]="column['ADV_FORMAT']"></textarea>
+                            </mat-form-field> -->
+
+                            <div class="textarea-container">
+                                <label>Advance Formating: </label>
+                                <textarea rows="2" data-min-rows="2" [disabled]="editFlag == 'V'"
+                                    [(ngModel)]="column['ADV_FORMAT']"></textarea>
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-MArch-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <mat-label>Type :</mat-label>
+                                <mat-select [(ngModel)]="column['COLTYPE']" [disabled]="editFlag == 'V'"
+                                    (ngModelChange)="onTypeChangecolumn('',column)" disableOptionCentering>
+                                    <mat-option *ngFor="let option of columnPropertyOption['options']"
+                                        [value]="option['value']">
+                                        {{ option['name'] }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                            <div class="dropdown-container">
+                                <label>Type: </label>
+                                <select [(ngModel)]="column['COLTYPE']" [disabled]="editFlag == 'V'"
+                                    (ngModelChange)="onTypeChangecolumn('',column)" disableOptionCentering>
+                                    <option *ngFor="let option of columnPropertyOption['options']"
+                                        [value]="option['value']">
+                                        {{ option['name'] }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-MArch-2025 -->
+                            <!-- <mat-form-field *ngIf="column['COLTYPE'] == 'DATE'" class="full-form-field">
+                                <input matInput placeholder="Display Format :" [(ngModel)]="column['PATTERN']"
+                                    class="form-field-input" [disabled]="editFlag == 'V'">
+                            </mat-form-field> -->
+
+                            <div class="input-container" *ngIf="column['COLTYPE'] == 'DATE'">
+                                <label>Display Format: </label>
+                                <input [(ngModel)]="column['PATTERN']" [disabled]="editFlag == 'V'">
+                            </div>
+                            <!-- Ends here -->
+                            <!-- Commented and changed by KAustubh Nandankar on 21-MArch-2025 -->
+                            <!-- <mat-form-field *ngIf="column['COLTYPE'] != 'DATE' && column['COLTYPE'] != 'NUMBER'"
+                                class="full-form-field">
+                                <input matInput placeholder="Display Format :" [(ngModel)]="column['FORMAT']"
+                                    class="form-field-input" [disabled]="editFlag == 'V'">
+                            </mat-form-field> -->
+
+                            <div *ngIf="column['COLTYPE'] != 'DATE' && column['COLTYPE'] != 'NUMBER'">
+                                <label>Display Format: </label>
+                                <input [(ngModel)]="column['FORMAT']" [disabled]="editFlag == 'V'">
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-MArch-2025 -->
+                            <!-- <mat-form-field *ngIf="column['COLTYPE'] == 'NUMBER'" class="full-form-field">
+                                <mat-label>Display Format</mat-label>
+                                <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="column['FORMAT']"
+                                    disableOptionCentering>
+                                    <mat-option *ngFor="let option of numericFormats" [value]="option">
+                                        {{ option }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+
+                            <div class="dropdown-container" *ngIf="column['COLTYPE'] == 'NUMBER'">
+                                <label>Display Format: </label>
+                                <select [disabled]="editFlag == 'V'" [(ngModel)]="column['FORMAT']"
+                                    disableOptionCentering>
+                                    <option *ngFor="let option of numericFormats" [value]="option">
+                                        {{ option }}
+                                    </option>
+                                </select>
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <input matInput placeholder="Column Name:" readonly="true" [(ngModel)]="column['NAME']"
+                                    class="form-field-input" [disabled]="editFlag == 'V'">
+                            </mat-form-field> -->
+
+                            <div class="input-container">
+                                <label>Column Name: </label>
+                                <input readonly="true" [(ngModel)]="column['NAME']" [disabled]="editFlag == 'V'">
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by KAustubh NAndankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <input matInput placeholder="Description :" [(ngModel)]="column['descr']"
+                                    class="form-field-input" [disabled]="editFlag == 'V'">
+                            </mat-form-field> -->
+
+                            <div class="input-container">
+                                <label>Description: </label>
+                                <input [(ngModel)]="column['descr']" [disabled]="editFlag == 'V'">
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <input matInput placeholder="Column DbName :"
+                                    [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'"
+                                    [(ngModel)]="column['DBNAME']" class="form-field-input">
+                            </mat-form-field> -->
+
+                            <div class="input-container">
+                                <label>Column DbName: </label>
+                                <input [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'"
+                                    [(ngModel)]="column['DBNAME']">
+                            </div>
+                            <!-- Ends here -->
+
+                            <!-- Added new field by vikas on 06-02-23 for mapping in visualinsight for grid [Start] -->
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <mat-label>Visible :</mat-label>
+                                <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="column['HIDDEN']"
+                                    (onSelectionChange)="onColumnHiddenSelection($event)" disableOptionCentering>
+                                    <mat-option value="T">True</mat-option>
+                                    <mat-option value="F">False</mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                            <div class="dropdown-container">
+                                <label>Visible: </label>
+                                <select [disabled]="editFlag == 'V'" [(ngModel)]="column['HIDDEN']"
+                                    (onSelectionChange)="onColumnHiddenSelection($event)" disableOptionCentering>
+                                    <option value="T">True</option>
+                                    <option value="F">False</option>
+                                </select>
+                            </div>
+
+
+                            <!-- Ends here -->
+                            <!-- Added new field by vikas on 06-02-23 for mapping in visualinsight for grid [End] -->
+                            <!-- Commented and changed by Kaustubh Nandankar on 21-March-2025 -->
+                            <!-- <mat-form-field class="full-form-field">
+                                <mat-label>Alignment :</mat-label>
+                                <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="column['alignment']"
+                                    (onSelectionChange)="onColAlignmentSelection($event)" disableOptionCentering>
+                                    <mat-option value="left">Left</mat-option>
+                                    <mat-option value="right">Right</mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+
+                            <div class="dropdown-container">
+                                <label>Alignment: </label>
+                                <select [disabled]="editFlag == 'V'" [(ngModel)]="column['HIDDEN']"
+                                    (onSelectionChange)="onColumnHiddenSelection($event)" disableOptionCentering>
+                                    <option value="left">Left</option>
+                                    <option value="right">Right</option>
+                                </select>
+                            </div>
+                            <!-- Ends here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Component Start  -->
+        <div *ngIf="editFlag != 'V'" class="columnPropfooterBtn" style="margin-top:10px">
+            <!-- <button  mat-mini-fab class="columnPropdeleteColumn" (click)="deleteColumnProperty($event); closePropertiesPopup();">
+                <img  src="/ibase/Insight/angplugin/assets/images/svg/Delete Small.svg" style="font-size: 16px; line-height: 0.7;padding-bottom:6px;">
+            </button> -->
+            <div class="deletePropdone" (click)="deleteColumnProperty($event); closePropertiesPopup();">
+                <img src="/ibase/Insight/angplugin/assets/images/svg/DeleteSmall.svg" style="height: 12px;padding-bottom:1px">
+                <div class="columnPropdeleteCursor">Delete</div>
+            </div>
+            <div class="columnPropdoneBtn columnPropbtnShadow" (click)="submit($event)">
+                <img src="/ibase/Insight/angplugin/assets/images/Done.svg" class="cursor" style="height: 12px;">
+                <div class="columnPropdoneCursor">Done</div>
+            </div>
+        </div>
+    </div>
+</ng-template>

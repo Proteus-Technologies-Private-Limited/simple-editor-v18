@@ -1,0 +1,27 @@
+
+<bb-gmap-search 
+    (onPlaceChange)="onPlaceChanged($event)"
+    (onSetCurrentPosition)="setPosition($event)">
+</bb-gmap-search>
+<google-map
+    #gmap
+    height="185px"
+    width="100%"
+    [zoom]="zoom"
+    [center]="center"
+    [options]="options">
+    <map-marker
+        #markerElem
+        *ngFor="let marker of markers"
+        [position]="marker.position"
+        [label]="marker.label"
+        [title]="marker.title"
+        [options]="marker.options"
+        (mapClick)="markerClicked(markerElem, marker.info)"
+        (mapDragend)="markerDropped($event)">
+    </map-marker>
+    <map-info-window>{{ infoContent }}</map-info-window>
+</google-map>
+{{ infoContent }}
+
+

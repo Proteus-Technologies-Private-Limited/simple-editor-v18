@@ -1,0 +1,23 @@
+<div id="grid-theme-wrapper" style="height: 100%" class="ag-theme-alpine">
+  <div class="agGridHeaderDiv">
+    <div class="cancelAGButtonIcon" (click)="closeFilter($event);">Cancel</div>
+    <div *ngIf="gridData && gridData.TITLE" class="headAgGridTitle">{{gridData.TITLE}}</div>
+    <div class="doneAGButtonIcon" (click)="getSelectedRowData()">Done</div>
+  </div>
+	<ag-grid-angular
+    class="agGridDiv ag-theme-alpine" 
+    [rowData]="rowData"
+		[columnDefs]="columnDefs" 
+    [enableRangeSelection]="true" 
+    [rowSelection]="'multiple'"
+		(gridReady)="onGridReady($event)" 
+    (firstDataRendered)="onFirstDataRendered($event)"
+    [pagination]="true"
+    [statusBar]="statusBar"
+    domLayout="'autoHeight'"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [defaultColDef]="defaultColDef"
+    >
+	</ag-grid-angular>
+</div>

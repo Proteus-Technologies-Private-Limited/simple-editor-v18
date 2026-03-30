@@ -1,0 +1,174 @@
+
+<!-- Added by shrutika on 27-10-2020 [Start] for draw pophelpHeader for servicehandler4-->
+<div *ngIf="isPophelpHeader" >
+  <div id ="pophelHeaderDiv"  class="SearchMenu-header">
+        <span class="SearchMenu-cancel" (click)="onCancel();" style="float:left;">
+          <i class="material-icons  cancelBtn" style="color: #9e9494 !important;cursor: pointer;">close</i>
+        </span>
+
+        <div class="pophelpTitle">{{pophelpTitle}}</div>
+
+        <span class="SearchMenu-cancel" (click)="onFinish();">
+          <i class="material-icons  doneBtn" style="color: #998b8b !important;cursor: pointer;">done</i>
+        </span>
+  </div>
+</div> 
+<div *ngIf = "isPophelpHeader" class="ang-pophelp-header-cont">
+	  <i class="material-icons pophelp-srch-icon">search</i>
+	<input #search class="search-val-inp" type="text" placeholder="Search"  [(ngModel)]="searchValue" [autofocus]="true" (keyup)="applyFilterOnSerch($event)">
+</div>
+<!-- Added by shrutika on 27-10-2020 [End] for draw pophelpHeader for servicehandler4-->
+
+<!-- <div class="bb-table-main-content"  > -->
+ <div class="bb-table-main-content"   [ngStyle]="{'max-height': isPophelpHeader?'470px':'','width': isPophelpHeader?'363px':'', 'overflow':isPophelpHeader?'auto':'' }">
+    <div #bbButtonCantainer *ngIf = "cancelButton || finishButton || saveButton" style="height: 40px;width: 100%" id="bb-btn-container">
+        <div *ngIf = "finishButton" class = "button-div">
+          <!-- By Pooja S on 10/04/2020 - to disable button on condition  -->
+          <button type="button" [disabled]="disableSumbit" [ngClass]="{'disable-Submit': disableSumbit}" class="bb-button-input" id = "bb_table_data" (click) = "onFinish()"> {{ finishButton }}</button>
+        </div>
+
+        <div *ngIf = "saveButton" class = "button-div">
+          <button type="button" class="bb-button-input" id = "bb_table_data" (click) = "onSave()"> {{ saveButton }}</button>
+        </div>
+        <!-- By Pooja S on 10/04/2020 for Sell plan Abm related changes -Start -->
+        <div *ngIf = "sentBackButton" class = "button-div">
+          <button type="button" class="bb-button-input" id = "bb_table_data" (click) = "onSentBackButton()"> {{ sentBackButton }}</button>
+        </div>
+        <!-- By Pooja S on 10/04/2020 for Sell plan Abm related changes -End -->
+
+        <div *ngIf = "cancelButton" class = "button-div">
+            <button type="button" class="bb-button-input" id = "bb_table_data" (click) = "onCancel()"> {{ cancelButton }}</button>
+        </div>
+    </div>
+
+  <mat-form-field  [ngClass]="{'hide-filter': !displayFilter }" >
+    <input matInput (keyup)="applyFilter($any($event.target).value)" placeholder="Filter" name="filter" />
+  </mat-form-field>
+
+  <div #bbTableContainer id = "bb-table-container" class="table-container" [ngClass]="{'no-filter': !displayFilter , 'no-paginator': !displayPaginator}">
+    <!-- commented and removed matSort to set the header align center-->
+
+    <table #bbTable id = "bb-table-container" style="width: 100%;height: 100%;" mat-table [dataSource]="dataSource"> 
+    <ng-container *ngFor='let colDef of _displayedColumns;let col = index' matColumnDef="{{colDef.name}}" [sticky]="colDef.sticky" [stickyEnd]="colDef.sticky">
+    <!-- commented and removed 'mat-header-cell' to set the header align center-->         
+        <th class = "bb-table-header bb-common" id = "{{colDef.name}}_col{{col}}" mat-header-cell *matHeaderCellDef [style.width]="colDef.width" 
+        [style.left] = "leftByIdJson[col]? leftByIdJson[col] : 'auto'" [ngClass]="{ 'bb-table-header-color': definedCellTotalUpdates,'rotate' : colDef.rotate, 'bb-hidden-col': colDef.visible == 'N', 'bb-fix-colum' : col == freezColumns - 1, 'bb-fix-header-col': colDef.sticky, 'bb-unfix-header-col': !colDef.sticky}"
+         >{{definedCellTotalUpdates && colDef.display == 'Total' ? 'Total Value in INR(‘000)': colDef.display}}</th> 
+          <ng-container *matCellDef="let element ; let row = index"  sticky>
+    
+            <!-- for sticky, uneditable and groupwise cells only Start -->
+            <!-- Changed by Amey W. [ Css chnages for total column in table ] on 10-4-2020  -->
+            <td class = "bb-table-td bb-common" *ngIf =" colDef.sticky && col < groupByRowCol && colDef.visible == 'Y'" id = "Column_{{row}}_{{col}}" mat-cell  
+            [style.left]="leftByIdJson[col]? leftByIdJson[col] : 'auto'" [style.bottom] = "(definedCellTotalUpdates && row >= (dataSourceLength - 4))? getFixRowBottom(row, span[colDef.display][row]) : 'auto'"
+            [ngClass]="{ 'stickyClass' : colDef.sticky,'bb-sticky-cell':definedCellTotalUpdates && row >= (dataSourceLength - 4), 'totalBackground': definedCellTotalUpdates && row >= (dataSourceLength - 4),'bb-differ-background': definedCellTotalUpdates && (((row + 1)%2) == 0) && col == 0 && row < (dataSourceLength-4)}" 
+            [attr.rowspan]="span[colDef.display][row]"[style.display]="span[colDef.display][row] ? '' : 'none'"
+            [ngStyle]="{'background-color': (col == 0 && element['BG_COLOR'])? element['BG_COLOR'] : 'white', 'border-top': (definedCellTotalUpdates && row != 0 && row <= (dataSourceLength - 4) && element[displayColNameLst[1]] == borderSeparationKey)? '1px solid #666' : ''}">                           
+              <span  style="padding-left: 10px;" [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text' }">{{definedCellTotalUpdates && element[colDef.name] == 'Total' ? 'Total Value in INR(‘000)' : element[colDef.name]}}</span> 
+            </td>
+            <!-- for sticky, uneditable and groupwise cells only End -->
+
+            <!-- for sticky cells only Start -->
+            <!-- Changed by Amey W. [ Css chnages for total column in table ] on 8-4-2020  -->
+            <td class = "bb-table-td bb-common bb-disabled-cell" *ngIf ="colDef.sticky && col >= groupByRowCol && colDef.visible == 'Y'" id = "Column_{{row}}_{{col}}" mat-cell 
+            [style.left]="leftByIdJson[col]? leftByIdJson[col] : 'auto' " [style.bottom] = "(definedCellTotalUpdates && row >= (dataSourceLength - 4))? getFixRowBottom(row) : 'auto'"
+            [ngClass]="{ 'stickyClass_' : colDef.sticky,'lastChildRight': col == (displayedCols.length - 1), 'bb-fix-colum' : col == freezColumns - 1, 'bb-disabled-cell': col != (displayedCols.length - 1),
+            'bb-editable-cell':(element[colDef.name+'_P'] && element[colDef.name+'_P'] == '0'),'bb-sticky-cell':definedCellTotalUpdates && row >= (dataSourceLength - 4),'totalBackground':definedCellTotalUpdates && (row >= (dataSourceLength - 4) || col == (displayedCols.length - 1))}" 
+            [ngStyle]="{'border-top': (definedCellTotalUpdates && row != 0 && row <= (dataSourceLength - 4) && element[displayColNameLst[1]] == borderSeparationKey)? '1px solid #666' : ''}">       
+              <span *ngIf ="colDef.name != 'Total'" [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text' }" >
+                {{element[colDef.name]}}
+              </span>
+              <div *ngIf ="colDef.name == 'Total'">
+              <!-- Changed by Amey W. [ Css chnages for total column in table ] on 8-4-2020  -->
+                  <!-- <span *ngIf = "colDef.format == 'Y'" class = "bb-rupee-span">&#8377;</span> -->
+                  <span class= "bb-row-total" [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text' }" > <!--'totalBackground' : colDef.inputType == 'number'-->
+                    {{ currentChangeValue | calculateTotal: row: dataSource.data: defineCellsTotalIndxArr: displayColNameLst: freezColumns: definedCellTotalUpdates: defineCellsTotalIndxArrForQty}}</span>
+              </div>
+            </td>
+            <!-- for sticky cells only End -->
+            <!-- for non sticky and editable cells cells only Start -->
+            <!-- Changed by Amey W. [ Css chnages for total column in table ] on 8-4-2020  -->
+            <td class = "bb-table-td bb-common" *ngIf =" !colDef.sticky && col >= groupByRowCol && colDef.visible == 'Y'"  id = "Column_{{row}}_{{col}}" mat-cell [style.width]="colDef.width" 
+              [style.bottom] = "(definedCellTotalUpdates && row >= (dataSourceLength - 4))? getFixRowBottom(row) : 'auto'"
+               [ngClass]="{ 'stickyClass_' : colDef.sticky,'bb-disabled-cell' :element[colDef.name+'_P'] == '1',
+              'bb-sticky-cell' : definedCellTotalUpdates && row >= (dataSourceLength - 4),'totalBackground':definedCellTotalUpdates && row >= (dataSourceLength - 4)}" 
+                (click) = "(definedCellTotalUpdates && element[colDef.name+'_P'] && element[colDef.name+'_P'] == '0')? isEditable(row, col) : '' "
+                [ngStyle]="{'border-top': (definedCellTotalUpdates && row != 0 && row <= (dataSourceLength - 4) && element[displayColNameLst[1]] == borderSeparationKey)? '1px solid #666' : ''}"> <!-- [style.left]="auto" -->
+              <!--commented by Sainath on 26-02-2020 -->
+              <!-- <span *ngIf = "colDef.format == 'Y' || element[displayColNameLst[0]] == 'Total'" class = "bb-rupee-span" style="position: absolute;margin: 3px;">&#8377;</span>  -->
+              <!--commented by Amey W on 10-04-2020 -->
+              <!-- <span *ngIf = "element[displayColNameLst[0]] == 'Total'" class = "bb-rupee-span" style="position: absolute;margin: 3px;">&#8377;</span>  -->
+
+              <ng-container *ngIf = "element[colDef.name+'_P']; else simpleInput ">
+                <input *ngIf = "!definedCellTotalUpdates && element[colDef.name+'_P'] == '0' " class="bb-input-text-field"
+                [ngClass]="{ 'actiontext' : colDef.action }"
+                [placeholder] = "colDef.placeholder"
+                type="{{colDef.inputType}}"
+                onClick="this.select();"
+                [(ngModel)]="element[colDef.name]"
+                (ngModelChange) = "setChangeValue($event, row, col, colDef.inputType)"
+                [style.width] = "'inherit'"
+                [style.text-align] = "colDef.inputType == 'text'?'left':'right'"
+                (focus) = "activeActionCell = row + '_' + col;"
+                 [ngStyle]="{'height': colDef.inputType == 'checkBox'?'15px':''}"
+                />
+                <span *ngIf = "colDef.format != 'L' &&  !definedCellTotalUpdates && element[colDef.name+'_P'] == '1' " [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text' }">{{element[colDef.name]}}</span>
+
+                <span *ngIf = "colDef.format == 'L' && !definedCellTotalUpdates && element[colDef.name+'_P'] == '1' " [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text' }" (click)="showAttachmentPlugin(element[colDef.name+'_html'])"  [innerHTML]="element[colDef.name+'_html']"></span>
+                <!-- For Sell Planning Purpose Only: will activate txt field row only when clicked :Start-->
+                <input #txtBox [id] ="row+'_'+col" *ngIf = "definedCellTotalUpdates && element[colDef.name+'_P'] == '0' && selectedRowState[row]" class="bb-input-text-field"
+                [ngClass]="{ 'actiontext' : colDef.action }"
+                [placeholder] = "colDef.placeholder"
+                type="{{colDef.inputType}}"
+                onClick="this.select();"
+                (blur) ="onBlur(row)"
+                [(ngModel)]="element[colDef.name]"
+                (ngModelChange) = "setChangeValue($event, row, col, colDef.inputType)"
+                [style.width] = "'inherit'"
+                [style.text-align] = "colDef.inputType == 'text'?'left':'right'"
+                [ngStyle]="{'height': colDef.inputType == 'checkBox'?'15px':''}"
+                />
+                <!-- Changed by Amey W. [ Css chnages for total column in table ] on 10-4-2020  -->
+                <span *ngIf = "definedCellTotalUpdates && (element[colDef.name+'_P'] == '1' || !selectedRowState[row])" [ngClass]="{ 'bb-number' : colDef.inputType == 'number','bb-text': colDef.inputType == 'text','bb-editable-text' :  !selectedRowState[row] && row < (dataSourceLength - 4), 'totalBackground' : element[displayColNameLst[0]] == 'Total' }">{{element[colDef.name]}}</span>
+                <!-- For Sell Planning Purpose Only: will activate txt field row only when clicked :End-->
+
+              </ng-container>
+              <ng-template #simpleInput>
+                  <input class="bb-input-text-field"
+                  [ngClass]="{ 'actiontext' : colDef.action }"
+                  [placeholder] = "colDef.placeholder"
+                  type="{{colDef.inputType}}"
+                  onClick="this.select();" 
+                  [(ngModel)]="element[colDef.name]"
+                  (ngModelChange) = "setChangeValue($event, row, col, colDef.inputType)"
+                  [style.width] = "'inherit'"
+                  [style.text-align] = "colDef.inputType == 'text'?'left':'right'"
+                  [ngStyle]="{'height': colDef.inputType == 'checkBox'?'15px':''}"  
+                  (focus) = "activeActionCell = row + '_' + col;"
+                  />
+              </ng-template>
+              <span *ngIf = "colDef.action && (row + '_' + col == activeActionCell)" class = "bb-cell-action vision-ui-check" (click)="onCellActionPerform(colDef, element)"></span> 
+            </td>
+            <!-- for non sticky and editable cells cells only End --> 
+
+             <!-- for non sticky and hidden cells cells only Start -->
+             <td class = "bb-table-td bb-common" class = "bb-hidden-col" *ngIf =" !colDef.sticky && col >= groupByRowCol  && colDef.visible == 'N'; "  id = "Column_{{row}}_{{col}}" mat-cell [style.width]="colDef.width"  [ngClass]="{ 'stickyClass_' : colDef.sticky}"> <!-- [style.left]="auto"-->
+                <span >{{element[colDef.name]}}</span>
+            </td>
+            <!-- for non sticky and hidden cells cells only End -->               
+          </ng-container>
+
+		<!--Changed by Sainath T. on 2-Mar-20 [Css chnages for total column in table]-->
+          <ng-container *matFooterCellDef>
+			<td *ngIf = "grandTotal" class = "bb-table-td bb-common bb-footer" style="padding-left: 10px!important;"
+				mat-footer-cell [ngClass]="{ 'bb-footer-number' : colDef.inputType == 'number','bb-footer-txt': colDef.inputType == 'text', 'bb-hidden-col': colDef.visible == 'N' }">{{getGrandTotal(colDef.name, colDef.sticky, col)}}</td>
+          </ng-container> 
+        </ng-container>
+        <tr  mat-header-row *matHeaderRowDef="displayColNameLst; sticky: true;" [style.height]="'40px'"></tr><!-- 170px -->
+        <tr  mat-row *matRowDef="let row; columns: displayColNameLst;" [style.height]="bodyRowHeight+'px'" (click)="selection.toggle(row)"></tr>
+        <ng-container *ngIf = "grandTotal">
+          <tr mat-footer-row  *matFooterRowDef="displayColNameLst sticky: true;" [style.height]="'40px'"></tr>
+        </ng-container>
+      </table>
+  </div>
+  <mat-paginator [ngClass]="{'hide-paginator': !displayPaginator }" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

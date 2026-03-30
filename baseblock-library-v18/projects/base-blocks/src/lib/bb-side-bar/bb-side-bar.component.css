@@ -1,0 +1,54 @@
+.bb-sidebar-opened {
+    width: calc( 100% - var(--sidepanel-width) - 1rem);
+    position: absolute;
+    padding: 0 0.5rem;
+}
+
+.bb-sidebar-closed {
+    width: calc( 100% - 56px);
+    position: absolute;
+    padding: 0 0.5rem;
+}
+
+::ng-deep .ng-sidebar {
+    z-index: 3 !important;
+}
+
+::ng-deep .ng-sidebar--right {
+    width: var(--sidepanel-width);
+    background: #fff;
+    position: absolute;    
+}
+/*
+.sidepane-hori{
+    display: inline;
+    float: right;
+}
+.sidepane-hori .sidepane-opt{
+     margin: 10px 5px 0px 0px;
+}
+.sidepane-vert{
+    display: block;
+    display: grid;
+}
+
+.sidepane-opt{
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background-color: #e7e8e9 !important;
+    text-align: center;
+    display: inline-block;
+    margin: 10px 0px 0px 5px;
+}
+
+.sidepane-opt img{
+    height: 17px;
+    width: 18px;
+    padding: 8px 0px 3px 8px;
+    line-height: 32px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+*/

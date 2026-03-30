@@ -1,0 +1,99 @@
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX3'"> 
+		<div class="mainInputField">
+			<div *ngIf="noPlaceholderNotDisable === true && noPlaceholderIsDisable === false">
+				<div *ngIf="bbTextDisabled === true && editFlag != 'V' && noPlaceholderIsDisable === false" class="noPlaceHolderDisableFilterIcon">
+					<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+					<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+					</div>
+				</div>
+				<div *ngIf="bbTextDisabled === false && editFlag != 'V' && noPlaceholderIsDisable === false" class="noPlaceHolderFilterIcon" >
+					<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+					<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
+						<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
+						<img *ngIf="bbType == 'number'" src="/ibase/Insight/angplugin/assets/images/svg/number_simple.svg" class="numberIcon">
+					</div>
+				</div>
+			</div>
+			<div *ngIf="noPlaceholderNotDisable === false && noPlaceholderIsDisable === false">
+				<div *ngIf="!noPlaceholderIsDisable && editFlag === 'V' " class="disableTextAreaFilterIcon">
+					<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+					<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+					</div>
+				</div>
+				<div *ngIf="bbTextDisabled === true && !noPlaceholderIsDisable && editFlag != 'V'" class="disableTextAreaFilterIcon">
+					<div *ngIf="value" id="{{inputID}}_Icon" class="disabledOptionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+					<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
+					</div>
+				</div>
+				<div *ngIf="bbTextDisabled === false && noPlaceholderIsDisable === false && editFlag != 'V'" class="textAreaFilterIcon" >
+					<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
+					<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
+						<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
+						<img *ngIf="bbType == 'number'" src="/ibase/Insight/angplugin/assets/images/svg/number_simple.svg" class="numberIcon">
+					</div>
+				</div>
+			</div>
+			
+			<div *ngIf="noPlaceholderIsDisable === false && value != undefined && value != null" class="mdcMainDiv">
+				<div class="mdcWrapperDiv">
+					<div class="mdcFlexDiv">
+						<div class="mdcAppearanceLegacy">
+							<div class="labelMainDiv">
+								<div *ngIf="required" class="requiredDiv">*</div>
+								<label class="lblText">{{placeholder}}</label>
+							</div>
+							<textarea class="textAreaInputClass" #textarea="ngModel" matInput [(ngModel)]="value" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbTextDisabled" 
+								[value]="value" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [style.resize]="bbResize" [style.direction]="bbDirection" 
+								[rows]="bbRows" [cols]="bbColoumn" [readOnly]="bbReadOnly"  [autofocus]="bbAutofocus" (focusout)="bbFocusOut.emit()"
+								(input)="openAutosuggest(fieldName,value,formNo)" (focus)="onFocus(fieldName,value,formNo,inputID)" (blur)="onBlur($event,inputID)"
+								id="{{inputID}}" (keydown)="onKeyDown($event)">
+							</textarea>
+							<bb-autosuggest-transaction *ngIf="drawPophelp == true && value?.length >= 2"
+								(itemChangeValues)="onItemChangeFromSuggestBox($event)"
+								(onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="currentCompData"
+								[id]="fieldName" (preventItemChange)="onPreventItemChange($event)">
+							</bb-autosuggest-transaction>
+							<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
+								(click)="openPopHelp()" class="textAreaWizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract"
+								(mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
+							</div>
+							<mat-hint>
+								<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+							</mat-hint>
+						</div>
+					</div>
+				</div>
+				
+			</div>	
+			<div *ngIf="noPlaceholderIsDisable === true && value != undefined && value != null" class="mdcMainDiv-disabled">
+				<div class="labelMainDiv">
+					<div *ngIf="required" class="requireDiv">*</div>
+					<label class="lblText">{{placeholder}}</label>
+				</div>
+				<textarea class="disabledInputField" #textarea="ngModel" matInput [(ngModel)]="value" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbTextDisabled" 
+					[value]="value" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [style.resize]="bbResize" [style.direction]="bbDirection" [style.height]="bbTextArHeight"
+					[rows]="bbRows" [cols]="bbColoumn" [readOnly]="bbReadOnly"  [autofocus]="bbAutofocus" (focusout)="bbFocusOut.emit()"
+					(input)="openAutosuggest(fieldName,value,formNo)" (focus)="onFocus(fieldName,value,formNo,inputID)" (blur)="onBlur($event,inputID)"
+					id="{{inputID}}" (keydown)="onKeyDown($event)">
+				</textarea>
+			</div>
+		</div>
+	</span>
+	
+	<span *ngSwitchCase="'UX2'">
+		<span  [ngClass]="{'labelPostion':bbLabelPostion === 'top'}">{{bbLabel}}</span>
+		<textarea  #textarea="ngModel"  [(ngModel)]="value" [required]="bbRequired" [disabled]="bbDisabled" [value]="value" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [style.resize]="bbResize" [style.direction]="bbDirection" [rows]="bbRows" [cols]="bbColoumn" [readOnly]="bbReadOnly"  [autofocus]="bbAutofocus" (focusout)="bbFocusOut.emit()"
+		(focus)="onFocus($event)">
+	    </textarea>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+	
+	<span *ngSwitchCase="'UX1'">
+		<textarea  #textarea="ngModel"  [(ngModel)]="value"  [placeholder]="bbPlaceholder"  [required]="bbRequired" [disabled]="bbDisabled" [value]="value" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [style.resize]="bbResize" [style.direction]="bbDirection" [rows]="bbRows" [cols]="bbColoumn" [readOnly]="bbReadOnly"  [autofocus]="bbAutofocus" (focusout)="bbFocusOut.emit()"
+		(focus)="onFocus($event)">
+	    </textarea>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+		
+	</span>
+</span>

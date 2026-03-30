@@ -1,0 +1,42 @@
+<!-- <h1 mat-dialog-title>
+  {{title}}
+</h1>
+
+<div mat-dialog-content>
+  <p>{{message}}</p>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onDismiss()">No</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Yes</button>
+</div> -->
+
+<div style="z-index: 1000;" id="popup_content" class="popup_content_error">
+  <div *ngIf = "!confirmBox" id="popup_title" class="popup_title"><div class = "popup_title_inner_div">{{title}}</div></div>
+    <!-- Commented and changed by Kaustubh Nandankar on 15-April-2025  -->
+  <!-- <div id="popup_img" class="popup_content_img vision-ui-warning_circle" (click) = "toggleSummary()" [ngClass] = "{'success-box': successBox}"></div> -->
+  <div id="popup_img" (click)="toggleSummary()" [ngClass]="{
+    'popup_content_prompt vision-ui-check': data?.title === 'Prompt',
+    'popup_content_img vision-ui-warning_circle': data?.title !== 'Prompt',
+    'success-box': successBox
+  }">
+  </div>
+  <!-- Ends here -->
+  <div id="popup_message" class="popup_message">
+    <div class = "bb-confirm-msg" [innerHTML]= "message"></div>
+    <div *ngIf="showSummaryFlag">
+      <br><br>
+      <p>
+        <span>Message Id-</span>
+        <span id="errorId">{{errorId}}</span>
+        <br>
+        <span id="errorTraceid">{{trace}}</span>
+      </p>
+    </div>
+  </div>
+  <div id="popup_panel" class="popup_panel">
+    <button *ngIf = "confirmBox && !successBox" type="button" class="popup_cancel popup_cancel_blue"
+      (click)="onDismiss()" id="popup_cancel">CANCEL</button>
+    <button type="button" class="popup_ok popup_ok_blue" (click)="onConfirm()" id="popup_ok">OK</button>
+  </div>
+</div>

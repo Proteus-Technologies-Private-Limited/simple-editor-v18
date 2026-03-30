@@ -1,0 +1,37 @@
+<span *ngIf="rate >= 0 && !isSmallRatings">
+ <span [ngClass]="isResponsive ? 'resp-rating' : 'fixed-rating'">
+   <span *ngFor="let a of range; let i = index" class="star-ratings" on-mouseover="reset();" on-mouseout="setPrevious();">
+     <i *ngIf="isResponsive" class="material-icons resp-star" (click)="update(a)" [ngClass]="a <= rate ? 'star-rating' : 'empty-star-rating'"> &#xE885; </i>
+     <i *ngIf="!isResponsive" class="material-icons" [ngClass]="i < rate ? 'star-rating' : 'empty-star-rating'"> &#xE885; </i>
+   </span>
+ </span>
+</span>
+
+ <div *ngIf="ratingDetail">
+ 	<table class="rating-chart-container">
+	 	<tr *ngFor="let a of range; let i = index" class="rating-full-bar" (click)="filterBy.emit(a)">
+		 	<td class="star-count-container">
+		 		<span class="rating-no">{{a}}</span> <i class="material-icons chart-star"> &#xE885; </i>
+		 	</td>
+		 	<td class="rating-container">
+			 	<span class="rating-bar">
+			 		<span [ngStyle]="{'width.%': (overallRatings[i]/totalRatings)*100}" class="avg-rating-bar"></span>
+			 	</span>
+		 	</td>
+		 	<td class="rating-count">
+		 		{{overallRatings[i]}}
+		 	</td>
+	 	</tr>
+ 	</table>
+ </div>
+
+ <span *ngIf="isSmallRatings">
+ 	<span class="fixed-rating">
+ 		<span *ngFor="let a of range; let i = index" class="star-ratings">
+	 		<i class="material-icons" [ngClass]="i < rate ? 'small-star-rating' : 'small-empty-star-rating'"> &#xE885; </i>
+ 		</span>
+ 	</span>
+ </span>
+
+
+

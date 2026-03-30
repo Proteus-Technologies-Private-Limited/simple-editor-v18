@@ -1,0 +1,353 @@
+    <mat-card *ngIf="currentConfig && sqlModel['SQLModel'] && sqlModel['CRITERIA']">
+	<query-builder [(ngModel)]="sqlModel['CRITERIA']['query']" [config]='currentConfig' [allowRuleset]='allowRuleset'
+		[allowCollapse]='allowCollapse'>
+		<ng-container *queryButtonGroup="let ruleset; let addRule=addRule; let addRuleSet=addRuleSet; let removeRuleSet=removeRuleSet">
+			<button [ngClass]="{displayNone : editFlag == 'V'}" type="button" mat-button color="primary" (click)="addRule(); setSourceSql(true);" matTooltip="Add rule" style="display: flex">
+                <img src="/ibase/Insight/angplugin/assets/images/Set.svg" style="padding-bottom: 1px; height: 15px; padding-right: 5px;">
+                <span style="font-size: 15px; font-weight: 600;">Condition</span>
+            </button>
+                <button [ngClass]="{displayNone : editFlag == 'V'}" type="button" mat-icon-button color="primary" *ngIf="addRuleSet" (click)="addRuleSet(); setSourceSql(true);" matTooltip="Add ruleset" style="display: flex;">
+                    <img src="/ibase/Insight/angplugin/assets/images/Condition.svg" style="padding-bottom: 1px; height: 15px; padding-right: 5px;">
+                    <span style="font-size: 15px; font-weight: 600;">Set</span>
+                </button>
+                <div style="position: absolute; top: 0; right: 0; z-index: 99;">
+                <button [ngClass]="{displayNone : editFlag == 'V'}" type="button" mat-icon-button color="accent" *ngIf="removeRuleSet" (click)="removeRuleSet(); setSourceSql(true);" matTooltip="Remove ruleset">
+                    <span style="height: 36px; width: 36px; display: flex; align-items: center; justify-content: center;">
+                    <img src="/ibase/Insight/angplugin/assets/images/Close2.svg" style="height: 15px;">
+                    </span>
+                </button>
+            </div>
+		</ng-container>
+		<ng-container [ngClass]="{displayNone : editFlag == 'V'}" *queryArrowIcon>
+			<mat-icon ngClass="mat-arrow-icon" style="color:grey !important;">chevron_right</mat-icon>
+		</ng-container>
+		<ng-container *queryRemoveButton="let rule; let removeRule=removeRule">
+			<button [ngClass]="{displayNone : editFlag == 'V'}" type="button" mat-icon-button color="accent" (click)="removeRule(rule)" matTooltip="Remove rule" style="margin: -12px -12px 0px 0px;">
+                <img src="/ibase/Insight/angplugin/assets/images/Close2.svg" style="padding-bottom: 1px; height: 15px; padding-right: 5px;">
+            </button>
+		</ng-container>
+		<ng-container *querySwitchGroup="let ruleset; let onChange=onChange">
+			<mat-radio-group  *ngIf="ruleset" [(ngModel)]="ruleset.condition" (ngModelChange)="onChange($event); setSourceSql(true);">
+				<mat-radio-button [ngClass]="{displayNone : editFlag == 'V'}" [style.padding.px]="10" value="and">And</mat-radio-button>
+				<mat-radio-button [ngClass]="{displayNone : editFlag == 'V'}" [style.padding.px]="10" value="or">Or</mat-radio-button>
+			</mat-radio-group>
+		</ng-container>
+		<ng-container *queryField="let rule; let fields=fields; let onChange=onChange; let getFields = getFields; let i = index">
+            <div style="margin: 36px 0 0 0; overflow: hidden;">
+                <mat-form-field cdkDropList (cdkDropListDropped)="onDropCriteria($event, dropInCriteria); onChange(dropInCriteria.value, rule); setSourceSql(true);" id="criteriaList" class="full-form-field" (mouseenter)="onMouseEnter($event)">
+                    <div *ngIf="isDropHere" [ngClass]="{displayNone : editFlag == 'V', dropHere : editFlag != 'V' }">
+                        <div class="dropHereElem1">
+                            <mat-icon class="dropHereIcon">add</mat-icon>
+                        </div>
+                        <div class="dropHereElem2">
+                            Drop here to add
+                        </div>
+                    </div>
+                    <div class ="fieldIcon" style="margin: 4px 0px -20px -35px;">
+                        <img src="/ibase/Insight/angplugin/assets/images/Column1.svg" style="height: 30px;">
+                    </div>
+                    <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="rule.field" (ngModelChange)="onChange($event, rule); setSourceSql(true);" (focus)="inputElem.value = ''; onKeyUpFieldContext('', 'columnDrpDown')" #dropInCriteria disableOptionCentering>
+                        <input matInput #inputElem type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'columnDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+                        <div class="bb-mat-select-panel">
+                            <mat-option name="columnDrpDown" *ngFor="let field of queryArrayNew" [disabled]="editFlag == 'V'" [value]="field.fieldName" class="bb-mat-option" id="{{field.fieldName}}">
+                                {{ field.fieldDisplayName }}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </ng-container>
+		<ng-container *queryOperator="let rule; let operators=operators; let onChange=onChange; let getQueryOption=getQueryOption; let changeQueryOption=changeQueryOption; let i = index">
+			<div class="form-field-container">
+                <mat-form-field class="full-form-field">
+                    <div class ="fieldIcon" style="margin: 0px 0px -20px -35px;">
+                        <div *ngIf = "rule['operator'] != 'between'" class="operatorIcon">
+                            {{ rule['operator'] }}
+                        </div>
+                        <div *ngIf = "rule['operator'] == 'between'" class="operatorIcon">
+                            BW
+                        </div>
+                    </div> 
+				    <mat-select [(ngModel)]="rule.operator" [disabled]="editFlag == 'V'" (ngModelChange)="onChange(rule); setSourceSql(true);" disableOptionCentering>
+					    <mat-option *ngFor="let value of operators" [value]="value">
+						    {{ value }}
+					    </mat-option>
+				    </mat-select>
+			    </mat-form-field>
+			  </div>
+			<div class="form-field-container">
+                <mat-form-field class="full-form-field">
+                <div class ="fieldIcon" style="margin: 0px 0px -20px -35px;">
+                    <div class = "optionIcon">
+                        {{ rule['queryOption'] }}
+                    </div>
+                </div> 
+                    <mat-select [(ngModel)]="rule.queryOption" [disabled]="editFlag == 'V'" (ngModelChange)="changeQueryOption(rule); setSourceSql(true);" disableOptionCentering>
+					    <mat-option *ngFor="let key of getQueryOption" [value]="key.value">
+						    {{ key.name }}
+					    </mat-option>
+				    </mat-select>
+                </mat-form-field>
+            </div>
+        </ng-container>
+        <ng-container *queryInput="let rule; type: 'boolean'; let onChange=onChange; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+	                <div class ="fieldIcon">
+	                    <!-- <img *ngIf="rule.queryOption != 'P'" [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+	                    <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+	                </div>
+	                <mat-form-field *ngIf="rule.queryOption == 'P'" class="half-form-field" style="margin: 5px">
+	                    <mat-label>Prompt Label</mat-label>
+	                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange()">
+	                </mat-form-field>
+                    <div class ="fieldIcon">
+	                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+	                </div>
+	                <mat-label [ngClass]="(rule.queryOption == 'P') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+				    <mat-checkbox  [disabled]="editFlag == 'V'" [(ngModel)]="rule.value" (ngModelChange)="onChange(); setSourceSql(true);"></mat-checkbox>
+            </div>
+		</ng-container>
+		<ng-container *queryInput="let rule; let field=field; let options=options; type: 'category'; let onChangeNew=onChangeNew; let getFields=getFields; let onChange=onChange; let i = index">
+			<div class="form-field-container">
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 0px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange()">
+                </mat-form-field>
+                <mat-form-field cdkDropList (cdkDropListDropped)="onDropCriteriaCol($event, dropInCriteriaCol); onChangeNew(dropInCriteriaCol.value, rule); setSourceSql(true);" [ngClass]="(rule.queryOption == 'P') ? 'half-form-field' : 'full-form-field'" id="criteriaColList" (mouseenter)="onMouseEnterCol($event)">
+                    <div class ="fieldIcon" style="margin: 0px 0px -20px -35px;">
+                        <img src="/ibase/Insight/angplugin/assets/images/Column1.svg" style="height: 30px;">
+                    </div>
+                    <div *ngIf="isDropHereCol" [ngClass]="{displayNone : editFlag == 'V', dropHere : editFlag != 'V' }"> 
+                        <div class="dropHereElem1">
+                            <mat-icon class="dropHereIcon">add</mat-icon>
+                        </div>
+                        <div class="dropHereElem2">
+                            Drop here to add
+                        </div>
+                    </div>
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                    <mat-select [disabled]="editFlag == 'V'" [(ngModel)]="rule.value" (ngModelChange)="onChangeNew($event, rule); setSourceSql(true);" (focus)="inputElemCol.value = ''; onKeyUpFieldContext('', 'valueDrpDown')" #dropInCriteriaCol disableOptionCentering>
+                        <input matInput #inputElemCol type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'valueDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+					    <div class="bb-mat-select-panel">
+                            <mat-option name="valueDrpDown" *ngFor="let field of queryArrayNew" [disabled]="editFlag == 'V'" [value]="field.fieldName" class="bb-mat-option" id="{{field.fieldName}}">
+						        {{ field.fieldDisplayName }}
+					        </mat-option>
+                        </div>
+				    </mat-select>
+			    </mat-form-field>
+            </div>
+        </ng-container>
+		<ng-container *queryInput="let rule; type: 'date'; let onChange=onChange ; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+	            <div class ="fieldIcon" >
+                    <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+	               	<span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+	            </div>
+	            <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+	            	<mat-label>Prompt Label</mat-label>
+	                <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+	            </mat-form-field>
+            </div>
+            <div class="form-field-container">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Default Value Type</mat-label>
+                    <div [disabled]="editFlag == 'V'" class="bb-mat-select-panel">
+                    	<mat-select (selectionChange)="customDrop($event, rule);" [(ngModel)]="rule.customValue">
+                        	<input matInput #inputElem type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'customDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+                            <mat-option name="customDrpDown" *ngFor="let custom of cust_date" [disabled]="editFlag == 'V'" [value]="custom.value" class="bb-mat-option" id="{{custom.value}}">
+                                {{custom.value}}
+                            </mat-option>
+                    	</mat-select>
+                	</div>
+                </mat-form-field>
+            </div>
+            <div *ngIf="rule.customValue != undefined && rule.customValue != ''" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                    <input [disabled]="editFlag == 'V' || rule.customValue != 'FixedValue'" matInput [matDatepicker]="picker" [(ngModel)]="rule.value" (ngModelChange)="onChange(); setSourceSql(true);">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+		</ng-container>
+		<ng-container *queryInput="let rule; let options=options; type: 'multiselect'; let onChange=onChange; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon" >
+                    <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+                    <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+                </div>
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+            <div class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+				    <mat-select [disabled]="editFlag == 'V'"  [(ngModel)]="rule.value" multiple (ngModelChange)="onChange(); setSourceSql(true);" disableOptionCentering>
+					    <mat-option *ngFor="let opt of options" [value]="opt.value">
+						    {{ opt.name }}
+				        </mat-option>
+				    </mat-select>
+			    </mat-form-field>
+            </div>
+		</ng-container>
+		<ng-container *queryInput="let rule; let field=field; type: 'number'; let onChange=onChange; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon" >
+                       <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+                       <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+                </div>
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+            <div *ngIf="rule.queryOption == 'P' || rule.queryOption == 'F'" class="form-field-container">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Default Value Type</mat-label>
+                    <div [disabled]="editFlag == 'V'" class="bb-mat-select-panel">
+                    	<mat-select (selectionChange)="customDrop($event, rule)" [(ngModel)]="rule.customValue"> 
+                        	<input matInput #inputElem type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'customDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+                            <mat-option name="customDrpDown" *ngFor="let custom of cust_data" [disabled]="editFlag == 'V'" [value]="custom.value" class="bb-mat-option" id="{{custom.value}}">
+                                {{custom.value}}
+                            </mat-option>
+                    	</mat-select>
+                	</div>
+                </mat-form-field>
+            </div>
+            <div *ngIf="rule.customValue != undefined && rule.customValue != ''" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                    <input matInput [disabled]="editFlag == 'V' || rule.customValue != 'FixedValue'" [(ngModel)]="rule.value" type="number" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+		</ng-container>
+		<ng-container *queryInput="let rule; let field=field; type: 'string'; let onChange=onChange; let i=index; let id = id; let onChangeNew=onChangeNew">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon" >
+                    <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+                    <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+                </div>
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+            <div *ngIf="rule.queryOption == 'P' || rule.queryOption == 'F'" class="form-field-container">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Default Value Type</mat-label>
+                    <div [disabled]="editFlag == 'V'" class="bb-mat-select-panel">
+                    	<mat-select (selectionChange)="customDrop($event, rule)" [(ngModel)]="rule.customValue">
+                        	<input matInput #inputElem type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'customDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+                            <mat-option name="customDrpDown" *ngFor="let custom of cust_data" [disabled]="editFlag == 'V'" [value]="custom.value" class="bb-mat-option" id="{{custom.value}}">
+                                {{custom.value}}
+                            </mat-option>
+                    	</mat-select>
+                	</div>
+                </mat-form-field>
+            </div> 
+            <div *ngIf="rule.customValue != undefined && rule.customValue != ''" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                    <input matInput [disabled]="editFlag == 'V' || rule.customValue != 'FixedValue'" [(ngModel)]="rule.value" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>  
+        </ng-container>
+        <ng-container *queryInput="let rule; let field=field; type: 'textarea'; let onChange=onChange; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -16px 0 0 5px;">
+                <div class ="fieldIcon" >
+                       <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+                       <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+                </div>
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+            <div *ngIf="rule.queryOption == 'P' || rule.queryOption == 'F'" class="form-field-container" style="margin: -16px 0 0 5px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field class="full-form-field" style="margin: 0 0 0 0;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Default Value Type</mat-label>
+                    <div [disabled]="editFlag == 'V'" class="bb-mat-select-panel">
+                        <mat-select (selectionChange)="customDrop($event, rule)" [(ngModel)]="rule.customValue">
+                                <input matInput #inputElem type="text" [disabled]="editFlag == 'V'" (keyup)="onKeyUpFieldContext($event.target.value, 'customDrpDown')" placeholder="Search..." class="bb-query-input" (keydown)="onKeyDown($event)">
+                                <mat-option name="customDrpDown" *ngFor="let custom of cust_data" [disabled]="editFlag == 'V'" [value]="custom.value" class="bb-mat-option" id="{{custom.value}}">
+                                    {{custom.value}}
+                                </mat-option>
+                        </mat-select>
+                    </div>
+                </mat-form-field>
+            </div>
+           <div *ngIf="rule.customValue != undefined && rule.customValue != ''" class="form-field-container" style="margin: -10px 0 0 0px;">
+            <div class ="fieldIcon">
+                <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+            </div>
+            <mat-form-field class="full-form-field" style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                        <textarea matInput [disabled]="editFlag == 'V' || rule.customValue != 'FixedValue'" [(ngModel)]="rule.value" (ngModelChange)="onChange(); setSourceSql(true);">
+                        </textarea> 
+			    </mat-form-field>
+        </div>
+		</ng-container>
+        <ng-container *queryInput="let rule; let field=field; type: 'multi-input'; let onChange=onChange; let add=add; let remove=remove; let i = index">
+            <div *ngIf="rule.queryOption == 'P'" class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon" >
+                       <!-- <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;"> -->
+                       <span class="optionIcon" *ngIf="rule.queryOption == 'P'">{{ rule.promptLabel.substring(0,1).toUpperCase() }}</span>
+                </div>
+                <mat-form-field *ngIf="rule.queryOption == 'P'" class="full-form-field" style="margin: 5px">
+                    <mat-label>Prompt Label</mat-label>
+                    <input matInput [disabled]="editFlag == 'V'" [(ngModel)]="rule.promptLabel" (ngModelChange)="onChange(); setSourceSql(true);">
+                </mat-form-field>
+            </div>
+            <div class="form-field-container" style="margin: -10px 0 0 0px;">
+                <div class ="fieldIcon">
+                    <img [src]="getImgSrc(rule['COLTYPE'])" style="height: 25px; width: 29px; margin: 2px 0px 0 1px;">
+                </div>
+                <mat-form-field [ngClass]="(rule.queryOption == 'P') ? 'full-form-field' : 'example-chip-list'" style="margin: 5px"style="margin: 0 0 0 0; width: calc(100% - 38px)!important;">
+                    <mat-label [ngClass]="(rule.queryOption == 'P' || rule.queryOption == 'F') ? 'displayBlock' : 'displayNone'">Prompt Default Value</mat-label>
+                    <mat-chip-list #chipList [(ngModel)]="rule.chipValue">
+                        <mat-chip *ngFor="let elem of rule.chipValue" [selectable]="selectable"
+                                [removable]="removable" (removed)="remove(rule, elem)">
+                            {{elem}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder=""
+                            [(ngModel)] = "rule.value"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add(rule)">
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+        </ng-container>
+    </query-builder>
+</mat-card>
+<br>
+<!-- Changed by vikas on 17-06-22 for hiding text-area from criteria -->
+<!-- <textarea *ngIf="viewModelCrt" class="output">{{sqlModel | json}}</textarea> -->

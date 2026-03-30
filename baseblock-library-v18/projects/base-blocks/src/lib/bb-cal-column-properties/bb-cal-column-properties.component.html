@@ -1,0 +1,459 @@
+<ng-container *ngTemplateOutlet="CalCalumnPropertiesPanel"></ng-container>
+<ng-template #CalCalumnPropertiesPanel>
+    <div class="cal-container-browser" id="bb-cal-container">
+        <div class="cal-header-container-browser">
+            <div *ngIf="currentAction != 'add'" class="closecalBtn btncalShadow" (click)="closeFilter($event);">
+                <img src="/ibase/Insight/angplugin/assets/images/svg/CloseCalculation.svg" class="imgalignment"
+                    style="height: 12px; width: 18px; margin: 0px;cursor: pointer;">
+            </div>
+            <div>
+                <div class="calColumnPropIcon"
+                    [ngStyle]="{'margin': currentAction == 'add'? '0px !important':'4px 0px 0px 8px'}">
+                    <img src="/ibase/Insight/angplugin/assets/images/svg/CalculationProperties.svg" class="tablecalDispImg">
+                </div>
+                <div class="calheadTitle" [ngStyle]="{'margin-left': currentAction == 'add'? '32px':'36px'}">Calculation
+                </div>
+                <div class="calsubTitle" [ngStyle]="{'margin-left': currentAction == 'add'? '32px':'36px'}">Please enter
+                    Calculation properties below</div>
+            </div>
+        </div>
+        <div id="calCulationCnt" class="option-calbody-container"
+            [ngStyle]="{'height': editFlag != 'V'? 'calc(100% - 160px)':'calc(100% - 102px)'}">
+            <div *ngFor="let detail of allformValues['Detail2']; let i = index;" id="calColumnsPanelId">
+                <div id="calc_{{calSequence}}">
+                    <div style="position:relative;" id="childCalDiv">
+                        <!-- Commented and changed by Kaustubh Nandankar on 18-Feb-2025 -->
+                        <!-- <mat-form-field class="full-form-field">
+                            <input matInput required="true" [name]="detail.col_heading" maxlength="30"
+                                placeholder="Calculation Heading:" id="Detail2.{{i + 1}}.col_heading"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i)"
+                                [(ngModel)]="detail.col_heading" (change)="changeCalculationName(detail)"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                        </mat-form-field> -->
+
+                        <div class="input-container">
+                            <label for="visualDesignId">Calculation Heading: </label>
+                            <input type="text" required="true" [name]="detail.col_heading" maxlength="30"
+                                id="Detail2.{{i + 1}}.col_heading" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" [(ngModel)]="detail.col_heading"
+                                (change)="changeCalculationName(detail)" [disabled]="editFlag == 'V'">
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+                        <!-- <mat-form-field class="full-form-field">
+                            <input matInput required="true" [name]="detail.col_name" maxlength="30"
+                                placeholder="Calculation Name:" id="Detail2.{{i + 1}}.col_name"
+                                (blur)="setIsFormChange('true');" (focus)="setCuurenValidationId('2',i)"
+                                [(ngModel)]="detail.col_name" (change)="changeColumnDescr(detail)"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                        </mat-form-field> -->
+
+                        <div class="input-container">
+                            <label for="visualDesignId">Calculation Name: </label>
+                            <input type="text" required="true" [name]="detail.col_name" maxlength="30"
+                                id="Detail2.{{i + 1}}.col_name" (blur)="setIsFormChange('true');"
+                                (focus)="setCuurenValidationId('2',i)" [(ngModel)]="detail.col_name"
+                                (change)="changeColumnDescr(detail)" [disabled]="editFlag == 'V'">
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-February-2025 -->
+                        <!-- Changed by tejas on 26-12-22 for hiding calcultion type [Start] -->
+                        <!-- <mat-form-field class="full-form-field" *ngIf="hideCalculationType">
+                            <mat-label>Calculation Type:</mat-label>
+                            <mat-select [(ngModel)]="detail.calc_type" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.calc_type"
+                                [disabled]="editFlag == 'V'" [(value)]="calcType" class="form-field-input">
+                                <mat-option [value]="'M'">Map from Source</mat-option>
+                                <mat-option [value]="'E'">Expression</mat-option>
+                                <mat-option [value]="'C'">Conditional Expression</mat-option>
+                                <mat-option [value]="'S'">SQL</mat-option>
+                                <mat-option [value]="'L'">Lookup</mat-option>
+                                <mat-option [value]="'U'">Cumulative Sum</mat-option>
+                                <mat-option [value]="'P'">Presentation</mat-option>
+                                <mat-option [value]="'N'">User Defined</mat-option>
+                                <mat-option [value]="'Local_AI_Function'">Local AI Function</mat-option>
+                                <mat-option [value]="'Local_Statistical_Function'">Local Statistical
+                                    Function</mat-option>
+                                <mat-option [value]="'Cloud_AI_Function'">Cloud AI Function</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container" *ngIf="hideCalculationType">
+                            <label>Calculation Type: </label>
+                            <select [(ngModel)]="detail.calc_type" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.calc_type"
+                                [disabled]="editFlag == 'V'" [(value)]="calcType">
+                                <option [value]="'M'">Map from Source</option>
+                                <option [value]="'E'">Expression</option>
+                                <option [value]="'C'">Conditional Expression</option>
+                                <option [value]="'S'">SQL</option>
+                                <option [value]="'L'">Lookup</option>
+                                <option [value]="'U'">Cumulative Sum</option>
+                                <option [value]="'P'">Presentation</option>
+                                <option [value]="'N'">User Defined</option>
+                                <option [value]="'Local_AI_Function'">Local AI Function</option>
+                                <option [value]="'Local_Statistical_Function'">Local Statistical
+                                    Function</option>
+                                <option [value]="'Cloud_AI_Function'">Cloud AI Function</option>
+                            </select>
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Changed by tejas on 26-12-22 for hiding calcultion type [Start] -->
+                        <!-- Added by tejas and vikas for updated UI Of Calculation Panel [Start] -->
+                        <!-- Added by Pranjali To Show Calculation Type From API [Start] -->
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+
+                        <!-- <mat-form-field class="full-form-field" *ngIf="calcType == 'Map from Source'">
+                            <mat-label>Function Type:</mat-label>
+                            <mat-select placeholder="Function Type:" required="true" [(ngModel)]="detail.function_type"
+                                (selectionChange)="getFunctionList($event);" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.function_type"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                                <mat-option *ngFor="let functionType of functiontypeArray ;let i = index"
+                                    [value]="functionType">
+                                    {{ functionType }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container" *ngIf="calcType == 'Map from Source'">
+                            <label for="options">Function Type: </label>
+                            <select required="true" [(ngModel)]="detail.function_type"
+                                (selectionChange)="getFunctionList($event);" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.function_type"
+                                [disabled]="editFlag == 'V'">
+                                <option *ngFor="let functionType of functiontypeArray ;let i = index"
+                                    [value]="functionType">
+                                    {{ functionType }}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Febraury-2025 -->
+                        <!-- Added by Pranjali To Show Calculation Type From API [End] -->
+                        <!-- <mat-form-field *ngIf="showModelScope != false" class="full-form-field">
+                            <mat-label>Model Scope:</mat-label>
+                            <mat-select [(ngModel)]="detail.model_scope" [disabled]="editFlag == 'V'"
+                                [(value)]="modelScope" class="form-field-input">
+                                <mat-option [value]="'G'">Global</mat-option>
+                                <mat-option [value]="'E'">Enterprise</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container" *ngIf="showModelScope != false">
+                            <label for="options">Model Scope: </label>
+                            <select [(ngModel)]="detail.model_scope" [disabled]="editFlag == 'V'"
+                                [(value)]="modelScope">
+                                <option [value]="'G'">Global</option>
+                                <option [value]="'E'">Enterprise</option>
+                            </select>
+                        </div>
+
+                        <!-- Ends here -->
+
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-February-2025 -->
+                        <!-- <mat-form-field class="full-form-field"
+                            *ngIf="calcType == 'Map from Source' ||  hideFunctionList == false">
+                            <mat-select placeholder="Function:" required="true"
+                                (selectionChange)="getFunctionParameter($event);" [(ngModel)]="detail.function_name"
+                                class="form-field-input">
+                                <mat-option *ngFor="let functionName of functionListArray;let i = index"
+                                    [value]="functionName">
+                                    {{ functionName }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container"
+                            *ngIf="calcType == 'Map from Source' ||  hideFunctionList == false">
+                            <label for="options">Function: </label>
+                            <select required="true" (selectionChange)="getFunctionParameter($event);"
+                                [(ngModel)]="detail.function_name">
+                                <option *ngFor="let functionName of functionListArray;let i = index"
+                                    [value]="functionName">
+                                    {{ functionName }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Ends here -->
+
+                        <div *ngFor="let option of functionParameters;let idx = index;">
+                            <div style="display: flex;justify-content: center;align-items: center;">
+                                <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+
+                                <mat-form-field *ngIf="option.name != 'modelname'" class="full-form-field">
+                                    <!-- Commented and changed by Kaustubh Nandankar on 20-Feb-2025 -->
+                                    <!-- <div *ngIf="option.type == 'String'">
+                                        <mat-label>{{option.label}}</mat-label>
+                                        <input [disabled]="editFlag == 'V'" class="argument" matInput
+                                            id="Argument_{{idx}}" name="Argument_{{idx}}" [(ngModel)]="option.value"
+                                            class="form-field-input" [value]="option['value']">
+                                    </div> -->
+
+                                    <div *ngIf="option.type == 'String'">
+                                        <div class="input-container">
+                                            <label>{{option.label}} </label>
+                                            <input [disabled]="editFlag == 'V'" class="argument" matInput
+                                                id="Argument_{{idx}}" name="Argument_{{idx}}" [(ngModel)]="option.value"
+                                                [value]="option['value']">
+                                        </div>
+                                    </div>
+                                    <!-- Ends here -->
+
+                                    <!-- Commented and changed by Kaustubh Nandankar on 20-Feb-2025 -->
+                                    <!-- <div *ngIf="option.type == 'Integer'">
+                                        <mat-label>{{option.label}}</mat-label>
+                                        <input [disabled]="editFlag == 'V'" class="argument" matInput
+                                            id="Argument_{{idx}}" name="Argument_{{idx}}" [(ngModel)]="option.value"
+                                            class="form-field-input" [value]="option['value']"
+                                            style="text-align: right">
+                                    </div> -->
+
+                                    <div *ngIf="option.type == 'Integer'">
+                                        <div class="input-container">
+                                            <label>{{option.label}} </label>
+                                            <input [disabled]="editFlag == 'V'" class="argument" matInput
+                                                id="Argument_{{idx}}" name="Argument_{{idx}}" [(ngModel)]="option.value"
+                                                [value]="option['value']" style="text-align: right">
+                                        </div>
+                                    </div>
+                                    <!-- Ends here -->
+
+
+
+                                    <div *ngIf="option.type == 'Date'">
+                                        <mat-label>{{option.label}}</mat-label>
+                                        <div style="display: flex;">
+                                            <input [disabled]="editFlag == 'V'" class="argument" matInput
+                                                id="Argument_{{idx}}" name="Argument_{{idx}}" [(ngModel)]="option.value"
+                                                [matDatepicker]="datePicker" class="form-field-input"
+                                                [value]="option['value']">
+                                            <mat-datepicker-toggle matSuffix [for]="datePicker">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #datePicker></mat-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <!-- Commented and changed by Kaustubh Nandankar on 20-Feb-2025 -->
+                                    <!-- <div *ngIf="option.type == 'DDLB'">
+                                        <mat-label>{{option.label}}</mat-label>
+                                        <mat-select id="Argument_{{idx}}" [(ngModel)]="option['value']">
+                                            <mat-option *ngFor="let modeloption of DDLBoptionArray"
+                                                [value]="modeloption">
+                                                {{ modeloption }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </div> -->
+
+                                    <div *ngIf="option.type == 'DDLB'">
+                                        <div>
+                                            <label>{{option.label}} </label>
+                                            <select id="Argument_{{idx}}" [(ngModel)]="option['value']">
+                                                <option *ngFor="let modeloption of DDLBoptionArray"
+                                                    [value]="modeloption">
+                                                    {{ modeloption }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Ends here -->
+                                </mat-form-field>
+                                <!-- Ends here -->
+
+                                <!-- Added by Sujan on 14-01-2023 to add drop down if function list contains model name -->
+                                <!-- Commented and changed by Kaustubh Nandankar on 20-Feb-2024 -->
+                                <!-- <mat-form-field *ngIf="option.name == 'modelname'" class="full-form-field">
+                                    <mat-label>{{option.label}}</mat-label>
+                                    <mat-select id="Argument_{{idx}}" [(ngModel)]="option['value']">
+                                        <mat-option *ngFor="let modeloption of modelListData" [value]="modeloption">
+                                            {{ modeloption }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field> -->
+
+                                <div class="dropdown-container" *ngIf="option.name == 'modelname'">
+                                    <label for="options">{{option.label}} </label>
+                                    <select id="Argument_{{idx}}" [(ngModel)]="option['value']">
+                                        <option *ngFor="let modeloption of modelListData" [value]="modeloption">
+                                            {{ modeloption }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!-- Ends here -->
+                            </div>
+                        </div>
+
+
+                        <!-- Added by tejas and vikas for updated UI Of Calculation Panel [End] -->
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+                        <!-- <mat-form-field class="full-form-field">
+                            <mat-label>Calculation DataType:</mat-label>
+                            <mat-select required="true" [(ngModel)]="detail.col_datatype"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i)"
+                                id="Detail2.{{i + 1}}.col_datatype" [disabled]="editFlag == 'V'"
+                                class="form-field-input">
+                                <mat-option [value]="'S'">String</mat-option>
+                                <mat-option [value]="'N'">Numeric</mat-option>
+                                <mat-option [value]="'D'">Date</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container">
+                            <label for="options">Calculation Datatype: </label>
+                            <select required="true" [(ngModel)]="detail.col_datatype" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.col_datatype"
+                                [disabled]="editFlag == 'V'">
+                                <option [value]="'S'">String</option>
+                                <option [value]="'N'">Numeric</option>
+                                <option [value]="'D'">Date</option>
+                            </select>
+                        </div>
+                        <!-- Ends here -->
+
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 20-Feb-2025 -->
+
+                        <mat-form-field *ngIf="isExpression == true " class="full-form-field">
+                            <textarea matInput maxlength="2000" placeholder="Calculation Expression:"
+                                id="Detail2.{{i + 1}}.calc_expression"
+                                (keyup)="colExpressOnKeyUp($event.target.value, i)" [matAutocomplete]="autoExpression"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i);"
+                                [(ngModel)]="detail.calc_expression" (change)="onChangeCalcExpr($event, i)"
+                                [disabled]="editFlag == 'V' || editFlag == 'A' " class="form-field-input" rows="5">
+                            {{expression}}
+                        </textarea>
+                            <mat-autocomplete #autoExpression="matAutocomplete">
+                                <mat-option *ngFor="let option of colExpressions" [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <div class="textarea-container" *ngIf="isExpression == true">
+                            <label for="description">Calculation Expression: </label>
+                            <textarea maxlength="2000" id="Detail2.{{i + 1}}.calc_expression"
+                                (keyup)="colExpressOnKeyUp($event.target.value, i)" [matAutocomplete]="autoExpression"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i);"
+                                [(ngModel)]="detail.calc_expression" (change)="onChangeCalcExpr($event, i)"
+                                [disabled]="editFlag == 'V' || editFlag == 'A' " rows="5"></textarea>
+                            <mat-autocomplete #autoExpression="matAutocomplete">
+                                <option *ngFor="let option of colExpressions" [value]="option">
+                                    {{option}}
+                                </option>
+                            </mat-autocomplete>
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+                        <!-- <mat-form-field class="full-form-field">
+                            <input matInput name="calc_seq" required maxlength="4" placeholder="Calculation Sequence:"
+                                id="Detail2.{{i + 1}}.calc_seq" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" [(ngModel)]="detail.calc_seq"
+                                style="text-align: right;" class="form-field-input">
+                        </mat-form-field> -->
+
+                        <div class="input-container">
+                            <label for="visualDesignId">Calculation Sequence: </label>
+                            <input type="text" name="calc_seq" required maxlength="4"
+                                placeholder="Calculation Sequence:" id="Detail2.{{i + 1}}.calc_seq"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i)"
+                                [(ngModel)]="detail.calc_seq" style="text-align: right;">
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-Feb-2025 -->
+                        <!-- <mat-form-field class="full-form-field">
+                            <input matInput name="col_descr" maxlength="120" placeholder="Calculation Description:"
+                                id="Detail2.{{i + 1}}.col_descr" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" [(ngModel)]="detail.col_descr"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                        </mat-form-field> -->
+
+                        <div class="input-container">
+                            <label for="visualDesignId">Calculation Description: </label>
+                            <input type="text" name="col_descr" maxlength="120" id="Detail2.{{i + 1}}.col_descr"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i)"
+                                [(ngModel)]="detail.col_descr" [disabled]="editFlag == 'V'">
+                        </div>
+
+                        <!-- Ends here -->
+
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-March-2025 -->
+                        <!-- <mat-form-field *ngIf="isDashboard != 'true'" class="full-form-field">
+                            <input matInput maxlength="30" placeholder="Persist Column Name:"
+                                id="Detail2.{{i + 1}}.persist_clumn_name" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" [(ngModel)]="detail.persist_clumn_name"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                        </mat-form-field> -->
+
+                        <div class="input-container">
+                            <label>Persist Column Name: </label>
+                            <input maxlength="30" id="Detail2.{{i + 1}}.persist_clumn_name"
+                                (blur)="setIsFormChange('true')" (focus)="setCuurenValidationId('2',i)"
+                                [(ngModel)]="detail.persist_clumn_name" [disabled]="editFlag == 'V'">
+                        </div>
+                        <!-- Ends here -->
+
+                        <!-- Commented and changed by Kaustubh Nandankar on 19-March-2025 -->
+                        <!-- <mat-form-field *ngIf="isDashboard != 'true'" class="full-form-field">
+                            <mat-label>Persist Form No:</mat-label>
+                            <mat-select [(ngModel)]="detail.persist_form_no" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.persist_form_no"
+                                [disabled]="editFlag == 'V'" class="form-field-input">
+                                <mat-option [value]="1">1</mat-option>
+                                <mat-option [value]="2">2</mat-option>
+                                <mat-option [value]="3">3</mat-option>
+                                <mat-option [value]="4">4</mat-option>
+                                <mat-option [value]="5">5</mat-option>
+                                <mat-option [value]="6">6</mat-option>
+                                <mat-option [value]="7">7</mat-option>
+                                <mat-option [value]="8">8</mat-option>
+                                <mat-option [value]="9">9</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <div class="dropdown-container" *ngIf="isDashboard != 'true'">
+                            <label>Persist Form No: </label>
+                            <select [(ngModel)]="detail.persist_form_no" (blur)="setIsFormChange('true')"
+                                (focus)="setCuurenValidationId('2',i)" id="Detail2.{{i + 1}}.persist_form_no"
+                                [disabled]="editFlag == 'V'">
+                                <option [value]="1">1</option>
+                                <option [value]="2">2</option>
+                                <option [value]="3">3</option>
+                                <option [value]="4">4</option>
+                                <option [value]="5">5</option>
+                                <option [value]="6">6</option>
+                                <option [value]="7">7</option>
+                                <option [value]="8">8</option>
+                                <option [value]="9">9</option>
+                            </select>
+                        </div>
+                        <!-- Ends here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="editFlag != 'V'" class="footerBtn">
+            <button mat-mini-fab class="deletecalColumn" (click)="onCalculationDelete()">
+                <img src="/ibase/Insight/angplugin/assets/images/svg/CalculationDelete.svg" class="calDeleteBtnImg">
+                <div class="calcolumnPropdeleteCursorsql">Delete</div>
+            </button>
+            <div class="donecalBtn btncalShadow" (click)="onDoneBtnClick()">
+                <div>
+                    <img src="/ibase/Insight/angplugin/assets/images/Done.svg" class="cursor" style="height: 12px;">
+                </div>
+                <div>
+                    <div class="calDoneBtn">Done</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

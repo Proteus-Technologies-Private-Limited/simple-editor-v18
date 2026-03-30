@@ -1,0 +1,74 @@
+<ng-container *ngTemplateOutlet="visualOptionPanel"></ng-container>
+<ng-template #visualOptionPanel>
+	<div class="option-container-browser" id = "bb-visual-container">
+       <div class="option-header-container-browser">
+            <div class="closeBtn btnShadow" (click)="closeFilter($event);">
+                <!-- <img src="/ibase/Insight/angplugin/assets/images/Close.svg" class="imgalignment" style="height: 12px; width: 12px; margin: 0px;" (click)="closeFilter($event);"> -->
+                <svg viewBox="0 0 14 14" style="width: 10px; fill: var(--primaryDark);">
+                    <path d="M13.71,12.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L7,8.42,1.71,13.71a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L5.58,7,.29,1.71A1,1,0,0,1,1.71.29L7,5.58,12.29.29a1,1,0,1,1,1.42,1.42L8.42,7Z"></path>
+                </svg>
+            </div>
+            <div>
+                <div class = "headTitle">Visual Options</div>
+                <div class = "subTitle">Please enter visual properties below</div>
+            </div>
+	 	</div>
+		<div class="option-body-container">
+		  <div *ngFor="let options of currentVisual['options']; let i = index" style="display: flex; align-items: flex-start; width: 100%;"> 
+                <div class="optionIcon" id="optionIconContainer">
+                    <!-- <img [src]="getImgSrc(options.dataType)" style="height: 32px; width: 32px; margin: 0px;" [hidden]="!getImgSrc(options.dataType)"> -->
+                    <!-- <img src="/ibase/Insight/angplugin/assets/images/svg/{{options.optionName}}.svg" class="optionImage" onerror="this.src = '/ibase/Insight/angplugin/assets/images/svg/Property.svg'">  -->
+                    <img src="/ibase/Insight/angplugin/assets/images/svg/Property.svg" class="optionImage" onerror="this.src = '/ibase/Insight/angplugin/assets/images/svg/Property.svg'"> 
+
+                </div>
+                <!-- <div style="display: block; width: 100%; height: 50px;" id="{{options.optionId}}"> -->
+                <div class="optionIdMainDiv" [ngStyle]="{'display' : options.dataType == 'boolean' ? 'flex' : 'block'}" id="{{options.optionId}}">
+                    <!-- <bb-label style="font-size: 14px; padding-left: 5px;">{{options.optionHeading}}</bb-label> -->
+                    <bb-label *ngIf = "options.listOfValues != undefined  && options.listOfValues != ''" [ngClass] = "options.dataType == 'boolean' ? 'optionLabelForToggleBtn' : 'optionLabel'">{{options.optionHeading}}</bb-label>
+                    <!-- Added by nikhil on 20-02-2022 for sorting column field -->
+                    <div *ngIf = "options.listOfValues != undefined && options.listOfValues != ''" style="display: block;">
+	                    <div class="form-field-container">
+	                        
+	                        <mat-form-field *ngIf = "options.listOfValues != undefined && options.dataType == 'string'" class="full-form-field-select">
+	                            <mat-select [(ngModel)]="options.defaultValue" [disabled]="options.allowChange == 'false'" style="text-transform: capitalize;" disableOptionCentering>
+	                                <mat-option *ngFor="let value of listFinalJson[options.optionId]" [value]="value">
+	                                    {{ value }}
+	                                </mat-option>
+	                            </mat-select>
+	                            <div style="color: var(--primaryDark) !important;" class="vision-ui-arrow_down optionListArr"></div>
+	                        </mat-form-field>
+                            <div *ngIf = "options.listOfValues != undefined && options.dataType == 'boolean'" class="mainTblToggle" [disabled]="options.allowChange == 'false'" >
+                                <label class="bb-switch" style="border-radius: 34px">
+                                    <input id="option_checkBox_{{i}}" name="option_checkBoxName_{{i}}" [(ngModel)]="options.checked" type="checkbox" class="textBox toggleCssforOption" value="this.checked">
+                                    <div class="bb-slider round" (click) = "optionToggleBtn(options.optionName)"></div>
+                                </label>
+                            </div>
+	                    </div>
+	                    <!-- <div *ngIf = "options.listOfValues == ''" class="full-form-fieldInput" id="sortingColField">
+	                    	<input matInput class="form-field-input" [(ngModel)]="options.defaultValue" [disabled]="options.allowChange == 'false'">
+	                    </div> -->
+                    </div>
+
+                    <!-- <div *ngIf = "options.dataType == 'string' && options.listOfValues == ''" class="full-form-fieldInput" id="stringField"> -->
+                    <mat-form-field *ngIf = "options.dataType == 'string' && options.listOfValues == ''" class="full-form-field">
+                        <mat-label>{{options.optionHeading}}</mat-label>
+                        <input matInput class="form-field-input" [(ngModel)]="options.defaultValue" [disabled]="options.allowChange == 'false'">
+                    </mat-form-field>
+                    <!-- </div> -->
+                    <!-- <div *ngIf = "options.dataType == 'number' && options.listOfValues == ''" class="full-form-fieldInput" id="numberField"> -->
+                    <mat-form-field *ngIf = "options.dataType == 'number' && options.listOfValues == ''" class="full-form-field">
+                        <mat-label>{{options.optionHeading}}</mat-label>
+                        <input matInput class="form-field-input" [(ngModel)]="options.defaultValue" style="text-align: right;" [disabled]="options.allowChange == 'false'">
+                    </mat-form-field>
+                    <!-- </div> -->
+                </div>
+		  </div>
+		</div>
+        <div class="footerBtn">
+            <div class="doneBtn btnShadow" (click)="submit($event)">
+                <img  src="/ibase/Insight/angplugin/assets/images/Done.svg" class="cursor" style="height: 12px;">
+                <div class="doneCursor">Done</div> 
+            </div>
+        </div>
+	</div>
+</ng-template>

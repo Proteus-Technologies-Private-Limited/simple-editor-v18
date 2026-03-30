@@ -1,0 +1,827 @@
+.result {
+    padding: 10px;
+    margin: 5px;
+    box-shadow: 1px 1px 1px #ccc;
+    background-color: #fff;
+}
+
+.config-box {
+    position: relative;
+    display: inline-block;
+    display: none;
+}
+
+.container {
+    position: relative;
+    display: block;
+    margin: 0 4px;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.avatar {
+    /*     display: inline-flex; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.tree-row-content {
+    display: inline-block;
+    width: 100%;
+}
+
+.avatar-text-content {
+    display: flex;
+    width: 100%;
+    position: relative;
+    vertical-align: top;
+    /*  text-align: center;*/
+    /*  top: 5px;*/
+}
+
+.avatar-text-tree-content {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+
+.tree-row1 {
+    padding-left: 10px;
+    font-size: 13px;
+    display: block;
+    position: relative;
+    width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.avatar-text {
+    padding-left: 4px;
+    font-size: 13px;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-transform: uppercase;
+    display: inline-flex;
+    text-align: center;
+
+}
+
+.tree-row2 {
+    display: inline-block;
+    padding-left: 10px;
+    font-size: 13px;
+    color: #666666;
+}
+
+.avatar-sub-text {
+    vertical-align: top;
+    top: 2px;
+    /* display: inline-block;*/
+    padding-left: 6px;
+    font-size: 13px;
+    color: #666;
+    display: inline-flex;
+    text-align: center;
+    /*     margin-top: 4px; */
+}
+
+.avatar-icon,
+.tree-row-avatar {
+    height: 30px;
+    width: 30px;
+    line-height: 32px;
+    margin-right: 5px;
+    background-position: 100%;
+    border-radius: 50%;
+    background: #a9a8a8;
+    background: #888f9f;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    float: left;
+}
+
+.fa {
+    /*  display: inline-block;*/
+    font-family: 'Material Icons' !important;
+    /*  font-size: inherit; */
+    font-style: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 13px;
+    display: inline-flex;
+    text-align: center;
+}
+
+.fa-check {
+    position: absolute;
+    left: 20px;
+    top: 16px;
+    /*     vertical-align: super; */
+}
+
+.fa-check:before {
+    content: 'check';
+    border-radius: 50%;
+    background-color: #16ab16;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px;
+    border: 2px #fff solid;
+}
+
+.fa-indeterminate {
+    position: absolute;
+    left: 20px;
+    top: 16px;
+    /*     vertical-align: super; */
+}
+
+.fa-indeterminate:before {
+    content: 'remove';
+    border-radius: 50%;
+    background-color: #ffcb5d;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px;
+    border: 2px #fff solid;
+}
+
+.treeview-RExpand .fa-caret-down,
+.treeview-RExpand .fa-caret-right,
+.treeview-LExpand .fa-caret-down,
+.treeview-LExpand .fa-caret-right {
+    /* height: 32px;*/
+    /*  line-height: 23px;*/
+    /* width: 32px !important;*/
+    text-align: center;
+    margin: 0 !important;
+    color: #aaaaaa;
+
+}
+
+.treeview-RExpand .fa-caret-down,
+.treeview-RExpand .fa-caret-right {
+    float: right;
+    /* padding-left: 1rem; */
+    right: 0px;
+    /* line-height: 39px; */
+    /* text-align: right; */
+    position: relative;
+}
+
+.treeview-RExpand .fa-caret-down:before {
+    content: 'remove_circle_outline';
+}
+
+.treeview-RExpand .fa-caret-right:before {
+    content: 'add_circle_outline';
+}
+
+.treeview-LExpand .fa-caret-down,
+.treeview-LExpand .fa-caret-right {
+    float: left;
+}
+
+.treeview-LExpand .fa-caret-down:before {
+    content: 'keyboard_arrow_down';
+    color: #666666;
+}
+
+.treeview-LExpand .fa-caret-right:before {
+    content: 'keyboard_arrow_right';
+    color: #666666;
+}
+
+.treeview-item {
+    margin-left: 2rem;
+    white-space: nowrap;
+}
+
+.form-check {
+    position: relative;
+    display: inline-block;
+    width: calc(100% - 32px);
+}
+
+.multilevel-form-check {
+    position: relative;
+    display: inline-flex;
+    width: calc(100% - 22px);
+    margin-left: 0rem !important;
+}
+
+.form-check-leaf {
+    margin-left: 2rem;
+}
+
+.treeview-RExpand .form-check-input,
+.treeview-LExpand .form-check-input {
+    display: none;
+}
+
+.treeview-RExpand .form-check-label,
+.treeview-LExpand .form-check-label {
+    display: block;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+    cursor: pointer;
+    width: 100%;
+}
+
+.treeview-RExpand .treeview-item,
+.treeview-LExpand .treeview-item {
+    margin-left: 0 !important;
+}
+
+.treeview-RExpand .treeview-item .treeview-item,
+.treeview-LExpand .treeview-item .treeview-item {
+    margin-left: 1rem !important;
+}
+
+.treeview-RExpand .treeview-container .row-item,
+.treeview-LExpand .treeview-container .row-item {
+    margin-bottom: 0px !important;
+    padding: 4px 5px 4px 0;
+
+}
+
+.treeview-container {
+    max-height: none !important;
+}
+
+.form-inline.row-item>div {
+    transition: 2s;
+}
+
+.display_template {
+    display: flex;
+    width: 100%;
+}
+
+
+.display-total {
+    display: inline-block;
+    font-size: 13px;
+    padding-left: 7px;
+}
+
+.dashboard-userAvatar {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    /* 	margin: 3px 0 3px 3px; */
+    /* 	text-align: center; */
+    /*	display: inline-block;*/
+    display: inline-flex;
+    text-align: center;
+}
+
+.eval-date {
+    /* 	padding-left: 0px !important; */
+}
+
+.question-text {
+    font-size: 12px;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-flex;
+    text-align: center;
+    padding-left: 6px !IMPORTANT;
+}
+
+.answer-text {
+    vertical-align: top;
+    top: 2px;
+    /*   display: inline-block;*/
+    /*   padding-left: 5px;*/
+    font-size: 12px;
+    color: #666;
+    display: inline-flex;
+    text-align: center;
+    /*     margin-left: -9px; */
+    /*     margin-top: 4px; */
+
+}
+
+.answer-text1 {
+    vertical-align: top;
+    top: 2px;
+    /*display: inline-block;*/
+    /*   padding-left: 5px;*/
+    font-size: 12px;
+    color: #666;
+    display: inline-flex;
+    text-align: center;
+    /*     margin-left: -9px; */
+
+}
+
+.assesse-text-content {
+    display: inline-flex;
+    width: calc(100% - 32px);
+    position: relative;
+    vertical-align: top;
+    align-items: center;
+}
+
+.avatar-contain {}
+
+.expansionIcon {
+    left: 10px;
+    /* 	width: 100%;  */
+}
+
+.bullelements {
+    display: flex;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    /*     margin-top: 3px; */
+
+}
+
+/*shrutika */
+/* Changed by Samruddhi for updated UI */
+.feedCustomImg {
+    display: flex;
+    align-items: center;
+    /* background: #cfbebe;
+    height: 30px;
+    width: 30px;
+    border-radius: 20px; 
+    margin-right: 2px;*/
+    justify-content: center;
+    padding: 2px;
+    height: 26px;
+    width: 26px;
+}
+
+.columnFeed {
+    /*border-radius: inherit;
+    position: relative;
+    cursor: pointer;
+    height: auto;
+    display: flex;
+    align-items: center;
+    width: 100%;*/
+    border-radius: inherit;
+    position: relative;
+    cursor: pointer;
+    height: auto;
+    display: flex;
+    align-items: start;
+    width: 100%;
+}
+
+/*Changed by Samruddhi for updated UI [start] */
+.checkImage {
+    font-size: 14px !important;
+    /* color: var(--primary)!important; */
+    /* background: #fff!important; */
+    border-radius: 50% !important;
+    line-height: 12px !important;
+    padding: 3px !important;
+    /* height: 11px!important;
+    width: 12px!important; */
+    position: absolute !important;
+    /* top: -7px!important;
+    left: -7px!important; */
+    color: var(--primaryDark) !important;
+    top: 6px !important;
+    left: -10px !important;
+    height: 10px !important;
+    width: 10px !important;
+}
+
+.checkImage1 {
+    font-size: 14px !important;
+    border-radius: 50% !important;
+    line-height: 12px !important;
+    padding: 3px !important;
+    position: absolute !important;
+    color: var(--primaryDark) !important;
+    top: 6px !important;
+    left: 10px !important;
+    height: 10px !important;
+    width: 10px !important;
+}
+
+.selectedFeed {
+    /* box-shadow: 0px 0px 2px 2px var(--primary); */
+}
+
+/*Changed by Samruddhi for updated UI [end] */
+
+.mat-expansion-panel-body {
+    padding: 0 !important;
+}
+
+/*Changed by Samruddhi for updated UI */
+.numberIcon {
+    font-size: 14px;
+    font-weight: bold;
+    /* background: #efefef; */
+    padding: 3px 6px;
+    display: flex;
+    height: 12px;
+    justify-content: center;
+    align-items: center;
+    /* color: #666; */
+    border-radius: 3px;
+    margin-right: 4px;
+    margin-top: 6px;
+    /* columns: #000; */
+    background: transparent;
+    color: rgb(51 70 105 / 100%);
+}
+
+.avgClass {
+    font-size: 12px;
+    font-weight: 600;
+    background: #e3f4fa;
+    padding: 3px 6px;
+    display: flex;
+    height: 12px;
+    margin-top: 6px;
+    justify-content: center;
+    align-items: center;
+    color: #00caff;
+    position: absolute;
+    margin-right: 10px;
+}
+
+::ng-deep .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+::ng-deep .cdk-drag-placeholder {
+    opacity: 0;
+}
+
+::ng-deep .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+::ng-deep .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.columnFeedMainDiv {
+    padding: 8px;
+    background: transparent !important;
+    width: calc(100% - 16px);
+}
+
+.dragDropFeedDiv {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 35px;
+    height: 32px;
+    justify-content: center;
+}
+
+.feedDataLabel {
+    display: flex;
+    width: calc(100% - 65px);
+    align-items: start;
+}
+
+/* Changed by Samruddhi for updated UI */
+.feedDataFirstDiv {
+    position: relative;
+    width: 30px;
+    /* background: #99a6be; */
+    border-radius: 8px;
+    height: 30px;
+    margin-right: 5px;
+    background: rgb(51 70 105 / 40%);
+}
+
+.feedDataSecondDiv {
+    line-height: 1;
+    width: calc(100% - 37px);
+}
+
+/*Changed by Samruddhi for updated UI [start]*/
+.columnContent {
+    line-height: 1;
+    font-weight: bold;
+    padding: 0 0 2px 0;
+    font-size: 16px;
+    color: rgb(51 70 105 / 100%);
+}
+
+.columnName {
+    /* color: gray;  */
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: 12px;
+    /* color: #000; */
+    color: rgb(51 70 105 / 100%);
+}
+
+/*Changed by Samruddhi for updated UI [end]*/
+
+.functionsInfo {
+    width: 30px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.columnFeedMainDiv-mobile {
+    padding: 8px 0;
+    background: #fff !important;
+    width: 100%;
+}
+
+.columnName-mobile {
+    color: gray;
+    line-height: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    padding-bottom: 1px;
+}
+
+/* Added by Nikhil on 06-09-2021 for adding the search option in schema for searching the columns[Start] */
+.bb-mat-select-panel {
+    transform: translate(0px, 0px) !important;
+    max-height: 216px !important;
+    overflow: auto !important;
+}
+
+/* Changed by Samruddhi on 09-06-2022 to remove search popup in tree component and add input box for search  */
+.bb-query-input {
+    /* padding: 0 5px;  */
+    height: 40px;
+    border-bottom: 1px solid #6666;
+    width: 100%;
+    border-color: transparent;
+    /* margin-left: 4px !important; */
+}
+
+.bb-mat-option {
+    height: auto !important;
+    min-height: 30px !important;
+    padding: 10px !important;
+}
+
+.bb-searchOption {
+    display: flex;
+    position: relative;
+    top: 8px;
+    padding: 0px 0px 10px 0px;
+}
+
+/* Changed by Samruddhi on 09-06-2022 to remove search popup in tree component and add input box for search  */
+.bb-searchImage {
+    width: 26px;
+    height: 30px;
+    /* margin-left: 22px; */
+    padding: 4px;
+}
+
+.bb-searchInput {
+    width: 382px;
+    height: 26px;
+    margin-left: 14px;
+    font-size: 12px;
+}
+
+/* Added by Nikhil on 06-09-2021 for adding the search option in schema for searching the columns[End] */
+/*Added by shrutika on 27-09-21 for schema designer start*/
+.schemaDispName {
+    padding: 0;
+    display: block;
+    box-shadow: inset 0 -1px 0 0 rgb(0 0 0 / 10%);
+    height: 60px;
+}
+
+.schemaDispName1 {
+    padding: 0;
+    height: auto;
+    display: block;
+}
+
+.schemaIconBg {
+    height: 28px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #8e4ed4;
+    border-radius: 50%;
+}
+
+.tableDispImg {
+    width: 28px;
+    height: 24px;
+    padding: 1px 4px 4px 0;
+    margin-right: 8px;
+}
+
+/* Changed by Samruddhi for updated UI */
+.tableDispName {
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(51 70 105 / 100%);
+}
+
+.dragImg {
+    width: 8px;
+}
+
+.feedImg {
+    width: 30px;
+    background: #99a6be;
+    border-radius: 8px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.floatingActionBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 0;
+    background-color: #fff;
+    box-shadow: 4px 6px 11px 5px rgb(0 0 0 / 10%);
+    bottom: 15px;
+    right: 15px;
+    margin: 0 !IMPORTANT;
+}
+
+.addIcon {
+    color: var(--primaryGradient);
+    padding: 8px;
+}
+
+::ng-deep .mat-expansion-indicator:after {
+    color: #38c796;
+}
+
+.tabWithListPopup {
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plusBtnDiv {
+    background-color: #fff;
+    height: 40px !important;
+    width: 40px !important;
+    position: absolute;
+    float: right;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+    box-shadow: 2px 3px 10px 0 rgb(0 0 0 / 30%), 0px 0px 1px 0 rgb(0 0 0 / 20%);
+}
+
+.matIcon {
+    margin-top: -13px;
+    width: 28px;
+}
+
+.matIconUI {
+    line-height: 0.4;
+    font-size: 28px;
+    color: var(--primary) !important;
+}
+
+/*Added by shrutika on 27-09-21 for schema designer end*/
+.treeViewFeedForSchema {
+    height: 100%;
+    position: relative;
+}
+
+.trreviewTables {
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Added by Samruddhi on 09-06-2022 to remove search popup in tree component and add input box for search  */
+.resetImageDiv {
+    margin-top: 4px;
+    padding: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.bb-resetImage {
+    padding: 4px;
+    width: 15px;
+    height: 15px;
+}
+
+
+.exportOption {
+    height: 450px;
+    width: 350px;
+    background: #fff;
+    pointer-events: auto;
+}
+
+.exportoptionPopup {
+    background: white;
+    display: block;
+    font-size: 20px;
+    font-weight: 500;
+    width: 190px;
+    height: 35px;
+}
+
+.boxShadowEditor {
+    box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, .1);
+    border-radius: 6px;
+}
+
+.exportoptionHeader {
+    background: white;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 15px;
+    width: calc(100% - 7px);
+    padding: 0px;
+    margin: 5px 0 0 5px;
+}
+
+.exportoptiontitle {
+    justify-content: center;
+    padding-left: 10px;
+    font-size: 25px;
+}
+
+.exportoptionbody {
+    overflow: auto;
+    background: white;
+    width: 100%;
+}
+
+.exportoptionLable {
+    justify-content: center;
+    color: #333;
+    font-size: 15px;
+    display: contents;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    text-shadow: none;
+    font-weight: 400;
+    background: transparent;
+    border: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 36px;
+    line-height: 36px;
+}
+
+/* Added by Kaustubh Nandankar on 04-March-2025 */
+.mat-expansion-indicator {
+    color: rgb(12, 218, 12) !important;
+}
+
+.mat-expansion-indicator svg {
+    fill: rgb(12, 218, 12) !important;
+}
+
+.mat-expansion-panel .mat-expansion-panel:not {
+    box-shadow: none !important;
+}
+
+/* Ends here */

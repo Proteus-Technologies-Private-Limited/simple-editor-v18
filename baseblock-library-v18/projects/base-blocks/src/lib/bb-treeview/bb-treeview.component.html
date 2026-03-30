@@ -1,0 +1,382 @@
+<!-- Changed by Samruddhi for updated UI [start]-->
+<!-- Changed by Samruddhi for FreehandSql -->
+<!-- <div *ngIf="itemTemplate == 'Feed'" id="feedDiv" [ngClass]="isSchemaDesigner == true ? 'treeViewFeedForSchema': 'treeViewFeed'" [ngStyle]="{'height': schemaName == 'FreeHandSQL' ?'104px':'calc(100% - 0px)'}"> -->
+  <!-- <div *ngIf="itemTemplate == 'Feed'" id="feedDiv" [ngClass]="isSchemaDesigner == true ? 'treeViewFeedForSchema': 'treeViewFeed'" [ngStyle]="{'height': schemaName == 'FreeHandSQL' ?'60px':'calc(100% - 0px)'}"> -->
+    <div *ngIf="itemTemplate == 'Feed'" id="feedDiv" [ngClass]="isSchemaDesigner == true ? 'treeViewFeedForSchema': 'treeViewFeed'" [ngStyle]="{'height': currSchemaType == 'F' && isLinkArgument == false ?'60px':'100%'}">
+    <!-- <div style="padding: 0; border-bottom: 1px solid #DCDCDC; height: auto; display: block;"> -->
+    <!-- <div class="schemaDispName"> -->
+      <div [ngClass]="isSchemaDesigner == true ? 'schemaDispName1': 'schemaDispName'">
+        <!-- <div style="display: flex; width: calc(100% - 32px); padding: 8px 16px 4px 16px;"> -->
+        <div style="display: flex; width: calc(100% - 32px); padding: 18px 16px 0px 8px;">
+          <!-- Changed by Vaishali on 28-12-22 To show to Connected Source (Logo) in SchemaDesigner after selection.  -->
+          <!-- <div *ngIf="isSchemaDesigner == true" class="schemaIconBg">
+              <img  src="/ibase/Insight/angplugin/assets/images/In_Memory_w.svg" style="width:28px; height:16px;">
+            </div> -->
+            <div  *ngIf="isSchemaDesigner == true && currentSelectedDataBaseName != undefined && currentSelectedDataBaseName == 'External Data Source'" class="schemaIconBg">
+              <img  src="{{connFeedImage}}" style="width:28px; height:16px;">
+            </div>
+            <div *ngIf="isSchemaDesigner == true && currentSelectedDataBaseName != undefined && currentSelectedDataBaseName == 'InMemeory'" class="schemaIconBg">
+              <img  src="/ibase/Insight/schemaplugin/assets/images/InMemory_W.svg" style="width:28px; height:16px;">
+            </div>
+            <div *ngIf="isSchemaDesigner == true && currentSelectedDataBaseName != undefined && currentSelectedDataBaseName == 'OLTP'" class="schemaIconBg">
+              <img  src="/ibase/Insight/schemaplugin/assets/images/OLTP_W.svg" style="width:28px; height:16px;">
+            </div>
+
+            <div *ngIf="isSchemaDesigner != true" style="height: 24px; width: 24px; display: flex; align-items: center; justify-content: center;">
+                <img src="/ibase/Insight/angplugin/assets/images/SchemaName.svg" style="width:25px; height:25px;">
+            </div>    
+            <!-- <div style="display: flex; align-items: center; justify-content: center; padding: 0 0 0 8px;"> -->
+            <div *ngIf="isSchemaDesigner == true"style="display: flex; align-items: center; justify-content: center; padding: 0 0 0 6px; margin-top: -12px">
+			        <div  style="border: white; font-size: 18px; font-weight: bold;">{{transDB}}</div>
+               <!-- <div *ngIf="transDB == undefined" style="border: white; font-size: 18px; font-weight: bold;">{{externaltransDB}}</div>  -->
+            </div>
+            <div *ngIf="isSchemaDesigner != true" style="display: flex; align-items: center; justify-content: center; padding: 0 0 0 2px; margin-top: -12px">
+			    <select [disabled]="editFlag != 'A'" style="border: white; font-size: 18px; font-weight: bold; color: rgb(51 70 105 / 100%); width: 100%;" [(ngModel)]="schemaName" (ngModelChange)="changeSchemaEvent()">
+                    <option *ngFor="let option of schemaList"><b>{{option.schemaName}}</b></option>
+                </select>
+            </div>
+        </div>
+        <!-- <div style="line-height: 1; font-size: 14px; color: grey; padding: 0 16px 8px 52px; height: auto; display: flex; line-break: anywhere;"> -->
+        <div *ngIf="isSchemaDesigner == true" style="line-height: 1; font-size: 12px; color: grey; padding: 0 16px 8px 46px; height: auto; display: flex; line-break: anywhere; margin-top: -8px;">
+           {{currentSelectedDataBaseName}}
+        </div>
+        <div *ngIf="isSchemaDesigner != true" style="line-height: 1; font-size: 14px; color: rgb(51 70 105 / 100%); width: 100%; padding: 2px 16px 8px 37px; height: auto; display: flex; line-break: anywhere; margin-top: -8px;">
+            {{schemaDescr}}
+        </div>
+    </div>
+    <!-- Added by Nikhil on 06-09-2021 for adding the search option in schema for searching the columns[Start]  -->
+    <!-- <div *ngIf="schemaName != 'FreeHandSQL'" id="searchOption" class="bb-searchOption" (click)="onOverlay()"> -->
+    <div *ngIf="currSchemaType != 'F'" id="searchOption" class="bb-searchOption" (click)="onOverlay()">
+        <!-- Changed by Samruddhi on 09-06-2022 to remove search popup in tree component and add input box for search  -->
+        <div>
+          <img src="/ibase/Insight/angplugin/assets/images/Search.svg" class="bb-searchImage cursor"> 
+        </div>
+        <!-- <mat-select matInput placeholder="Search Columns..." class="bb-searchInput " [disabled]="editFlag == 'V'" (focus)="inputElem.value = ''; onSearchoption('', 'columnDrpDown')" (selectionChange) = "onChangeOption($event)"  [(ngModel)]="columnInitial">                        
+          <input matInput #inputElem id = "columnInput" placeholder="Search Columns..." maxlength="100" placeholder="Search...." [formControl]="myControl" (keyup)="onSearchoption($event.target.value, 'columnDrpDown')" class="bb-query-input" (keydown)="onKeyDown($event)" aria-invalid="false" aria-required="false">
+             <div class="bb-mat-select-panel">
+                <div *ngFor = "let table of tablesArray; let i = index">
+                    <mat-option name="columnDrpDown" *ngFor = "let column of table.COLUMN;  let j = index" [disabled]="editFlag == 'V'" [value]="column" class="bb-mat-option" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}"> 
+                    {{column.NAME}} - {{column.name}}
+                    </mat-option>
+                </div>
+            </div>
+        </mat-select> -->
+        <input matInput #inputElem id = "columnInput" placeholder="Search Columns" maxlength="100" [formControl]="myControl" class="bb-query-input" aria-invalid="false" aria-required="false" [(ngModel)]="columnInitial" (keyup)="onSearchoption($event.target.value, 'columnDrpDown')" class="bb-query-input" (keydown)="onKeyDown($event)">
+        <div *ngIf = "isReset != false" class="resetImageDiv" (click)="resetSearch()">
+            <img class="bb-resetImage cursor" src="/ibase/Insight/angplugin/assets/images/cross.svg">
+        </div>
+    </div>
+    <!-- Added by Nikhil on 06-09-2021 for adding the search option in schema for searching the columns[End]  -->
+    <!-- Changed by Samruddhi on 28/06/21 for in sql editor all the tables must open at the same time -->
+    <!-- <mat-accordion *ngIf="schemaName != 'FreeHandSQL' && isReset == false" multi> -->
+    <mat-accordion style="overflow: auto; display: block; height: calc(100% - 108px);" *ngIf="currSchemaType != 'F' && isReset == false && tablesArray != undefined" multi>
+        <mat-expansion-panel *ngFor = "let table of tablesArray; let idx = index" class="trreviewTables" style="box-shadow: none !important;">
+            <mat-expansion-panel-header *ngIf="isSchemaDesigner == true && table.checked == undefined" style="padding: 0 18px; width: calc(100% - 36px);" [collapsedHeight]="'35px'" [expandedHeight]="'35px'" (contextmenu)="onRightClick($event,table.TABLE_NAME)" >
+              <!-- <img *ngIf="isSchemaDesigner == true" src="/ibase/Insight/angplugin/assets/images/InMemory.svg" style="width:20px; height:20px; padding: 1px 4px 4px 0; margin-right: 8px;">
+              <img *ngIf="isSchemaDesigner != true" src="images/Tables.svg" class="tableDispImg"> -->
+              <img src="/ibase/Insight/angplugin/assets/images/Tables.svg" class="tableDispImg">
+              <span class="tableDispName">{{table.DISPLAY_NAME | titlecase}}</span>
+            </mat-expansion-panel-header>
+
+            <mat-expansion-panel-header *ngIf="isSchemaDesigner == true && table.checked == true" style="padding: 0 18px; width: calc(100% - 36px);" [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+              <mat-icon  *ngIf="table.checked == true" id="matIcon1" class="checkImage1" style="display:block" #matIconEl>fiber_manual_record</mat-icon>
+              <img src="/ibase/Insight/angplugin/assets/images/Tables.svg" class="tableDispImg">
+              <span class="tableDispName">{{table.DISPLAY_NAME | titlecase}}</span>
+            </mat-expansion-panel-header>
+
+            <mat-expansion-panel-header *ngIf="isSchemaDesigner != true" style="padding: 0 18px; width: calc(100% - 36px);" [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+              <!-- <img *ngIf="isSchemaDesigner == true" src="/ibase/Insight/angplugin/assets/images/InMemory.svg" style="width:20px; height:20px; padding: 1px 4px 4px 0; margin-right: 8px;">
+              <img *ngIf="isSchemaDesigner != true" src="images/Tables.svg" class="tableDispImg"> -->
+              <img src="/ibase/Insight/angplugin/assets/images/Tables.svg" class="tableDispImg">
+              <span cdkDrag [cdkDragDisabled]="table.checked" class="tableDispName">{{table.DISPLAY_NAME | titlecase}}</span>
+            </mat-expansion-panel-header>
+            <!-- Added by nikhil on 08-11-2021 for drag and drop functinality -->
+            <div *ngIf= "isReset == false" cdkDropList [cdkDropListData]="table.COLUMN" id="schemaList" (cdkDropListDropped)="onDropDelete($event);">
+                <div *ngFor = "let column of table.COLUMN; let columnIndx = index" cdkDrag [cdkDragDisabled]="column.checked" [ngClass]="isBrowser ? 'columnFeedMainDiv' : 'columnFeedMainDiv-mobile'"  data-columnIndex = "{{columnIndx}}">
+                    <div id="feedPanel_{{idx}}" class="columnFeed" >
+                        <div class="dragDropFeedDiv">
+                          <!-- Changed by Samruddhi for updated UI -->
+                            <img src="/ibase/Insight/angplugin/assets/images/Drag.svg" style="width:8px;">
+                        </div>
+                        <input id="hiddenCheckBox_{{idx}}_{{columnIndx}}" type="checkbox" style="display:none" [(ngModel)]="column.checked" name="hiddenCheckBox_{{columnIndx}}" (ngModelChange) = "setChangeValue(column)" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" />
+                        <label for="hiddenCheckBox_{{idx}}_{{columnIndx}}" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" class="feedDataLabel">
+                            <div class="feedDataFirstDiv">
+                                <!-- <mat-icon [ngStyle]="{'display': column.checked ?'block':'none'}" class="checkImage">check_circle</mat-icon> -->
+                                <!-- Changed by Samruddhi for updated UI -->
+                                <mat-icon id="matIcon_{{column.NAME}}" [ngStyle]="{'display': column.checked ?'block':'none'}" class="checkImage" style="display:block" #matIconEl>fiber_manual_record</mat-icon>
+                                <img [src]="getImgSrc(column['COLTYPE'])" [ngClass]="{ 'selectedFeed' : column.checked }" class="feedCustomImg selectedFeed"/>
+                            </div>
+                            <div class="feedDataSecondDiv">
+                                <div class="columnContent">{{column.content | titlecase}}</div>
+                                <!-- change by shrutika on 27-08-21 for display dbname -->
+                                <!-- <div [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.NAME}}</div> -->
+                                <div *ngIf="column['DBSIZE'] != ''" [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.DBNAME}} - {{column['DBSIZE']}}</div>
+                                <div *ngIf="column['DBSIZE'] == ''" [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.DBNAME}}</div>
+                            </div>
+                        </label>
+                        <div class="functionsInfo">
+                            <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                            <!-- <div *ngIf="column['FUNCTION'] == ''" class="numberIcon">{{column['DBSIZE']}}</div>
+                            <div *ngIf="column['FUNCTION'] != ''" class="avgClass">{{column['FUNCTION']}}</div> -->
+                            <!-- <div class="numberIcon">{{column['DBSIZE']}}</div> -->
+                            <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                        </div>
+                    </div>
+                </div>
+              </div> 
+            </mat-expansion-panel>
+          </mat-accordion>
+          <!-- Added by Samruddhi on 09-06-2022 to remove search popup in tree component and add input box for search -->
+          <!-- <mat-accordion *ngIf="schemaName != 'FreeHandSQL' && isReset == true" multi> -->
+          <mat-accordion *ngIf="currSchemaType != 'F' && isReset == true" multi>
+            <mat-expansion-panel id = "{{table.TABLE_NAME}}" *ngFor = "let table of tablesArray; let idx = index" class="trreviewTables" expanded>
+                <mat-expansion-panel-header *ngIf="table.COLUMN.length > 0" style="padding: 0 18px; width: calc(100% - 36px);" [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+                  <!-- <img *ngIf="isSchemaDesigner == true" src="/ibase/Insight/angplugin/assets/images/InMemory.svg" style="width:20px; height:20px; padding: 1px 4px 4px 0; margin-right: 8px;">
+                  <img *ngIf="isSchemaDesigner != true" src="images/Tables.svg" class="tableDispImg"> -->
+                  <img src="/ibase/Insight/angplugin/assets/images/Tables.svg" class="tableDispImg">
+                  <span cdkDrag [cdkDragDisabled]="table.checked" class="tableDispName">{{table.DISPLAY_NAME}}</span>
+                </mat-expansion-panel-header>
+              <div cdkDropList [cdkDropListData]="table.COLUMN" id="schemaList" (cdkDropListDropped)="onDropDelete($event);">
+                <div id="{{column.DBTABLE}}_{{column.NAME}}" name="columnDrpDown" *ngFor = "let column of table.COLUMN;  let columnIndx = index" cdkDrag [cdkDragDisabled]="column.checked" [ngClass]="isBrowser ? 'columnFeedMainDiv' : 'columnFeedMainDiv-mobile'" data-tableName="{{table.TABLE_NAME}}" data-columnIndex = "{{columnIndx}}">
+                  <div id="feedPanel_{{idx}}" class="columnFeed" >
+                      <div class="dragDropFeedDiv">
+                        <img src="/ibase/Insight/angplugin/assets/images/Drag.svg" style="width:8px;">
+                      </div>
+                      <input id="hiddenCheckBox_{{idx}}_{{columnIndx}}" type="checkbox" style="display:none" [(ngModel)]="column.checked" name="hiddenCheckBox_{{columnIndx}}" (ngModelChange) = "setChangeValue(column)" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" />
+                      <label for="hiddenCheckBox_{{idx}}_{{columnIndx}}" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" class="feedDataLabel">
+                          <div class="feedDataFirstDiv">
+                              <mat-icon [ngStyle]="{'display': column.checked ?'block':'none'}" class="checkImage">fiber_manual_record</mat-icon>
+                              <img [src]="getImgSrc(column['COLTYPE'])" [ngClass]="{ 'selectedFeed' : column.checked }" class="feedCustomImg selectedFeed"/>
+                          </div>
+                          <div class="feedDataSecondDiv">
+                              <div class="columnContent">{{column.content}}</div>
+                              <div *ngIf="column['DBSIZE'] != ''" [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.DBNAME}} - {{column['DBSIZE']}}</div>
+                              <div *ngIf="column['DBSIZE'] == ''" [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.DBNAME}}</div>
+                          </div>
+                      </label>
+                      <div class="functionsInfo">
+                          <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                          <!-- <div *ngIf="column['FUNCTION'] == ''" class="numberIcon">{{column['DBSIZE']}}</div>
+                          <div *ngIf="column['FUNCTION'] != ''" class="avgClass">{{column['FUNCTION']}}</div> -->
+                          <!-- <div class="numberIcon">{{column['DBSIZE']}}</div> -->
+                          <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                      </div>
+                  </div>
+                </div>
+              </div> 
+            </mat-expansion-panel>
+      </mat-accordion>
+</div>
+
+<!-- Added by Samruddhi for Freehandsql [Start]-->
+<!-- <div *ngIf="itemTemplate == 'Column' && schemaName == 'FreeHandSQL' && finalTableArray != undefined" id="freehandDiv" [ngClass]="isSchemaDesigner == true ? 'treeViewFeedForSchema': 'treeViewFeed' style="height: auto;"> -->
+<div *ngIf="itemTemplate == 'Column' && currSchemaType == 'F' && finalTableArray != undefined" id="freehandDiv" [ngClass]="isSchemaDesigner == true ? 'treeViewFeedForSchema': 'treeViewFeed'" style="height: auto;">
+  <div [ngClass]="isSchemaDesigner == true ? 'schemaDispName1': 'schemaDispName'">
+    <div style="display: flex; width: calc(100% - 32px); padding: 18px 16px 0px 8px;">
+        <div *ngIf="isSchemaDesigner != true" style="height: 24px; width: 24px; display: flex; align-items: center; justify-content: center;">
+            <img src="/ibase/Insight/angplugin/assets/images/SchemaName.svg" style="width:25px; height:25px;">
+        </div>
+        <div *ngIf="isSchemaDesigner != true" style="display: flex; align-items: center; justify-content: center; padding: 0 0 0 2px; margin-top: -12px">
+          <select [disabled]="editFlag != 'A'" style="border: white; font-size: 18px; font-weight: bold; color: rgb(51 70 105 / 100%); width: 100%;" [(ngModel)]="schemaName" (ngModelChange)="changeSchemaEvent()">
+            <option *ngFor="let option of schemaList"><b>{{option.schemaName}}</b></option>
+          </select>
+        </div>
+    </div>
+    <div *ngIf="isSchemaDesigner != true" style="line-height: 1; font-size: 14px; color: rgb(51 70 105 / 100%); width: 100%; padding: 2px 16px 8px 37px; height: auto; display: flex; line-break: anywhere; margin-top: -8px;">
+        {{schemaDescr}}
+    </div>
+</div>
+
+ <!-- <mat-accordion *ngIf="schemaName == 'FreeHandSQL'" multi> -->
+    <!-- <mat-expansion-panel *ngFor = "let column of freehandColumnArray; let idx = index" style="margin: 0 !important;" [expanded]="true"> -->
+    <!-- <mat-expansion-panel *ngFor = "let table of finalTableArray; let idx = index" style="margin: 0 !important;" [expanded]="true"> -->
+        <!-- <mat-expansion-panel-header style="padding: 0 18px; width: calc(100% - 36px);" [collapsedHeight]="'35px'" [expandedHeight]="'35px'">
+          <img *ngIf="isSchemaDesigner != true" src="images/Tables.svg" class="tableDispImg">
+          <span cdkDrag class="tableDispName">{{table.DISPLAY_NAME}}</span>
+        </mat-expansion-panel-header> -->
+      <!-- <div *ngFor = "let column of freehandColumnArray; let idx = index" id="columnMain">  -->
+        
+      <!-- Changed by Samruddhi to set dynamic columnlist in case of freehand -->
+      <!-- <div id="columnMain"> -->
+      <!-- <div id="columnMain" *ngIf="schemaName == 'FreeHandSQL'"> -->
+      <div id="columnMain" *ngIf="currSchemaType == 'F'">
+        <div *ngFor = "let table of finalTableArray; let idx = index">
+          <!-- <div cdkDropList [cdkDropListData]="column" id="columnList" style="margin-top: 8px;"> -->
+          <div cdkDropList [cdkDropListData]="table.COLUMN" id="columnList" style="margin-top: 8px;">
+            <!-- <div cdkDrag [cdkDragDisabled]="column.checked" [ngClass]="isBrowser ? 'columnFeedMainDiv' : 'columnFeedMainDiv-mobile'"> -->
+              <!-- <div cdkDrag [ngClass]="isBrowser ? 'columnFeedMainDiv' : 'columnFeedMainDiv-mobile'"> -->
+              <div *ngFor = "let column of table.COLUMN; let columnIndx = index" cdkDrag [cdkDragDisabled]="column.checked" [ngClass]="isBrowser ? 'columnFeedMainDiv' : 'columnFeedMainDiv-mobile'">
+                <div id="feedPanel_{{columnIndx}}" class="columnFeed" >
+                    <div class="dragDropFeedDiv">
+                      <!-- Changed by Samruddhi for updated UI -->
+                        <img src="/ibase/Insight/angplugin/assets/images/Drag.svg" style="width:8px;">
+                    </div>
+                    <input id="hiddenCheckBox_{{idx}}_{{columnIndx}}" type="checkbox" style="display:none" [(ngModel)]="column.checked" name="hiddenCheckBox_{{columnIndx}}" (ngModelChange) = "setChangeValue(column)" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" />
+                    <label for="hiddenCheckBox_{{idx}}_{{columnIndx}}" [ngStyle]="{'pointer-events': editFlag == 'V' ?'none':''}" class="feedDataLabel">
+                        <div class="feedDataFirstDiv">
+                            
+                            <mat-icon *ngIf="column.checked != undefined" [ngStyle]="{'display': column.checked ?'block':'none'}" class="checkImage">fiber_manual_record</mat-icon>
+                            <img *ngIf="column.checked != undefined" [src]="getImgSrc(column['COLTYPE'])" [ngClass]="{ 'selectedFeed' : column.checked }" class="feedCustomImg selectedFeed"/>
+                        </div>
+                        <div class="feedDataSecondDiv">
+                            <div class="columnContent">{{column.content}}</div>
+                            <div [ngClass]="isBrowser ? 'columnName' : 'columnName-mobile'">{{column.NAME}}</div>
+                        </div>
+                    </label>
+                    <div class="functionsInfo">
+                        <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                        <!-- <div *ngIf="column['FUNCTION'] == ''" class="numberIcon">{{column['DBSIZE']}}</div>
+                        <div *ngIf="column['FUNCTION'] != ''" class="avgClass">{{column['FUNCTION']}}</div> -->
+                        <!-- <div class="numberIcon">{{column['DBSIZE']}}</div> -->
+                        <!-- change by shrutika on 16-07-21 [Start] for not display default function on form. -->
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    <!-- </mat-expansion-panel> -->
+<!-- </mat-accordion> -->
+      </div>
+</div>
+<!-- Added by Samruddhi for Freehandsql [End]-->
+
+<!-- <div *ngIf="isSchemaDesigner != true" title="Add" class="floatingActionBtn" id="add" name="addNew">
+  <div mat-fab class="plusBtnDiv" class="material-icons plus" style="color: var(--primaryGradient); padding: 8px;">add</div>
+</div> -->
+
+<div class="row">
+  <div>
+    <div class="container">
+      <div>
+        <div *ngIf="itemTemplate == 'simple'"  class="treeview">
+          <ngx-treeview [config]="config" [items]="items" [itemTemplate]='itemTemplateSimple' (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event)">
+          </ngx-treeview>
+        </div>
+        <div *ngIf="itemTemplate == 'left-expand'" class="treeview-LExpand">
+          <ngx-treeview [config]="config" [items]="items" [itemTemplate]='itemTemplateLExpand'  (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event)">
+          </ngx-treeview>
+        </div>
+        <div *ngIf="itemTemplate == 'right-expand'" class="treeview-RExpand">
+          <ngx-treeview [config]="config" [items]="items" [itemTemplate]='itemTemplateRExpand'  (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event)">
+          </ngx-treeview>
+        </div>
+        <div *ngIf="itemTemplate == 'multi-key-expand'" class="treeview-RExpand">
+          <ngx-treeview [config]="config" [items]="items" [itemTemplate]='defaultTemplate'  (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event)">
+          </ngx-treeview>
+        </div>
+        <!--  <div *ngIf="itemTemplate == 'Feed'">
+           <ngx-treeview [config]="config" [items]="items" [itemTemplate]='itemTemplateFeed'>
+          </ngx-treeview> 
+        </div> -->
+      </div>  
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="itemTemplate == 'Feed'">
+        <ng-container [itemTemplate]='itemTemplateFeed'></ng-container> 
+    </div> -->
+
+
+<ng-template #itemTemplateSimple let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" 
+      class="fa" 
+      [class.fa-caret-right]="item.collapsed"
+      [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" 
+        [(ngModel)]="item.checked" 
+        (ngModelChange)="onCheckedChange()" 
+        [disabled]="item.disabled"
+        [indeterminate]="item.indeterminate" />
+
+      <label class="form-check-label" (click)="item.checked = !item.checked; onCheckedChange()">
+        {{item.text}}
+      </label>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #itemTemplateLExpand let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" 
+      class="fa" 
+      [class.fa-caret-right]="item.collapsed"
+      [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check" [class.form-check-leaf]="!item.children">
+      <input type="checkbox" class="form-check-input" 
+        [(ngModel)]="item.checked" 
+        (ngModelChange)="onCheckedChange()" 
+        [disabled]="item.disabled"
+        [indeterminate]="item.indeterminate" />
+
+      <label class="form-check-label" (click)="item.checked = !item.checked; onCheckedChange()">
+        <div class="avatar">
+          <span class="avatar-icon">{{item.itemData.empname.charAt(0).toUpperCase()}}</span>
+          <i *ngIf="item.checked"  aria-hidden="true" class="fa fa-check"></i>
+          <i *ngIf="item.indeterminate"  aria-hidden="true" class="fa fa-indeterminate"></i>
+          <div class="avatar-text-content">
+            <span class="avatar-text">{{item.itemData.empname}}</span>
+            <span class="avatar-sub-text">{{item.itemData.designation}}</span>
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #itemTemplateRExpand let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item">
+    <i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" 
+      class="fa" 
+      [class.fa-caret-right]="item.collapsed"
+      [class.fa-caret-down]="!item.collapsed"></i>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" 
+        [(ngModel)]="item.checked" 
+        (ngModelChange)="onCheckedChange()" 
+        [disabled]="item.disabled"
+        [indeterminate]="item.indeterminate" />
+
+      <label class="form-check-label" (click)="item.checked = !item.checked; onCheckedChange()">
+        <div class="avatar">
+          <i *ngIf="item.checked"  aria-hidden="true" class="fa fa-check"></i>
+          <i *ngIf="item.indeterminate"  aria-hidden="true" class="fa fa-indeterminate"></i> 
+          <span class="avatar-icon">{{item.itemData.text?.charAt(0).toUpperCase()}}</span>
+          
+       	  <div applyTemplate class="display_template"  [shHtml] = "layoutTemplate || defaultTemplate " [data] ="item" > </div>
+<!--           <span class="avatar-icon">{{item.itemData.empname.charAt(0).toUpperCase()}}</span> -->
+<!--           <div class="avatar-text-content"> -->
+<!--             <span class="avatar-text">{{item.itemData.empname}}</span> -->
+<!--             <span class="avatar-sub-text">{{item.itemData.designation}}</span> -->
+<!--           </div> -->
+        </div>
+      </label>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #defaultTemplate let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+  <div class="form-inline row-item" (click)="onCollapseExpand()">
+    <i *ngIf="item.children"  aria-hidden="true" 
+      class="fa" 
+      [class.fa-caret-right]="item.collapsed"
+      [class.fa-caret-down]="!item.collapsed"
+      [style.float]="expansioIconPos   ?  expansioIconPos : 'right'"
+      ></i>
+    <div class="multilevel-form-check" [ngClass]="expansioIconPos=='left' ? 'expansionIcon' : ''" [class.form-check-leaf]="!item.children">
+    	<div applyTemplate class="display_template"  [itemTemplates]="itemTemplates" [data] ="item" > </div> 
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addtofolder id="addtofolder" class="exportOption"
+  cdk-connected-overlay>
+    <div class="exportoptionPopup boxShadowEditor">
+        <div class="exportoptionclick" style="width: inherit; font-size: larger; display: flex; align-items: center;" (click)="onclickpopup($event)">  
+            <img style="padding: 10px; height: 16px;" src="/ibase/Insight/schemaplugin/assets/images/foldericon.png" class="exportoptionLableimg">
+            <span class="exportoptionLable">Add As New Folder</span>
+        </div>   
+    </div>
+</ng-template>

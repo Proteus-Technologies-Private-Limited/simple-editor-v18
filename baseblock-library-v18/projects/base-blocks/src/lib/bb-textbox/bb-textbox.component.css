@@ -1,0 +1,540 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    
+    .roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.labelPostion{
+display: table;
+}
+
+:host ::ng-deep.mat-form-field-ripple {
+    height: 1px !important;
+    background-color: #ff9000 !important;
+}
+
+/* Added by Samruddhi for UI related changes in Simple layout */
+.inputClass{
+    color: #293956 !important;
+    padding: 0 6px !important;
+    font-family: "Roboto", sans-serif !important;
+    /* box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2); */
+    box-shadow: 0 0 0 1px #0003 !important;
+    height: 32px !important;
+    /* font-size: 17px; */
+    font-size: 14px !important;
+    background-color: rgb(0 0 0 / 2%) !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    /* width: calc(100% - 42px); */
+    width: calc(100% - 12px) !important;
+    display: flex !important;
+    border: none;
+    /* padding-right: 32px !important; */
+
+    /* mat-mdc-input-element */
+}
+.disablePopHelp{
+    display: none !important;
+}
+
+/* .lblText
+{
+    display: flex;
+    align-items: center;
+    top: 0;
+    font-size: 15px;
+    height: 20px;
+    color: #293948;
+} */
+
+.labelMainDiv
+{
+    display: flex;
+    /* position: absolute;
+    top: -4px; */
+    width: auto;
+}
+
+.requireDiv
+{
+    color: #ff0000;
+    display: block;
+    /* position: absolute;
+    top: -4px;
+    left: -8px; */
+}
+
+::ng-deep.mat-form-field-label{
+    /* color: #666 !important; */
+    /* transition: transform .4s cubic-bezier(.25,.8,.25,1),color .4s cubic-bezier(.25,.8,.25,1),width .4s cubic-bezier(.25,.8,.25,1) !important; */
+}
+
+:host ::ng-deep.mat-form-field._mat-animation-noopable .mat-form-field-label{
+    /* font-size: 15px !important; */
+}
+
+::ng-deep .wizTransPophelpImg {
+    height: 20px;
+    width: 20px;
+    padding: 5px;
+    overflow: hidden;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAABEklEQVR42mNgQAKTJ0+Wam1tjcrJyZFiIBU0NbUmFBQUfigsLNqZkVEiRpLmuXPnSlVWVu8AGvC/sLBwLckGtLW1iRYVFa0B2v6voKB4V1ZWkSxJBuTm5oqCnA7E3wsKCnaVlJDoAqABMlAD/peXl6+dPn06yQaAvZCfX/CvsrJq18yZM+VIMgDkZGDgXQca8Lu9vbODaI319fVMxcXFAUCnvwfhiROnRBClMTQ0lBkY2ilFRcUfi4pKXgETUCixljKBNAJtewGyERhgYUD/shLl1Ly8vECQjSCNIEOIsu7////MQM0gG0EaXwEDKozoAGpv7/IAanoGshEYRaFpaWmsRGvu75/kDUzbp4Eak4hRDwCclYTXhKEuGgAAAABJRU5ErkJggg==) center center no-repeat;
+    background-size: 50% !important;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 4px;
+    top: 25px;
+}
+
+.noPlaceholderIsDisableClass
+{
+    margin-left: 50px;
+    margin-top: -12px;
+    height: 30px;
+    padding: 0 0 12px 0;
+    display: block;
+}
+
+.mat-form-field-infix.inputFieldIsDisable
+{
+    border-top: 0px !important; 
+    border-right: 0px !important; 
+    border-left: 0px !important; 
+    border-bottom: 1px solid silver !important;
+    display: flex !important;
+    align-items: flex-end !important;
+}
+
+.lblText
+{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    height: 20px;
+    color: #293948;
+    font-family: "Roboto", sans-serif !important;
+    /* position: absolute;
+    top: -4px; */
+    white-space: nowrap;
+    width: auto;
+}
+
+
+:root{
+    
+    --txt-dark: #293948;
+    --txt-dark-des: hsla(209, 27%, 22%, 0.8);
+    --icon-bg: hsla(0, 0%, 0%, 0.3);
+}
+
+.optionIcon	
+{	
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #293948;
+    font-size: 18px;
+    background-color: #0000000f;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    opacity: 0.8;
+    /* box-shadow: 0 0 0 1px #0003; */
+}
+
+.disabledOptionIcon	
+{	
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2939488c;
+    font-size: 18px;
+    background-color: #0000000f;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    opacity: 0.5;
+    /* box-shadow: 0 0 0 1px #0003; */
+    /* opacity: 0.5; */
+}
+
+.textFilterIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--icon-bg);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 8px;
+    margin-top: 18px;
+} 
+
+.disableTextFilterIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--icon-bg);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 8px;
+    margin-top: 18px;
+} 
+
+.disableTextFilterIcon .optionIcon 
+{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #2939488c !important;
+    font-size: 18px !important;
+    background-color: #0000000f !important;
+    font-weight: 500 !important;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px !important;   
+    opacity: 0.5;
+}
+
+.focusOptionIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    background-color: #293948;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px #0003;
+}
+
+.mainInputField {
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
+    -webkit-column-break-inside: avoid;
+    grid-gap: 10px;
+}
+
+:host ::ng-deep .mat-input-element:disabled {
+    color: #293956 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    padding: 0 0 4px !important;
+    box-shadow: 0 1px #0003 !important;
+    height: 20px !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    cursor: not-allowed;
+    background-color: transparent;
+}
+
+.numberIcon
+{
+    height: 36px;
+    width: 36px;
+}
+
+.stringIcon
+{
+    height: 20px;
+    width: 20px;
+}
+
+.inputClass:focus {
+    outline: none; /* Remove the default focus outline */
+    border: none; /* Change the border to highlight the field */
+    box-shadow: 0 0 0 1px #ff9000; /* Add a shadow for emphasis */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+:host ::ng-deep .mat-mdc-form-field {
+  /* margin-bottom: 8px; */
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  text-align: left;
+}
+
+/* For filled appearance (like legacy flat) */
+.mat-mdc-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  background-color: white;
+  border-radius: 4px;
+  padding: 0 8px;
+  box-shadow: none;
+}
+
+/* Fix the label positioning */
+.mat-mdc-floating-label {
+  font-size: 13px;
+  top: 12px;
+  left: 0;
+}
+
+/* Red asterisk for required fields */
+.mat-mdc-form-field-required-marker {
+  color: red;
+  margin-left: 2px;
+}
+
+/* .mat-mdc-input-element {
+  color: #293956 !important;
+  padding: 0 6px !important;
+  font-family: "Roboto", sans-serif !important;
+  box-shadow: 0 0 0 1px #0003 !important;
+  height: 32px !important;
+  font-size: 14px !important;
+  background-color: rgb(0 0 0 / 2%) !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  width: calc(100% - 12px) !important;
+  display: flex !important;
+  border: none;
+} */
+
+.mat-mdc-input-element:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0 0 0 1px #ff9000 !important; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+::ng-deep .mdc-line-ripple {
+  display: none !important;
+}
+
+/* ::ng-deep .mat-mdc-form-field-flex {
+  font-family: Roboto, sans-serif !important;
+  top: 0px !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 62px;
+} */
+
+:host ::ng-deep .mat-mdc-form-field-flex {
+  background-color: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+  height: 36px !important;
+  padding-right: 32px; /* leave space for icon */
+}
+
+/* :host ::ng-deep .mat-mdc-form-field-infix {
+  padding: 0 8px !important;
+} */
+
+::ng-deep .mat-mdc-form-field-outline {
+  height: 100% !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align {
+  /* margin-top: -4px !important;  */
+  /* Adjust this if underline is still off */
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  /* margin-top: 2px; */
+  /* padding-left: 0px !important; */
+  /* padding-right: 0px !important; */
+  margin-top: .54167em !important;
+  top: calc(100% - 1.66667em) !important;
+}
+
+/* Prevent hint from shifting underline height */
+.mat-mdc-form-field-hint-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Customize validation message appearance */
+.mat-mdc-form-field-hint {
+  color: red !important;
+  font-size: 12px;
+  line-height: 14px;
+  margin-left: 0px;
+  margin-top: 2px;
+}
+
+.mat-mdc-form-field-hint-spacer {
+  flex: 0 0 auto;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+  content: "";
+  display: none !important;
+  height: 16px;
+}
+
+::ng-deep .mdc-line-ripple::before,
+.mdc-line-ripple::after {
+  display: none !important;
+}
+
+/* .mdc-text-field--filled.mdc-text-field--disabled .mdc-text-field__input { */
+.disabledInputField{
+  color: #293956 !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  padding: 0px !important;
+  box-shadow: 0 0 transparent !important;
+  height: 20px !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  cursor: not-allowed !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+:host ::ng-deep .mdc-text-field--filled.mdc-text-field--disabled {
+  background-color: transparent !important;
+  height: 42px;
+}
+
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 10px;
+}
+
+/* .mdc-text-field--outlined .mat-mdc-form-field-infix,
+.mdc-text-field--no-label .mat-mdc-form-field-infix {} */
+
+::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix,
+::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding-bottom: 0 !important;
+  padding-top: 0px !important;
+}
+
+:host ::ng-deep .mdc-text-field {
+  display: inline-flex;
+  align-items: baseline;
+  padding: 0 2px;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+:host ::ng-deep .mat-mdc-form-field-hint-wrapper .mat-mdc-form-field-error-wrapper
+{
+  position: absolute !important;
+  top: -18px !important;
+  left: 0px !important;
+  right: 0 !important;
+  padding: 0px !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  animation: _mat-form-field-subscript-animation 0ms cubic-bezier(0.55, 0, 0.55, 0.2) !important;
+}
+
+.mdcMainDiv
+{
+  flex: auto;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 4px !important;
+  height: 70px;
+}
+
+.mdcMainDiv-disabled
+{
+  flex: auto;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  height: 30px;
+  display: flex;
+  box-shadow: 0px 1px #0003 !important;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.bbAutoSuggestDiv
+{
+  position: absolute;
+  width: 100%;
+  max-height: 244px;
+  height: auto;
+  display: flex;
+}

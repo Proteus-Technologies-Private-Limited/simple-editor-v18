@@ -1,0 +1,182 @@
+<!-- <div *ngIf="suggestFormattedData" > -->
+<ng-container *ngTemplateOutlet=" filteredSuggestions ? filterTemplt : suggestTemplt"></ng-container>
+
+
+<ng-template #filterTemplt>
+  <mat-form-field floatPlaceholder="bbFloatPlaceholder" class="mat-form-field">
+    <div matPrefix *ngIf="bbchipEnable">
+      <ng-container *ngTemplateOutlet=" ChipListTemplt"></ng-container>
+    </div>
+    <input matInput [matAutocomplete]="filterAuto" [formControl]="suggestCtrl" [placeholder]="bbPlaceholder"
+      [(ngModel)]="chipValue" #chip="matAutocompleteTrigger" (change)="onValueChange()" (paste)="validateData($event);"
+      (focus)="bbFocus.emit(chip);">
+  </mat-form-field>
+
+  <mat-autocomplete #filterAuto style="width: 222em !important;">
+    <mat-option *ngFor="let suggestObj of filteredSuggestions | async "
+      [value]="bbchipEnable == true ? '' : (clearAftrSelection == true ? '': suggestObj.value)"
+      (onSelectionChange)="add(suggestObj.value)">
+      <ng-container *ngTemplateOutlet=" suggestOptTemplt; context:{ $implicit: suggestObj }"></ng-container>
+    </mat-option>
+  </mat-autocomplete>
+</ng-template>
+
+
+<!-- Commented and changed by Kaustubh Nandankar on 07-March-2024 -->
+<!-- <ng-template #suggestTemplt>
+	<div *ngIf = "bbDisabled==false">
+	  <mat-form-field floatPlaceholder="bbFloatPlaceholder" class = "mat-form-field">
+	    <div matPrefix *ngIf="bbchipEnable" >
+	        <ng-container *ngTemplateOutlet=" ChipListTemplt"></ng-container>
+	    </div>
+	    <input matInput 
+	           [matAutocomplete]="suggestAuto" 
+	           [formControl]="suggestCtrl"
+	           [placeholder]="bbPlaceholder"
+	           [(ngModel)]="chipValue"
+	            #chip ="matAutocompleteTrigger"
+	           (change) = "onValueChange()"
+	           (paste) = "validateData($event);"
+	           (focus)="bbFocus.emit(chip);"
+	           >
+	  </mat-form-field>
+	  <mat-autocomplete #suggestAuto style="width: 343em !important;">
+	          <mat-option *ngFor="let suggestObj of suggestData " [value]="bbchipEnable == true ? '' : (clearAftrSelection == true ? '': suggestObj.value)"    (onSelectionChange)="add(suggestObj.value)">
+			        <ng-container *ngTemplateOutlet=" suggestOptTemplt; context:{ $implicit: suggestObj }" ></ng-container>
+			  </mat-option>
+	  </mat-autocomplete>  
+
+	 </div>
+	 <div *ngIf = "bbDisabled==true">
+		  <mat-form-field floatPlaceholder="bbFloatPlaceholder" class = "mat-form-field">
+		    <div matPrefix *ngIf="bbchipEnable" >
+		        <ng-container *ngTemplateOutlet=" ChipListTemplt"></ng-container>
+		    </div>
+		    <input matInput [placeholder]="bbPlaceholder" [(ngModel)]="chipValue" #chip disabled>
+		  </mat-form-field>
+	 </div>
+</ng-template> -->
+
+<ng-template #suggestTemplt>
+  <div *ngIf="!bbDisabled">
+    <div class="custom-input-container">
+      <div *ngIf="bbchipEnable" class="chip-container">
+        <ng-container *ngTemplateOutlet="ChipListTemplt"></ng-container>
+      </div>
+      <input class="custom-input" [placeholder]="bbPlaceholder" [(ngModel)]="chipValue" [formControl]="suggestCtrl"
+        #chip (change)="onValueChange()" (paste)="validateData($event)" (focus)="bbFocus.emit(chip);" />
+    </div>
+    <!-- Suggestions Dropdown -->
+    <!-- <div class="suggestions" *ngIf="suggestData?.length">
+      <div class="suggestion-item" *ngFor="let suggestObj of suggestData" (click)="add(suggestObj.value)">
+        <ng-container *ngTemplateOutlet="suggestOptTemplt; context:{ $implicit: suggestObj }"></ng-container>
+      </div>
+    </div> -->
+    <div class="suggestions" *ngIf="showSuggestions && suggestData?.length">
+      <div class="suggestion-item" *ngFor="let suggestObj of suggestData" (click)="selectSuggestion(suggestObj)">
+        <span class="suggestion-text">{{ suggestObj.value }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- <div *ngIf="bbDisabled">
+    <div class="custom-input-container disabled">
+      <div *ngIf="bbchipEnable" class="chip-container">
+        <ng-container *ngTemplateOutlet="ChipListTemplt"></ng-container>
+      </div>
+      <input class="custom-input" [placeholder]="bbPlaceholder" [(ngModel)]="chipValue" #chip disabled />
+    </div>
+  </div> -->
+</ng-template>
+
+<!-- Ends here -->
+
+<ng-template #ChipListTemplt>
+  <div *ngIf="uxDesign == 'UX1'">
+    <ng-container *ngTemplateOutlet=" ChipListTemplt_UX1"></ng-container>
+  </div>
+  <div *ngIf="uxDesign == 'UX2'">
+    <ng-container *ngTemplateOutlet=" ChipListTemplt_UX2"></ng-container>
+  </div>
+  <div *ngIf="uxDesign == 'UX3'">
+    <ng-container *ngTemplateOutlet=" ChipListTemplt_UX3"></ng-container>
+  </div>
+</ng-template>
+
+<!-- uxDesign : UX1 - Simple -->
+<ng-template #ChipListTemplt_UX1>
+  <mat-chip-list>
+    <mat-chip *ngFor="let chipObj of chipData;" color="accent" class="custom-chip"
+      [ngClass]="{'selected': chipToDelete == chipObj.value }">
+      <div class="contentChip">
+        <!--
+    <img class="imageChip" src="{{chipObj.image}}"/>
+    <span class="iconChip">{{ chipObj.displayChipText.charAt(0) }}</span>
+  -->
+        <ng-container *ngTemplateOutlet=" imageTemplt; context:{$implicit: chipObj, classSuffix: ''}"></ng-container>
+        <span class="textChip">{{ chipObj.displayChipText }}</span>
+        <i class="material-icons closeChip" (click)="remove(chipObj)">cancel</i>
+      </div>
+      <input type="hidden" name="refId" [value]='chipObj.value' />
+    </mat-chip>
+  </mat-chip-list>
+</ng-template>
+
+<!-- uxDesign : UX2 - Flat -->
+<ng-template #ChipListTemplt_UX2>
+  <mat-chip-list matPrefix *ngIf="bbchipEnable">
+    <mat-chip *ngFor="let chipObj of chipData;" color="accent" class="capsule-flat-chip"
+      [ngClass]="{'selected': chipToDelete == chipObj.value, 'errChip': chipObj.errData }">
+
+      <div class="capsuleFlatChip">
+        <span class="capsuleTextFlatChip">{{ chipObj.displayChipText }}</span>
+        <i class="material-icons closeCapsuleFlatChip" (click)="remove(chipObj)">close</i>
+      </div>
+
+      <input *ngIf="!chipObj.errData" type="hidden" name="refId" [value]='chipObj.value' />
+    </mat-chip>
+  </mat-chip-list>
+</ng-template>
+
+<!-- uxDesign : UX3 - Material -->
+<ng-template #ChipListTemplt_UX3>
+  <mat-chip-list matPrefix *ngIf="bbchipEnable">
+    <mat-chip *ngFor="let chipObj of chipData;" color="accent" class="capsule-chip"
+      [ngClass]="{'selected': chipToDelete == chipObj.value }">
+
+      <div class="capsuleChip">
+        <!--
+	    <img class="capsuleImageChip" src="{{chipdata.image}}"/>
+	    <span class="capsuleIconChip">{{ chipdata.displayChipText.charAt(0) }}</span>
+	  -->
+        <ng-container
+          *ngTemplateOutlet=" imageTemplt; context:{$implicit: chipObj, classSuffix: 'Capsule'}"></ng-container>
+        <span class="capsuleTextChip">{{ chipObj.displayChipText }}</span>
+        <i class="material-icons closeCapsuleChip" (click)="remove(chipObj)">cancel</i>
+      </div>
+      <input type="hidden" name="refId" [value]='chipObj.value' />
+    </mat-chip>
+  </mat-chip-list>
+</ng-template>
+
+
+<ng-template #suggestOptTemplt let-suggestData>
+  <div class="suggestOption">
+    <ng-container
+      *ngTemplateOutlet=" imageTemplt; context:{$implicit: suggestData, classSuffix: 'Capsule'}"></ng-container>
+    <span class="capsuleTextChip">{{ suggestData.displaySuggestText }}</span>
+    <!--<span class="capsuleTextChip">{{ suggestData.displaySuggestText }}</span>-->
+  </div>
+</ng-template>
+
+<ng-template #imageTemplt let-imageData let-classSuffix='classSuffix'>
+  <span *ngIf="imageData.image == 'ERROR'" class="iconChip{{classSuffix}}">
+    {{ imageData.displaySuggestText.trim().charAt(0) }}
+  </span>
+
+  <img *ngIf="imageData.image" class="imageChip{{classSuffix}}" src="{{HOST_URL}}{{imageData.image}}"
+    (error)="imageData.image = 'ERROR'; iconImg.nativeElement.style = 'display:none';" #iconImg />
+
+</ng-template>
+<!-- </div> -->

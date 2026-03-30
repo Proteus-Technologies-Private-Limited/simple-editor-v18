@@ -1,0 +1,24 @@
+
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX3'"> 
+		<mat-form-field>
+			<input matInput #phone="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (keypress)=" validateMax($event);"/>
+			<mat-hint>
+				<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+			</mat-hint>
+		</mat-form-field>	
+	</span>
+	
+	<span *ngSwitchCase="'UX2'">
+		<span  [ngClass]="{'labelPostion':bbLabelPostion === 'top'}">{{bbLabel}}</span>
+		<input  #phone="ngModel" [(ngModel)]="value" [type]="bbType" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (keypress)=" validateMax($event);"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+		 
+	</span>
+	
+	<span *ngSwitchCase="'UX1'">
+		<input  #phone="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" (keypress)=" validateMax($event);" />
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+</span>
+      

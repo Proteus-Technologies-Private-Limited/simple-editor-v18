@@ -1,0 +1,107 @@
+.inputClass{
+    color: #293956 !important;
+    padding: 0 6px !important;
+    font-family: "Roboto", sans-serif !important;
+    box-shadow: 0 0 0 1px #0003 !important;
+    height: 32px !important;
+    font-size: 14px !important;
+    background-color: rgb(0 0 0 / 2%) !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    width: calc(100% - 10px) !important;
+    display: flex !important; 
+}
+
+.inputClass:focus {
+    outline: none; /* Remove the default focus outline */
+    border: none; /* Change the border to highlight the field */
+    box-shadow: 0 0 0 1px #ff9000; /* Add a shadow for emphasis */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.mat-datepicker-popup .mat-calendar-next-button, .mat-datepicker-popup .mat-calendar-previous-button, .mat-datepicker-toggle
+{
+    color: rgba(0, 0, 0, .54) !important;
+    position: absolute !important;
+    right: 0px !important;
+    top: -15px !important;
+}
+
+::ng-deep .mat-datepicker-toggle .mdc-icon-button::before,
+::ng-deep .mat-datepicker-toggle .mdc-icon-button::after,
+::ng-deep .mat-datepicker-toggle .mat-mdc-button-persistent-ripple,
+::ng-deep .mat-datepicker-toggle .mat-ripple {
+    display: none !important;
+}
+
+::ng-deep .mat-datepicker-toggle .mdc-icon-button:focus,
+::ng-deep .mat-datepicker-toggle .mdc-icon-button:active {
+    background-color: transparent !important;
+}
+
+.mat-mdc-form-field
+{
+    width: 100% !important;
+}
+
+::ng-deep .mat-datepicker-content
+{
+    background-color: #fff !important;
+}
+
+.mat-mdc-form-field-required-marker {
+    color: red;
+    margin-left: 2px;
+}
+
+.labelMainDiv
+{
+    display: flex;
+    width: auto;
+}
+
+.requireDiv
+{
+    color: #ff0000;
+    display: block;
+}
+
+.lblText
+{
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    height: 20px;
+    color: #293948;
+    font-family: "Roboto", sans-serif !important;
+    /* position: absolute;
+    top: -4px; */
+    white-space: nowrap;
+    width: auto;
+}
+
+::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+}
+
+::ng-deep.mdc-text-field--filled.mdc-text-field--disabled {
+    background-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-form-field-focus-overlay {
+    display: none !important;
+}
+
+::ng-deep .mdc-line-ripple,
+::ng-deep .mdc-line-ripple::before,
+::ng-deep .mdc-line-ripple::after {
+    display: none !important;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align {
+    display: none !important;
+}

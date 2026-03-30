@@ -1,0 +1,1187 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    
+    .roboto-thin {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.roboto-light {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.roboto-regular {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.roboto-thin-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.roboto-light-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.roboto-regular-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-medium-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.roboto-bold-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.roboto-black-italic {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.extract-template-content
+{
+    /* height: calc(100% - 62px);
+    padding: 15px;
+    top: 0;
+    font-size: 15px;
+    overflow: hidden;
+    display: flex;
+    position: relative; */
+
+    height: calc(100% - 50px);
+    /* padding: 15px; */
+    width: 100%;
+    top: 0;
+    font-size: 15px;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+}
+.mainContentDiv
+{
+   /* width: calc(50% - 5px);*/
+    overflow: hidden;
+    width: 100%;
+}
+.formContentDiv{
+    background-color: transparent;
+    height: calc(100% - 74px);
+    overflow: hidden auto;
+    padding: 12px;
+    width: calc(100% - 24px);
+    padding: 0px 12px 12px 12px;
+}
+.bb-feed-expandGroupBox
+{
+    background-color: transparent; 
+}
+
+.expandGroupBoxChild{
+    display: block;
+    background-color: #fff;
+    border-radius: 12px;
+    /* margin: 0px 0px -5px 0px; */
+    padding: 16px 10px;
+}
+.popupcloseForTax
+{
+    padding-left: 5px;
+    padding-top: 2px;
+    border: 2px solid white;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 3px #000;
+    cursor: pointer;
+    z-index: 3;
+
+    line-height: 14px;
+
+    font-size: 15px !important;
+    color: #1e9454 !important;
+    position: absolute !important;
+    left: -12px !important;
+    text-align: center !important;
+    top: -12px !important;
+    width: 30px !important;
+    height: 30px !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    margin-top: 24px !important;
+    margin-left: 28px !important;
+    /* display: flex !important; */
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+}
+
+
+
+
+.PanelLabel {
+    border-bottom: 1px solid #d9d9d9;
+    width: auto;
+    height: auto;
+    padding: 5px 2px 6px 2px;
+    margin: 0;
+    table-layout: fixed;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.hasCommand {
+    background-color: white;
+    vertical-align: middle;
+    cursor: pointer;
+    width: auto;
+}
+.subFormDetailFeed {
+    width: calc(100% - 16px) !important;
+}
+
+.feedImgPnl {
+    padding-left: 0;
+    margin-top: 0;
+}
+.feedImgIconPnl-select {
+    border: 2px solid #7bc6ff !important;
+}
+.feedImgPnl {
+    padding-left: 0;
+    margin-top: 0;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+}
+.feedImgCss {
+    margin-right: 5px;
+}
+.flowPanelAlign {
+    float: left;
+}
+.animatePanel {
+    -webkit-animation: paneltransform 0.6s linear forwards;
+    animation: paneltransform 0.6s linear forwards;
+}
+.displayNone
+{
+    display: none;
+}
+.displayBlock
+{
+    display: block;
+}
+.checkedImage
+{
+    height: 12px;
+    width: 12px;
+    overflow: hidden;
+    vertical-align: top;
+    top: 18px!important;
+    position: absolute;
+    margin-top: -10px;
+    z-index: 2;
+    border: 2px solid #fff;
+    border-radius: 12px;
+}
+.checkedIcon
+{
+	height: 14px;
+    width: 14px;
+    overflow: hidden;
+    vertical-align: top;
+    transform: translate(-25%, -50%);
+    position: absolute;
+    z-index: 2;
+    border: 2px solid #fff;
+    border-radius: 12px;
+}
+.taxDeatilMainDiv
+{
+    overflow: auto;
+    width: 100%;
+}
+.taxdetailsDoneBtn {
+    padding: 10px 5px 10px 10p
+}
+.recalculateChBox
+{
+    display: flex;
+    align-items: center;
+}
+.taxDetailHeading
+{
+    height: 48px;
+    color: #fff !important;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-rendering: optimizeLegibility;
+    text-align: center;
+    font-size: initial;
+    background: transparent !important;
+    width: 100%;
+    padding-bottom: 10px;
+}
+.gwtPopUpTxtLabel
+{
+    /* position: absolute;
+    right: 0;
+    bottom: 6px;
+    cursor: pointer;
+    background-size: 60%; */
+    position: relative;
+    right: 0;
+    bottom: 22px;
+    cursor: pointer;
+    background-size: 60%;
+}
+
+::ng-deep.mat-form-field.mat-focused .mat-form-field-ripple{
+    height: 1px !important;
+    background-color: #ff9000 !important;
+    /* transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1),opacity 100ms cubic-bezier(0.25, 0.8, 0.25, 1),background-color 300ms cubic-bezier(0.25, 0.8, 0.25, 1) !important; */
+}
+
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+    display: none;
+}
+
+::ng-deep.mat-button-wrapper{
+    color: #8d8d8d;
+}
+/* ::ng-deep.mat-form-field-ripple {
+    background-color: #ff9000 !important;
+} */
+::ng-deep.mat-form-field-underline {
+    background-color: #dbdbdb !important;
+}
+/* ::ng-deep.mat-form-field-underline::before {
+    background-color: #dbdbdb !important;
+} */
+::ng-deep.mat-form-field{
+    /* width: 97% !important; */
+}
+::ng-deep.mat-form-field-infix{
+    padding: 5px 0px !important;
+}
+::ng-deep.mat-form-field-label{
+    color: #293948 !important;
+    transition: transform .4s cubic-bezier(.25,.8,.25,1),color .4s cubic-bezier(.25,.8,.25,1),width .4s cubic-bezier(.25,.8,.25,1) !important;
+}
+/* ::ng-deep.mat-form-field._mat-animation-noopable .mat-form-field-label{
+    font-size: 16px;
+}
+::ng-deep.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    font-size: 19px !important;
+} */
+::ng-deep.mat-input-element{
+    caret-color: auto;
+}
+
+.taxBtn
+{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    color: #333;
+    height: 22px;
+    font-size: 12px;
+    background-color: #e7e7e7 !important;
+    background: #e7e7e7;
+    cursor: pointer;
+    width: auto !important;
+    margin-right: 5px;
+    border: 1px solid #e7e7e7 !important;
+}
+
+.multiline-tooltip
+{
+    white-space: pre-line;
+}
+
+::ng-deep.multiline-tooltip
+{
+    white-space: pre-line;
+}
+
+::ng-deep.mat-progress-spinner.mat-progress-spinner-indeterminate-animation[mode=indeterminate] circle {
+    transition-property: stroke !important;
+    animation-duration: 4000ms !important;
+    animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1) !important;
+    animation-iteration-count: infinite !important;
+}
+
+.tooltipImage {
+    /* background-image: url(../images/collapse.png); */
+    background-image: url(/ibase/E12BROWSER/angplugin/assets/images/tooltip.svg);
+    /* background-image: url(../images/sync.png); */
+    background-repeat: no-repeat;
+    background-size: 14px;
+    background-position-y: 8px;
+    width: 20px;
+    height: 30px;
+}
+
+.tooltipWrapper:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltipWrapper .tooltiptext {
+    visibility: hidden;
+    background-color: #fff!important;
+    color: #000!important;
+    border-radius: 6px!important;
+    padding: 6px!important;
+    box-shadow: 0 4px 15px -3px #0000004d, 0 0 0 1px #0000004d;
+    font-size: 12px!important;
+    height: auto!important;
+    width: 150px !important;
+    position: absolute;
+    z-index: 1!important;
+    margin-top: 20px;
+    margin-left: -20px;
+}
+
+.tooltiptext::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    left: 50%;
+    margin-left: -64px;
+    margin-top: -20px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.tooltipData
+{
+    padding-bottom: 6px;
+    white-space: initial;
+}
+.bb-feed-bb-feed-collapseGroupBox{
+    background-color: #fff;
+}
+.collapseGroupBoxChild{
+    display: none;
+}
+.item-code-pophelp-panel 
+{
+	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0
+		rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+	background: white;
+	position: inherit;
+    width: 350px;
+}
+.extDatabaseSelectTab {
+    height: 28px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 0px 1px #ff737361;
+    min-width: 60px;
+    border-radius: 20px;
+    background: #fee;
+    width: 15px;
+    cursor: pointer;
+}
+.extDatabasebtnShadow {
+    box-shadow: 0px;
+}
+.extDatabaseslectTableLabel {
+    padding: 0;
+    color: #e44a4a;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    margin: 0 0 0 6px;
+}
+.extDatabasefooterBtn {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 12px);
+    align-items: center;
+    height: 48px;
+}
+.mainInputField {
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
+    -webkit-column-break-inside: avoid;
+    grid-gap: 10px;
+    /* height: 50px;
+    margin: 0 0 10px;
+    height: 60px; */
+}
+
+.optionIcon	
+{	
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #293948;
+    font-size: 18px;
+    background-color: #0000000f;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    opacity: 0.8;
+    flex-direction: column !important;
+    /* box-shadow: 0 0 0 1px #0003; */
+}
+
+.disabledOptionIcon	
+{	
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2939488c;
+    font-size: 18px;
+    background-color: #0000000f;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    opacity: 0.5;
+    flex-direction: column !important;
+    /* box-shadow: 0 0 0 1px #0003; */
+    /* opacity: 0.5; */
+}
+
+.feedViewFilterIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--icon-bg);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 8px;
+    margin-top: 17px;
+
+    /* min-height: 40px !important;
+    min-width: 40px !important;
+    margin: 0 !important;
+    padding: 24px 0 0 0; */
+} 
+
+.feedViewDisabledFilterIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--icon-bg);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 8px;
+    margin-top: 24px;
+
+    /* min-height: 40px !important;
+    min-width: 40px !important;
+    margin: 0 !important;
+    padding: 6px 0 0 0; */
+} 
+
+.selectFilterIcon
+{
+    /* border-radius: 8px; */
+    min-height: 40px !important;
+    /* background: #ffffff; */
+    min-width: 40px !important;
+    margin: 0 !important;
+    padding: 22px 0 0 0;
+} 
+
+.selectDisabledFilterIcon
+{
+    /* min-height: 40px !important;
+    min-width: 40px !important;
+    margin: 0 !important;
+    padding: 32px 0 0 0; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--icon-bg);
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 8px;
+    margin-top: 26px;
+} 
+
+.numberFilterIcon
+{
+    min-height: 40px !important;
+    min-width: 40px !important;
+    margin: 0 !important;
+    padding: 6px 0 0 0;
+}
+
+.basicField
+{
+    width: 100%;
+}
+.groupBxHeaderLbl
+{
+    text-align: left;
+    font-weight: 500 !important;
+    color: #5d6e84 !important;
+    font-size: 18px !important;
+}
+
+.headerMainText
+{
+    width: calc(100% - 154px);
+    text-align: center;
+    color: #334669 !important;
+    font-size: 17px;
+    display: flex;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+.headerText
+{
+    margin-left: 45.2%;
+    color: #334669!important;  
+    margin-top: -18px; 
+    font-size: 13px;
+    opacity: .8;
+}
+.textmainDiv
+{
+    color: #fff; 
+    font-weight: normal;
+}
+.e12GroupBox {
+    width: 100%;
+    padding: 5px 0;
+    margin-left: 0;
+    margin-right: 2px;
+    overflow: visible !important;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid-column;
+    background-color: RGBA(255, 255, 255, 0.2) !important;
+    border-radius: 12px;
+    border: 1px solid white;
+    /* margin-bottom: 5px !important; */
+    margin-bottom: 8px !important;
+    display: block;
+}
+.groupBoxHeaderPnl
+{
+    background-color:transparent !important;
+    padding: 10px 0px 7px 18px;
+    display: inline-flex;
+    width: calc(100% - 33px);
+}
+.saveBtn{
+    height: 32px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 60px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 3px 3px 6px 3px #0003, -3px -3px 6px 2px #fff;
+    background: linear-gradient(90deg, #1e9454, #1e886d);
+    margin: 9px 0px 0px 1px;
+}
+.doneButtonIconEditor {
+    font-size: 14px !important;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    margin-right: 2px;
+    width: 55px;
+}
+.doneCursor{
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    cursor: pointer;
+    margin: 0 0 0 6px;
+    color: #fff;
+}
+/* Changed by vikas on 31-07-24 for reducing size of closeAll popup */
+::ng-deep.bubbleBox-no-grad
+{
+    background-color: RGBA(255, 255, 255, .4) !important;
+    backdrop-filter: blur(12px) !important;
+    overflow: hidden !important;
+    border:none !important;
+    border-radius: 9px;
+}
+.wallPanelBgColor {
+    background-color: transparent !important;
+}
+.tranIdLabel
+{
+    font-weight: 500 !important;
+    color: #334669 !important;
+    opacity: .8 !important;
+}
+
+.tranKeyInfoImage
+{
+    color: #334669 !important;
+}
+.iconContainer
+{
+    display: flex;
+    height: 40px;
+    width: 40px;
+    position: relative;
+    border-radius: 8px;
+    /* margin-right: 5px; */
+    /* margin: 51px 0px 0px 35px;     */
+    background: rgb(51 70 105 / 40%);
+    align-items: center;
+    justify-content: center;
+}
+.formSubTitle
+{
+    display: flex; 
+	align-items: center; 
+	font-size: 12px; 
+	font-weight: 500;
+    color: #334669;
+    opacity: 0.8;
+}
+.formTitleWrap
+{
+    margin: 0 0 0 8px;
+}
+::ng-deep .numDetailAlignRight input.inputClass {
+	text-align: right !important;
+}
+::ng-deep .pophelpNumDetaillignRight input.inputClass {
+	text-align: right !important;
+}
+
+::ng-deep.mat-select {
+    display: inline-block !important;
+    width: 100% !important;
+    outline: none !important;
+    /* box-shadow: 0 0 0 1px #0003 !important; */
+    border-radius: 4px !important;
+    background-color: #00000005 !important;
+}
+
+::ng-deep.mat-select-trigger
+{
+    border-radius: 4px;
+    display: flex;
+    margin: 4px 0 0 0;
+    align-items: center;
+    /* display: inline-table !important; */
+    cursor: pointer !important;
+    min-height: 40px;
+    position: relative !important;
+    box-sizing: border-box !important;
+    /* padding-top: 3px !important; */
+    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, .2);
+    display: flex !important;
+}
+
+::ng-deep.mat-select-value
+{
+    padding: 0 7px !important;
+    display: flex !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+::ng-deep.mat-select-arrow-wrapper 
+{
+    display: table-cell !important;
+    vertical-align: middle !important;
+    width: 34px !important;
+}
+
+::ng-deep.mat-select-panel
+{
+    background: #fff !important;
+}
+
+.matSelectDiv
+{
+    display: block;
+    padding: 4px 0 0 !important;
+    width: 100% !important;
+    /* margin-bottom: 12px; */
+}
+
+.feedSelectDiv {
+    display: block;
+    padding: 4px 0 0;
+    width: 100%;
+}
+
+.feedSelectField {
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 0 7px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #293956;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.setFormLayout 
+{
+  /* width: calc(100% - 50px) !important; */
+  width: 100% !important;
+}
+
+.setNumFormLayout
+{
+  /* width: calc(100% - 50px) !important; */
+  width: 100% !important;
+  height: 40px;
+  /* padding: 24px 0 0; */
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, .2);
+  border-radius: 4px;
+  margin-bottom: 24px !important;
+  margin-top: 6px;
+}
+
+::ng-deep .setNumFormLayout input.inputClass {
+	text-align: right !important;
+}
+
+:host ::ng-deep.mat-select-disabled .mat-select-trigger
+{
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+}
+
+.noPlaceholderIsDisableDiv
+{
+    margin-left: 50px;
+    margin-top: -22px;
+    height: 30px;
+    padding: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+}
+
+.noPlaceholderTextArIsDisableDiv
+{
+    margin-left: 50px;
+    margin-top: -12px;
+    height: auto !important;
+    padding: 0 0 12px 0;
+    display: block;
+}
+
+.mat-datepicker-popup .mat-calendar-next-button, .mat-datepicker-popup .mat-calendar-previous-button, .mat-datepicker-toggle
+{
+    color: rgba(0, 0, 0, .54) !important;
+    position: absolute !important;
+    /* top: -16px !important; */
+    right: 6px !important;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 2.3em !important;
+    margin-left: -9px;
+    margin-bottom: 11px;
+}
+
+:host ::ng-deep * {
+	font-family: "Roboto", sans-serif !important;
+}
+
+.noPlaceholderIsDisableDiv bb-textbox ::ng-deep .mat-form-field-infix {
+    padding: 0px !important;
+}
+
+.freeFormContentThreeColumn {
+    column-gap: 20px !important;
+    padding: 10px;
+    grid-column-gap: 20px !important;
+    column-rule: 1px dashed gray;
+    -moz-column-count: 3;
+    column-count: 3 !important;
+    height: auto !important;
+}
+
+.noPlaceholderIsDisableDiv bb-textarea ::ng-deep .mat-form-field-infix
+{
+    padding: 0px !important;
+}
+
+.focusOptionIcon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    background-color: #293948;
+    font-weight: 500;
+    height: 40px !important;
+    width: 40px !important;
+    line-height: 42px !important;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px #0003;
+    flex-direction: column;
+}
+
+.month 
+{
+    color: #293948 !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    font-weight: 700 !important;
+    align-items: center;
+    display: flex;
+    height: 11px;
+ }
+ 
+.day 
+{
+    color: #BC2222;
+    font-size: 16px !important;
+    align-items: center;
+    font-weight: 700 !important;
+    display: flex;
+    height: 18px;
+    /* line-height: 28px; */
+ }
+
+ .focusOptionIcon .month {
+    color: #fff !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    font-weight: 700 !important;
+    align-items: center;
+    display: flex;
+    height: 11px;
+ }
+ 
+.focusOptionIcon .day {
+    color: #F05959;
+    font-size: 16px !important;
+    align-items: center;
+    font-weight: 700 !important;
+    display: flex;
+    height: 18px;
+    /* line-height: 28px; */
+ }
+
+ :host ::ng-deep .mat-select:focus 
+ {
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0 0 0 1px #ff9000 !important; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important; 
+ }
+
+ .hideCellData{
+    opacity: .5;
+    pointer-events: none;
+    cursor: not-allowed;
+    display: none !important;
+}
+
+.mat-mdc-form-field {
+    /* margin-bottom: 8px; */
+    width: 100%;
+}
+
+/* For filled appearance (like legacy flat) */
+.mat-mdc-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+    background-color: white;
+    border-radius: 4px;
+    padding: 0 8px;
+    box-shadow: none;
+}
+
+/* Reduce padding inside input */
+
+/* Fix the label positioning */
+.mat-mdc-floating-label {
+    font-size: 13px;
+    top: 12px;
+    left: 0;
+}
+
+/* Red asterisk for required fields */
+.mat-mdc-form-field-required-marker {
+    color: red;
+    margin-left: 2px;
+}
+
+.mat-mdc-input-element {
+    color: #293956 !important;
+    padding: 0 6px !important;
+    font-family: "Roboto", sans-serif !important;
+    box-shadow: 0 0 0 1px #0003 !important;
+    height: 32px !important;
+    font-size: 14px !important;
+    background-color: rgb(0 0 0 / 2%) !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    width: calc(100% - 12px) !important;
+    display: flex !important;
+
+}
+
+::ng-deep .mdc-line-ripple {
+    display: none !important;
+}
+
+::ng-deep .mat-mdc-form-field {
+    --mdc-outlined-text-field-container-height: 40px;
+    /* Adjust to your input height */
+    /* margin-bottom: 0px !important; */
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+    align-items: center !important;
+    /* Vertically center input with underline */
+}
+
+::ng-deep .mat-mdc-form-field-outline {
+    height: 100% !important;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align {
+    /* margin-top: -4px !important;  */
+    /* Adjust this if underline is still off */
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    /* margin-top: 2px; */
+    /* padding-left: 0px !important; */
+    /* padding-right: 0px !important; */
+    margin-top: .54167em !important;
+    top: calc(100% - 1.66667em) !important;
+}
+
+/* Prevent hint from shifting underline height */
+.mat-mdc-form-field-hint-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Customize validation message appearance */
+.mat-mdc-form-field-hint {
+    color: red !important;
+    font-size: 12px;
+    line-height: 14px;
+    margin-left: 0px;
+    margin-top: 2px;
+}
+
+.mat-mdc-form-field-hint-spacer {
+    flex: 0 0 auto;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+    content: "";
+    display: none !important;
+    height: 16px;
+}
+
+::ng-deep .mdc-line-ripple::before,
+.mdc-line-ripple::after {
+    display: none !important;
+}
+
+::ng-deep .mdc-text-field--filled.mdc-text-field--disabled .mdc-text-field__input {
+    color: #293956 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    padding: 0 0 4px !important;
+    box-shadow: 0 1px #0003 !important;
+    height: 20px !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+    cursor: not-allowed !important;
+    background-color: transparent !important;
+}
+
+::ng-deep .mat-mdc-select {
+    box-shadow: 0px 0px transparent !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    padding-top: 18px !important;
+    display: inline-block !important;
+    width: 100% !important;
+    outline: none !important;
+}
+
+.mat-mdc-select-trigger {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    box-shadow: 0 0 0 1px #0003;
+    /* box-sizing: border-box !important; */
+    min-height: 32px;
+    margin: 4px 0 0;
+    border-radius: 4px;
+    background-color: #00000005 !important;
+}
+
+.mat-mdc-select-value {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #293956 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    /* height: 40px !important; */
+    margin-left: 6px !important;
+}
+
+::ng-deep .mat-mdc-select-panel {
+    background: #fff !important;
+}
+
+/* ::ng-deep .mat-mdc-select {
+    box-shadow: 0 1px #0003 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    padding: 0;
+    display: inline-block;
+    width: 100%;
+    outline: none;
+} */
+
+.labelMainDiv {
+    display: flex;
+    width: auto;
+}
+
+.matSelectLblText {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    height: 20px;
+    color: #293948;
+    font-family: "Roboto", sans-serif !important;
+    white-space: nowrap;
+    width: auto;
+}
+
+::ng-deep .mat-mdc-select-arrow svg {
+    fill: currentColor !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: -9% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.requiredDiv
+{
+    color: #ff0000;
+    display: block;
+}
+
+::ng-deep .mdc-text-field {
+    display: inline-flex;
+    align-items: baseline;
+    padding: 0 2px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix,
+::ng-deep .mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding-bottom: 0 !important;
+}
+
+.sl-formTitle
+{
+	display: flex;
+	align-items: center;
+	font-size: 16px;
+	/* color: rgb(51 70 105 / 100%);
+	font-weight: bold;
+    margin: 0px 0px 0px 5px; */
+    color: #334669;
+    font-weight: 700;
+}
+
+.date-picker bb-day-picker ::ng-deep .mat-mdc-form-field {
+    vertical-align: top !important;
+}
+
+.date-picker bb-day-picker ::ng-deep .mat-mdc-form-field-infix {
+    min-height: auto !important;
+}
+
+.date-picker bb-day-picker ::ng-deep .mat-mdc-text-field-wrapper {
+    overflow: visible !important;
+}
+
+.date-picker bb-day-picker ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+.date-picker bb-day-picker ::ng-deep .mat-mdc-form-field-bottom-align {
+    display: none !important;
+}
+

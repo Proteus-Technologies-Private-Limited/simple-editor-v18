@@ -1,0 +1,19 @@
+<ng-sidebar-container style="height: 100vh;" [animate]="false" >
+    <!-- A sidebar -->
+    <ng-sidebar 
+        [(opened)]="_opened"
+        [mode]="'push'"
+        [position]="'right'"
+        [dock]="true"
+        [dockedSize]="'40px'"
+        [animate]="false">
+
+        <ng-content select="bb-sidebar-contents"></ng-content>
+    </ng-sidebar>
+
+    <!-- A sidebar page -->
+    <div ng-sidebar-content [ngClass]=" {'bb-sidebar-opened' : _opened, 'bb-sidebar-closed' : !_opened } ">
+        <ng-content select="bb-sidebar-page-contents"></ng-content>
+    </div>
+</ng-sidebar-container>
+

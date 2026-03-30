@@ -1,0 +1,47 @@
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX3'"> 
+		<mat-form-field>
+			<input matInput #email="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus"/>
+		    <mat-hint>
+		    	<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+			</mat-hint>
+		</mat-form-field>	
+	</span>
+	
+	<span *ngSwitchCase="'UX2'">
+		<span  [ngClass]="{'labelPostion':bbLabelPostion === 'top'}">{{bbLabel}}</span>
+		<input  #email="ngModel" [(ngModel)]="value" [type]="bbType" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+	
+	<span *ngSwitchCase="'UX1'">
+		<input  #email="ngModel" [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+
+	</span>
+</span>
+
+
+
+
+
+
+<!-- <span [ngSwitch]="uxDesign"> -->
+<!-- 	<span *ngSwitchCase="'UX3'">  -->
+<!-- 		<mat-form-field> -->
+<!-- 			<input email-validator [validation]="bbValidation" [invalidMessage]="invalidMessage" #email="ngModel" matInput [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [expression]="bbExpression" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus"/> -->
+<!-- 		</mat-form-field>	 -->
+<!-- 		<validation [control]="email" [requiredMessage]="requiredMessage"></validation> -->
+<!-- 	</span> -->
+	
+<!-- 	<span *ngSwitchCase="'UX2'"> -->
+<!-- 		<div>{{bbPlaceholder}}</div> -->
+<!-- 		<input [type]="bbType" [value]="bbValue"> -->
+<!-- 	</span> -->
+	
+	
+<!-- 	<span *ngSwitchCase="'UX1'"> -->
+<!-- 		<input email-validator [validation]="bbValidation" [invalidMessage]="invalidMessage" #email="ngModel" matInput [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxlength]="bbMaxlength" [minlength]="bbMinlength" [expression]="bbExpression" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus"/> -->
+<!-- 		<validation [control]="email" [requiredMessage]="requiredMessage"></validation> -->
+<!-- 	</span> -->
+<!-- </span> -->

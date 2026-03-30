@@ -1,0 +1,30 @@
+
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX3'"> 
+		<div>
+			<div class="labelMainDiv">
+				<div *ngIf="required" class="requiredDiv">*</div>
+				<label class="lblText">{{ placeholder }}</label>
+			</div>
+			<input matInput #number="ngModel" class="inputClass"
+			 [(ngModel)]="value" [type]="bbType" [placeholder]="bbPlaceholder" 
+			 [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" 
+			 [maxLength]="bbMaxlength" [minLength]="bbMinlength" [readOnly]="bbReadOnly" 
+			 [autofocus]="bbAutofocus" [style.textAlign]="align"/>
+			<mat-hint>
+				<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+			</mat-hint>
+		</div>	
+	</span>
+	
+	<span *ngSwitchCase="'UX2'">
+		<span  [ngClass]="{'labelPostion':bbLabelPostion === 'top'}">{{bbLabel}}</span>
+		<input  #number="ngModel" [(ngModel)]="value" [type]="bbType" [required]="bbRequired" [disabled]="bbDisabled" [value]="bbValue" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" [style.textAlign]="align"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+	
+	<span *ngSwitchCase="'UX1'">
+	    <input  #number="ngModel" [(ngModel)]="value" [type]="bbType" [required]="bbRequired" [placeholder]="bbPlaceholder" [disabled]="bbDisabled" [value]="bbValue" [maxLength]="bbMaxlength" [minLength]="bbMinlength" [readOnly]="bbReadOnly" [autofocus]="bbAutofocus" [style.textAlign]="align"/>
+		<validation [control]="model" [errors]="errors" [errorMessages]="customErrorMessages"></validation>
+	</span>
+</span>

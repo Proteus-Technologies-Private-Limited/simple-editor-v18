@@ -1,0 +1,75 @@
+<ng-container *ngTemplateOutlet="databaseTablePanel"></ng-container>
+<ng-template #databaseTablePanel>
+	<div *ngIf="editFlag == 'A'" id="tabPpoupID" class="filter-container-browser">
+       <div class="filter-header-container-browser">
+            <div class="closeBtn btnShadow">
+                <span style="color:var(--primaryDark);"class="material-icons pophelp-srch-icon serachColor" (click)="closeTabPopup($event);">
+                     close
+                </span>
+            </div>
+            <div>
+                <div class = "headTitle">{{tabWithListClassData['popupName']}}</div>
+                <div class = "subTitle">{{tabWithListClassData['popupDescription']}}</div>
+            </div>
+	 	</div>
+		<div class="filter-body-container">
+        <div class="allTabs">
+            <div *ngFor = "let tabData of tabWithListClassData['tabDetails']; let idx = index" class ="singleTabDiv"> 
+            <input id="hiddenRadio_{{idx}}" type="radio" style="display:none" (click)="setCheckValue( tabData )" name="hiddenRadio_{{idx}}" />
+                <label for="hiddenRadio_{{idx}}">
+                    <mat-icon [ngStyle]="{'display': tabData.checked ?'block':'none'}" class="checkImage">check_circle</mat-icon>
+                        <div class="tabImgDiv"> <img src="{{tabData['imgPath']}}" style="width:36px;"></div>
+                        <div class="tabName">{{tabData['name']}}</div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Added by Vikas for FEED CODE FOR EXTERNAL DATA SOURCE [Start] -->
+        <div *ngIf="showExternalDatabase">
+            <div  class="ang-pophelp-header-cont">
+                <i class="material-icons pophelp-srch-icon serachColor">search</i>
+                <input #search class="search-val-inp" type="text" placeholder="Search Data Source"  [autofocus]="true" [(ngModel)]="likeValue" (keyup.enter)="getFilterDatabaseList()">
+            </div>
+            <div class="tableListDiv">
+                <div *ngFor="let extdatasource of extDbFeed;let idx = index;" class="tableFeedDiv">
+                    <input id="hiddenCheckBox_{{idx}}" type="checkbox"  style="display:none" [(ngModel)]="extdatasource.checked" name="hiddenCheckBox_{{idx}}" 
+                    (ngModelChange)="onSelectDatabaseFeed(extdatasource,idx)" />
+                        <label for="hiddenCheckBox_{{idx}}" class="forselectDotDatabaseList">
+                            <span id="DataMatIcon_{{idx}}" [ngStyle]="{'display': extdatasource.checked ?'block':'none'}" class="checkCircle"></span>
+                                <div class="imgTag">
+                                    <img class="feedImg" [ngClass]="{ 'selectedFeedDatabaseList' : extdatasource.checked }" src="{{extdatasource['imgPath']}}"> 
+                                </div>
+                        </label>
+                        <div class="feedLeft">
+                            <div class="feeLeftVal">
+                              <span class="feedLeftTop"><b>{{ extdatasource['CONN_NAME']+" "  }}    </b></span>
+                            </div>
+                        </div>
+                  </div> 
+               </div>
+        </div>
+
+        <!--  Added by Vikas FEED CODE FOR EXTERNAL DATABASE CONNECTION [End] -->
+        <button  mat-fab class="plusBtnDiv" >
+            <mat-icon class="icon matIcon" ><i class="icon-display material-icons matIconUI" >add</i></mat-icon>
+        </button>
+
+        <!-- FEED CODE FOR SCHEMA DESIGNER  -->
+		</div>
+        <div class="footerBtn">
+        <div style="width:50%;justify-content:flex-start;display:flex;">
+            <div class="SelectTab btnShadow"  (click)="onSelectTable();">
+                <img  src="/ibase/Insight/angplugin/assets/images/Done.svg" style="height: 12px;">
+                <div class="slectTableLabel">Select Table</div>
+            </div>
+        </div>  
+            <div style="width:50%;justify-content:flex-end;display:flex;">
+                <div class="doneBtn btnShadow"  (click)="onDone($event);">
+                    <img  src="/ibase/Insight/angplugin/assets/images/Done.svg" style="height: 12px;">
+                    <div class="doneCursor">Done</div>
+                </div>
+            </div>
+        </div>
+	</div>
+</ng-template>
+

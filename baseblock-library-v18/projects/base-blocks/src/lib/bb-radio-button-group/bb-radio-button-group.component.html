@@ -1,0 +1,22 @@
+
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'">
+		<span *ngIf="bbLabelPosition =='before'">
+           <ng-container *ngTemplateOutlet="content"></ng-container>	
+		   <input (change)="changeInput($event)" [type]="bbType"[id]="bbId" [name]="name" [required]="bbRequired" [disabled]="bbDisabled" [checked]="bbChecked" [value]="bbValue">
+        </span>
+		<span *ngIf="bbLabelPosition =='after'" >
+		   <input (change)="changeInput($event)" [type]="bbType"[id]="bbId" [name]="name" [required]="bbRequired" [disabled]="bbDisabled" [checked]="bbChecked" [value]="bbValue">
+           <ng-container *ngTemplateOutlet="content"></ng-container>
+		</span>          
+           
+	</span>
+	
+	<span *ngSwitchCase="'UX3'">
+		<mat-radio-button (change)="changeInput($event)" [id]="bbId" [name]="name" [required]="bbRequired" [disabled]="bbDisabled" [checked]="bbChecked" [value]="bbValue" [labelPosition]="bbLabelPosition">
+			<ng-container *ngTemplateOutlet="content"></ng-container>
+		</mat-radio-button>
+	</span>
+	
+	<ng-template #content><ng-content></ng-content></ng-template>
+</span>

@@ -1,0 +1,72 @@
+ <div class="mapContainer">
+    <div class="form-group">
+       <input placeholder="Search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl"> 
+<!--    		<p class="pickCurrLoc" (click)="setCurrentPosition()" title="Pick Current Location"></p> -->
+		<span class="pickCurrLoc vision-ui-gps_location_lock" (click)="setCurrentPosition()" 
+		 title="Pick Current Location">
+		</span>
+    </div>
+    <div  (touchmove)="agmTouchMove()"  (touchend) = "agmTouchEnd()" >
+		    <div  #agmEle  [ngClass]="(smallScreenDevice == true && largeView == true) ? 'agm-map-none ' : 'agm-map-fix' "   *ngIf="!mapMakers && bbMapMarkers.length==0">
+			    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [streetViewControl]="false" [mapTypeControl]="false" [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions" [draggable]="true" [panControl]="true" (mapClick)="placeMarker($event)">
+			      	<agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true" (dragEnd)="markerDragEnd($event)" (markerClick)="onMouseClick(infoWindow)" (mouseOver)="onMouseOver(infoWindow)" (mouseOut)="onMouseOut(infoWindow)">
+			      	 <agm-info-window [disableAutoPan]="true" #infoWindow (infoWindowClose)="infoWindowClose(infoWindow)">
+			            {{makerInfoWindow}}
+			         </agm-info-window>
+			      	</agm-marker> 
+			   		<agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="20" [fillOpacity]="0.50" [fillColor]="'#00A19A'"></agm-circle>
+			    </agm-map> 
+			    <div class="AddressDisplay">
+		       		{{makerInfoWindow}} 
+		    	</div>
+		    </div>
+		  
+		  	<div #agmEle  [ngClass]="(smallScreenDevice == true && largeView == true) ? 'agm-map-none ' : 'agm-map-fix' "  class="makerMapContainer ownMaker" *ngIf="mapMakers && bbMapMarkers.length==0">
+			  	<agm-map  [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [streetViewControl]="false" [mapTypeControl]="false" [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions" [draggable]="true" [panControl]="true" >
+			      	<agm-marker *ngFor="let m of mapMakers let i = index"
+				          (markerClick)="clickedMarker(m, i)"
+				          [latitude]="m.lat"
+				          [longitude]="m.lng"
+				          [label]="m.label"
+				          [markerDraggable]="m.draggable"
+				          (dragEnd)="multiMarkerDragEnd(m, $event)">
+				      	 <agm-info-window [disableAutoPan]="true">
+				           {{m.descr}}
+				         </agm-info-window>
+			      	</agm-marker>   
+			      	<agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="40" [fillOpacity]="0.50" [fillColor]="'#00A19A'" [editable]="true"></agm-circle>      
+			    </agm-map>
+		    </div>
+		    
+		    <div  #agmEle [ngClass]="(smallScreenDevice == true && largeView == true) ? 'agm-map-none ' : 'agm-map-fix' " class="makerMapContainer customMaker" *ngIf="bbMapMarkers && bbMapMarkers.length != 0">
+			  	<agm-map  [latitude]="latitude" [longitude]="longitude" [maxZoom]='22' [zoom]="zoom" [fitBounds]="latlngBounds" [streetViewControl]="false" [mapTypeControl]="false" [fullscreenControl]="true" [fullscreenControlOptions]="screenOptions" [zoomControlOptions]="zoomControlOptions" [draggable]="true" [panControl]="true" >
+			      	<agm-marker-cluster maxZoom='19' imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+			      	<agm-marker *ngFor="let m of bbMapMarkers let i = index"
+				          (markerClick)="infoWindowToggle(infoWindow);clickedMarker(m, i)"
+				          [latitude]="m.lat"
+				          [longitude]="m.lng"
+				          [label]="m.label"
+				          [markerDraggable]="m.draggable"
+				          (dragEnd)= "multiMarkerDragEnd(m, $event)">
+				       	  <agm-info-window [disableAutoPan]="true" [isOpen]='m.isInfoWindowOpen' #infoWindow (infoWindowClose)="multiMarkerInfoWindClose(m)">
+				       	  		<div class = "agmInfoWindowClass">
+					       	  		<div class = "agmInfoAddressClass">
+					       	  			<span class="locationLbl">Location</span>
+					       	  			<br>
+					       	  			{{m.descr}}
+					       	  			<!-- <bb-textbox placeholder="Location" [(ngModel)]="m.descr" [ngModelOptions]="{standalone: true}" ></bb-textbox> -->
+					       	  			<!-- <md-input-container class = "mat-form-field">
+					       					<input mdInput [placeholder]="Location" [(ngModel)]="m.descr" disabled>
+					  					</md-input-container> -->
+					       	  		</div>
+					       	  		<ng-container *ngTemplateOutlet="m.bbMapInfoWindow1"></ng-container>
+								</div>
+				          </agm-info-window>
+			      	</agm-marker>   
+			      	</agm-marker-cluster>
+			      	<!-- <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="40" [fillOpacity]="0.50" [fillColor]="'#00A19A'" [editable]="true"></agm-circle> -->      
+			    </agm-map>
+		    </div>
+    </div>
+    
+  </div>

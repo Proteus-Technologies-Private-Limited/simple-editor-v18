@@ -1,0 +1,419 @@
+.filter-container-browser
+{
+	justify-content: center;
+    align-items: center;
+    width: 320px;
+    position: relative;
+    border-radius: 10px;
+    background-color: hsla(0,0%,100%,.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 25px 0 rgb(0 0 0 / 30%), 20px 20px 25px 0 rgb(0 0 0 / 10%), inset 0 0 34px 0 rgb(255 255 255 / 80%), 0 0 0 1px #fff, 0 0 100px 0 rgb(0 0 0 / 15%);
+    top: 0px;
+}
+.filter-header-container-browser
+{
+    position: relative;
+    font-size: 26px;
+    display: flex;
+    padding: 16px;
+    width: calc(100% - 32px);
+    margin: 0px !important;
+} 
+.btnShadow
+{
+    box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+}
+
+.closeBtn
+{
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+    width: 32px;
+    border-radius: 20px;
+    background: #fff;
+}
+.headTitle
+{
+    padding: 0 0 0 14px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+.subTitle
+{
+    font-size: 12px;
+    padding: 0 0 0 14px;
+    color: #424242;
+    letter-spacing: .5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: .8;
+}
+.filter-body-container
+{
+	position: relative;
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    height: 66vh;
+}
+
+
+.doneBtn
+{
+     height: 32px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+    /*width: auto;*/
+    min-width: 60px;
+    border-radius: 20px;
+    background: linear-gradient(90deg,#1e9454,#1e886d);
+    width: 50%;
+    float: right;
+}
+
+.doneCursor
+{
+    padding: 0;
+    margin: 0 0 0 6px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+/* Added by vikas on 09-08-22 for showing only 3 tabs per row [Start]*/
+.allTabs
+{
+    display: flex;
+    margin: auto;
+    padding: 16px 8px 0;
+    width: calc(100% - 16px);
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+/* Added by vikas on 09-08-22 for showing only 3 tabs per row [end]*/
+.singleTabDiv
+{
+    display: block;
+    width: calc(33.33% - 16px);
+    margin: 0 8px;
+    position: relative;
+}
+.tabImgDiv
+{
+    display: flex;
+    width: 100%;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(173 141 252 / 10%);
+    border-radius: 10px;
+}
+.tabName
+{
+    text-align: center;
+    padding: 8px;
+    color: #666;
+    font-size: 12px;
+}
+.footerBtn
+{
+    justify-content: flex-end;
+    display: flex;
+    padding: 16px;
+    width: calc(100% - 32px);
+}
+
+.SelectTab
+{
+    height: 32px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 6px 3px rgb(0 0 0 / 20%), -3px -3px 6px 2px #fff;
+    min-width: 60px;
+    border-radius: 20px;
+    background: #fff;
+    width: auto;
+}
+
+.slectTableLabel
+{
+    padding: 0;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.plusBtnDiv{
+  /*  background-color: var(--primary)!important;*/
+   background-color: #fff;
+    height: 40px!important;
+    width: 40px!important;
+    position: absolute;
+    float: right;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1;
+    box-shadow: 2px 3px 10px 0 rgb(0 0 0 / 30%), 0px 0px 1px 0 rgb(0 0 0 / 20%);
+}
+.matIcon
+{
+    margin-top: -13px; 
+    width: 28px;
+}
+.matIconUI
+{
+    line-height: 0.4; 
+    font-size: 28px; 
+    color: var(--primary)!important;
+}
+
+.checkImage {
+    font-size: 14px!important;
+    color: var(--primary)!important;
+    background: #fff!important;
+    border-radius: 50%!important;
+    line-height: 12px!important;
+    padding: 3px!important;
+    height: 11px!important;
+    width: 12px!important;
+    position: absolute!important;
+    /*top: 20px!important;
+    left: 30px!important;*/
+}
+
+.imgTag
+{
+    display: flex;
+}
+
+.feedLeft
+{
+    display: flex;
+    width: calc(100% - 66px);
+    padding: 8px 0;
+    margin: 0 0px 0 10px;
+    align-items: center;
+    min-height: 40px;
+    box-shadow: inset 0px -1px 0px 0 rgb(0 0 0 / 10%);
+}
+.feeLeftVal
+{
+    display: flex;
+    height: 20px;
+    align-items: center;
+}
+.feedLeftTop
+{
+    display: contents;
+    position: relative;
+    vertical-align: -webkit-baseline-middle;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #666;
+}
+.feedBottom
+{
+    font-size: 12px;
+    color: #666;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    display: none;
+}
+
+.feedLeftBottom
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.feedRight
+{
+    height: 40px;
+    width: 100%;
+    margin-right: 16px;
+    padding-top: 4px;
+}
+
+.feedRightVal
+{
+    height: 20px;
+    text-align: right;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.feedRightTop
+{
+    position: relative;
+    vertical-align: -webkit-baseline-middle;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    color: #666;
+}
+
+.criteriaDiv
+{
+    height: 100%;
+    /* min-height: 450px;
+    width: 363px;
+    min-width: 363px;
+    background: #fff;*/
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ang-pophelp-header-cont
+{
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    width: calc(100% - 32px);
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+pophelp-srch-icon
+{
+    color: #666;
+    vertical-align: middle;
+    font-size: 20px;
+    padding-left: 10px;
+}
+.search-val-inp
+{
+    height: 44px;
+    border: none;
+    background: transparent;
+    padding: 0 10px;
+    display: inline-block;
+
+}
+
+/* Changed by vikas on 09-08-22 for hiding the background color for connection name feed [Start]*/
+.feedImg 
+{
+    border-radius: 8px;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    /* background-color: #98a5b9; */
+}
+/* Changed by vikas on 09-08-22 for hiding the background color for connection name feed [end]*/
+.tableFeedDiv
+{
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 16px;
+    width: calc(100% - 16px);
+}
+/* Changed by vikas on 09-08-22 for  connection name feed selected [Start]*/
+.selectedFeedDatabaseList {
+    box-shadow: 0px 0px 2px 2px var(--primary);
+}
+/* Changed by vikas on 09-08-22 for  connection name feed selected [end]*/
+.tableFeedMainDiv
+{
+    width: 100%;
+    height: calc(100% - 118px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.serachColor
+{
+    color: var(--primaryDark) !important;
+    padding: 8px;
+}
+
+.checkCircle
+{
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    top: calc(50% - 5px);
+    left: -5px;
+    background-color: var(--primaryDark);
+    position: absolute;
+}
+.forhiddenCheckBoxLbl
+{
+     width: calc(33.33% - 16px);
+    margin: 0 8px;
+}
+/* Changed by vikas on 09-08-22 for feed dot styles [Start]*/
+.forselectDotDatabaseList
+{
+    position: relative;
+}
+/* Changed by vikas on 09-08-22 for feed dot styles [End]*/
+.tableListDiv
+{
+    height: 220px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar 
+{
+    width: 6px !important;
+    height:6px !important;
+}
+  
+::-webkit-scrollbar-track 
+{
+    background: #f2f2f2 !important; 
+    border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-thumb 
+{
+    background: #33476b4d !important; 
+    border-radius: 10px !important;
+}
+
+::-webkit-scrollbar-thumb:hover 
+{
+    background: #33466999 !important; 
+}
+
+.html 
+{
+    scroll-behavior: smooth !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline 
+{
+    background-color: rgb(51 70 105 / 20%);
+}

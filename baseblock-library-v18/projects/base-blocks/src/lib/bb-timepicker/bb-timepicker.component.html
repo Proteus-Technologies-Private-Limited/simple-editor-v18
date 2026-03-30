@@ -1,0 +1,86 @@
+<div class="time-picker-container">
+<div class="text_field_block" *ngIf='!isCustomTimePicker'>
+	<input class="inputTypeTime text_field" [(ngModel)]="value" (focus)="focusElement()" (blur)="blueElement()" type="time" step="1" required >
+	<label class = "timePickerPlaceHolder text_label" [ngClass]="{'focusedPlaceHolder' : focused}" >{{placeHolder}}</label>
+</div>
+
+<div *ngIf='isCustomTimePicker'>
+	<div class = "timePickerPlaceHolder" [ngClass]="{'focusedPlaceHolder' : focused}" >{{placeHolder}}</div>
+	<div class="hhTimeDiv">
+		<input type="number" maxlength="2" size="2" class="timeInputFld hhTime" placeholder="HH" #HHInput [(ngModel)]='hhTime' [readonly]=readOnly (keydown)="numbersOnly('HH',$event)" (input)="validateTime('HH',$event)" (focus)="focusElement()" (blur)="blueElement()">
+		<span class="md-up-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; increase('HH',HHInput)" role="button" tabindex="0"></span>
+		<span class="md-down-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; decrease('HH',HHInput)" role="button" tabindex="0"></span>
+		<span class="timeSeparator">:</span>
+	</div>
+	<div class="mmTimeDiv">
+		<input type="number" maxlength="2" size="2" class="timeInputFld mmTime" placeholder="MM" #MMInput [(ngModel)]='mmTime' [readonly]=readOnly (keydown)="numbersOnly('MM',$event)" (input)="validateTime('MM',$event)" (focus)="focusElement()" (blur)="blueElement()">
+		<span class="md-up-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; increase('MM',MMInput)" role="button" tabindex="0"></span>
+		<span class="md-down-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; decrease('MM',MMInput)" role="button" tabindex="0"></span>
+		<!-- <span class="timeSeparator">:</span> -->
+	</div >
+	
+	<!-- <div class="ssTimeDiv">
+		<input type="number" maxlength="2" size="2" class="timeInputFld ssTime" placeholder="SS" #SSInput [(ngModel)]='ssTime' [readonly]=readOnly (keydown)="numbersOnly('SS',$event)" (input)="validate('SS',$event)" (focus)="focusElement()" (blur)="blueElement()">
+		<span class="md-up-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; increase('SS',SSInput)" role="button" tabindex="0"></span>
+		<span class="md-down-arrow" aria-hidden="true" (click)="!readOnly &amp;&amp; decrease('SS',SSInput)" role="button" tabindex="0"></span>
+	</div> -->
+	<div class="clock" (click) = "showClock()"> 
+		
+	</div>
+	
+	<div class="timePickerPopUp" *ngIf='isShowClock'>
+		<div class="timePickerPopUpHdr">
+			<span class="displayTime" [ngClass]="{'selectedMode' : isHrsClick}" (click)="hrsClicked()">{{hhTimePopUp}}</span>
+			<span class ="opupTimeSeperator">:</span>
+			<span class="displayTime" [ngClass]="{'selectedMode' : isMinsClick}" (click)="minsClicked()" >{{mmTimePopUp}}</span>
+			<select [(ngModel)]="amPmTimePopUp">
+	                <option value="AM" >AM</option>
+	                <option value="PM" >PM</option>
+	        </select>
+		</div>
+		<div class="timePickerPopUpBody">
+			<div class="hourPicker" *ngIf='isHrsClick' >
+				<div class="hpl1"><span class="timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '12'}" (click)="selectHH('12')" >12</span></div>
+				<div class="hpl2"><div><span class="leftSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '11'}" (click)="selectHH('11')">11</span></div><div><span class="rightSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '1'}" (click)="selectHH('1')">1</span></div></div>
+				<div class="hpl3"><div><span class="leftSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '10'}" (click)="selectHH('10')">10</span></div><div><span class="rightSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '2'}" (click)="selectHH('2')">2</span></div></div>
+				<div class="hpl4"><div><span class="leftSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '9'}" (click)="selectHH('9')">9</span></div><div><span class="rightSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '3'}" (click)="selectHH('3')">3</span></div></div>
+				<div class="hpl5"><div><span class="leftSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '8'}" (click)="selectHH('8')">8</span></div><div><span class="rightSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '4'}" (click)="selectHH('4')">4</span></div></div>
+				<div class="hpl6"><div><span class="leftSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '7'}" (click)="selectHH('7')">7</span></div><div><span class="rightSideElemt timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '5'}" (click)="selectHH('5')">5</span></div></div>
+				<div class="hpl7"><span class="timePickerValSpan" [ngClass]="{'selectedSpan' : focusedSpan == '6'}" (click)="selectHH('6')">6</span></div>
+			</div>
+			
+			<div class="minPicker" *ngIf='isMinsClick' >
+			 	 <div class="mmlF"> 
+			 	 	<span class="timePickerValSpan" [ngClass]="{'selectedSpan' : selectedMMSpan == toString(00)}" (click)="selectMM(00)" >00</span>
+				 </div>
+				 <div *ngFor = 'let min of minits' class="mml{{min}}"> 
+					<div class="numberDiv" *ngIf='0 === ((60-min) % 5)'>
+						<span class="timePickerValSpan leftSideElemt"  [ngClass]="{'selectedSpan' : selectedMMSpan == toString(60 - min)}" (click)="selectMM(60 - min)" >{{60 - min}}</span> 
+					</div>
+					<div class="numberDiv" *ngIf='0 === (min % 5)'>
+						<span class="timePickerValSpan rightSideElemt" [ngClass]="{'selectedSpan' : selectedMMSpan == toString(min)}" (click)="selectMM(min)" >{{min}}</span>
+					</div>
+					<div class="dotNumDiv" *ngIf='!(0 === ((60-min) % 5))'>
+						<span class="timePickerValSpan displayDotForNum leftSideDotElemt"  [ngClass]="{'selectedSpan' : selectedMMSpan == toString(60 - min) }" (click)="selectMM(60 - min)" >.</span> 
+					</div>
+					<div class="dotNumDiv" *ngIf='!(0 === (min % 5))'>
+						<span class="timePickerValSpan displayDotForNum rightSideDotElemt" [ngClass]="{'selectedSpan' : selectedMMSpan == toString(min) }" (click)="selectMM(min)" >.</span>
+					</div>		
+				</div> 
+				<div class="mmlL"> 
+			 	 	<div><span class="timePickerValSpan" [ngClass]="{'selectedSpan' : selectedMMSpan == toString(30)}" (click)="selectMM(30)" >30</span></div>
+				 </div>
+				
+				<!-- <ul class='circle-container'>
+				<li *ngFor="let min of minits"> {{min}}
+	    			  
+				</li>
+				</ul> -->
+			</div>
+		</div>
+		<div class="timePickerPopUpFtr">
+			<div class="closePopUpBtn" (click)="closeClock()" >close</div><div (click)="setValues()" class = "setClockValBtn">set</div>
+		</div>
+		</div>
+	</div>
+</div>

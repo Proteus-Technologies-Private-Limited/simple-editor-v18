@@ -1,0 +1,284 @@
+
+<div id="criteriaID1" *ngIf = "filterInfo && filterInfo.operator != 'between'">
+	<div id="criteriaID2" *ngIf = " filterType == '1' && help_option == '2' && !hidden" class="filterType1">
+		<!--<label class="filterLabel"> {{filterDescr}} </label>-->
+		<bb-autosuggest id="autosuggestID1" *ngIf="!isChipValue" class="ang-filter-input"
+						[(ngModel)]="filterValue"
+						[uxDesign] = "'UX3'"
+						[dataSource]= "dataSource"
+						[chipEnable] = "false"
+						[chipValue] = "filterValue"
+						[placeholder] = "filterDescr"
+						[minlength]="auto_fill_len"
+						[refId]="refId"
+						[isPophelp]="true"
+						[required]="filterMandatory"
+						(onSelectionChange)="changeSelection($event);"
+						(onChangeValue) = "onChangeValue($event)">
+		</bb-autosuggest>
+		<bb-chip-input id="chipInputID2" *ngIf="isChipValue"
+					class="chipField" 
+					[(ngModel)]="filterValue" 
+					[placeholder]="filterDescr" 
+                    (dataChangeAll) = "changeChipValue($event);"
+					[required]="filterMandatory" 
+					[dataList]="chipData"
+					[uxDesignData] = "'UX3'"
+					[dataSource]= "dataSource"
+					[filterName]= "filterName"
+					[chipValue] = "filterValue"
+					[auto_fill_len]="auto_fill_len"
+					[minlength]="auto_fill_len"
+					[help_option]="help_option"
+					[refId]="refId"
+					[isPophelp]="true"
+					[isChipValue]="true"
+					(onSelectionChange)="changeSelection($event);"
+					(onChangeValue) = "onChangeValue($event)">						
+		</bb-chip-input>
+		
+		<i *ngIf="isPopHelp" (click)="openPophelp();" class="material-icons ang-pophelp-icon">&#xE315;</i>
+	</div>
+	
+	<div *ngIf = " filterType == '1' && help_option != '2' && !hidden && filterInfo.operator != 'between'" class="filterType1">
+		<!--<label class="filterLabel"> {
+			{filterDescr}} </label>-->
+		<bb-textbox  *ngIf = " (!multi_opt && argName.includes('MONTH') ) || multi_opt == '0' "
+					 class="batteryStatus" 
+				    [(ngModel)]="filterValue"
+				    [value]="filterValue"
+					[placeholder]="filterDescr.length < 48 ? filterDescr :' '" 
+					[uxDesign]="'UX3'" 
+					[required]="filterMandatory"
+					[readOnly]="readOnly"					
+					name="{{filterName}}"
+					id="{{filterId}}"
+					(change) = "changeValue();" 
+					[isSimpleLayout] = "false">
+		</bb-textbox>
+
+		<bb-chip-input *ngIf = " (!multi_opt && !argName.includes('MONTH') ) || multi_opt == '1'" 
+					class="chipField" 
+					[(ngModel)]="filterValue" 
+					[placeholder]="filterDescr" 
+                    (dataChangeAll) = "changeChipValue($event);"
+					[required]="filterMandatory" 
+					[dataList]="chipData">						
+		</bb-chip-input>  
+					<!-- (dataChange) = "changeChipValue($event);" -->
+
+		<i *ngIf="isPopHelp" (click)="openPophelp();" class="material-icons ang-pophelp-icon">&#xE315;</i>
+	</div>
+	
+    <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [Start]-->
+    <div *ngIf = " filterType == '0' && !hidden "  class="filterTypeNum" style="text-align: right;">
+		<bb-textbox  *ngIf = " (!multi_opt && argName.includes('MONTH') ) || multi_opt == '0' "
+					class="batteryStatus" 
+				    [(ngModel)]="filterValue"
+                    type="number"
+				    [value]="filterValue"
+					[placeholder]="filterDescr.length < 48 ? filterDescr :' '" 
+					[uxDesign]="'UX3'" 
+					[required]="filterMandatory"
+					[readOnly]="readOnly"					
+					name="{{filterName}}"
+					id="{{filterId}}"
+					(change) = "changeValue();"
+                    style="text-align: right;"
+					[isSimpleLayout] = "false"
+					>
+		</bb-textbox>
+        <bb-chip-input *ngIf = " (!multi_opt && !argName.includes('MONTH') ) || multi_opt == '1'" 
+					class="chipField" 
+					[(ngModel)]="filterValue" 
+					[placeholder]="filterDescr" 
+                    (dataChangeAll) = "changeChipValue($event);"
+					[required]="filterMandatory" 
+					[dataList]="chipData">						
+		</bb-chip-input> 
+	</div>
+    <!-- Added by Samruddhi for UI of criteria component also change done and close icon. [End]-->
+    
+	<div *ngIf = " filterType == '1' && help_option != '2' && hidden && filterInfo.operator != 'between'"  class="filterType1">
+		<input type="hidden" [(ngModel)]="filterValue" [value]="filterValue">
+	</div>
+	
+	<div *ngIf = " filterType == '2' "  class="filterType2">
+		<span class="filterName">{{filterDescr}}</span>
+		<bb-checkbox  style="padding-bottom: 6px;" *ngIf="filterValues.selectAll=='true'" [(ngModel)]="filterValue" [value]="filterValues.item[1].data" (bbChange)="selectAll(filterValues.item);">All</bb-checkbox>
+
+		<bb-checkbox  [checked]="isAllSelected" [disabled]="disabled" style="padding-bottom: 6px;" *ngFor="let values of filterValues.item" [(ngModel)]="filterValue" [value]="values.data" (bbChange)="changeMultipleValue(values.data);">{{values.display}}</bb-checkbox>
+	
+	</div>
+	
+	<div *ngIf = " filterType == '3' "  class="filterType3">
+		<span class="filterName">{{filterDescr}}</span>
+		<bb-radio-group required name="" [(ngModel)]="filterValue">
+			<bb-radio-button style="padding-bottom: 6px; display: grid;"  *ngFor="let values of filterValues.item" [value]="values.data" (change)="changeSingleValues(values.data);" [labelPosition]="'after'">{{values.display}}</bb-radio-button>
+		</bb-radio-group>
+	</div>
+		
+	<div *ngIf = " filterType == '4'"  class="filterType4">
+		<!--<label class="filterLabel"> {{filterDescr}} </label>-->
+			<mat-form-field class="datePicker">
+				<!-- <span *ngIf = " filterName == 'fromDate' "> -->
+                 <span *ngIf = " filterName == 'fromDate' ||  filterName == 'DATE BETWEEN'">
+					  <input matInput  
+						  	 [(ngModel)]="filterValue"
+						  	 [value]="filterValue"
+						  	 [max]="toDate" 
+							 [matDatepicker]="datePicker" 
+							 (dateChange)="changeDate($event);" 
+							 [placeholder]="filterDescr" 
+							 [required]="filterMandatory"
+							 name="{{filterName}}" 
+							 id="{{filterId}}" >
+		        </span>
+                <span *ngIf = " filterName == 'toDate' ||  filterName == 'And'">
+				<!-- <span *ngIf = " filterName == 'toDate' "> -->
+					  <input matInput  
+						     [(ngModel)]="filterValue" 
+						     [value]="filterValue"
+						     [max]="maxDate" 
+						     [min]="fromDate"
+						     [required]="filterMandatory"
+							 [matDatepicker]="datePicker" 
+							 (dateChange)="changeDate($event);" 
+							 [placeholder]="filterDescr" 
+							 name="{{filterName}}" 
+							 id="{{filterId}}" >
+				</span>
+				<!-- <span *ngIf = " filterName != 'toDate' && filterName != 'fromDate' "> -->
+                <span *ngIf = " filterName != 'toDate' && filterName != 'fromDate'
+                 && filterName != 'DATE BETWEEN' && filterName != 'And' ">
+				  <input matInput  [(ngModel)]="filterValue"
+				  	[value]="filterValue"
+					[matDatepicker]="datePicker" 
+					(dateChange)="changeDate($event);" 
+					[placeholder]="filterDescr" 
+					[required]="filterMandatory"
+					name="{{filterName}}" 
+					id="{{filterId}}" >
+				</span>
+			    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+			    <mat-datepicker #datePicker></mat-datepicker>
+			</mat-form-field>
+	</div>
+	<div #monthPickerEl class="date-picker" *ngIf="filterType == '5'">
+		<span class="desc">{{filterDescr}}</span>
+		<bb-month-picker [value]="filterValue" (changeMonth)="changeMonthValues($event);" (opened)="openCalender($event)"></bb-month-picker>
+	</div>
+	<div class="date-picker" *ngIf="filterType == '6'">
+		<span class="desc">{{filterDescr}}</span>
+		<bb-year-picker [value]="filterValue" (changeYear)="changeYearValues($event);" (opened)="openCalender($event)"></bb-year-picker>
+	</div>
+	<div *ngIf = " filterType == '7' "  id='site-picker-filter-7' >  <!--Changes made by Sameer Dhoteghar on 23rd November 2021[For issue in filter type 7]-->
+	    <site-picker [filterInfo]="filterInfo" [filterExprInput]="filterExprInput"  (populateData)="changeSiteValue($event);"></site-picker>
+	</div>
+</div>
+<!-- Added by Sujan for between operator [Start] -->
+<div *ngIf = "filterInfo.operator == 'between'" class="filterType1">
+	<div *ngIf = " filterType != '4'" style="width: 100%">
+		<mat-form-field>
+			<span *ngIf = "placeHolderPrefix == 'From'">
+				<input matInput
+					class = "ang-filter-input"
+					[(ngModel)] = "fromFieldValue" 
+					[value] = "fromFieldValue"
+					[required] = "filterMandatory"
+					[placeholder] = "placeHolderName" 
+					name = "{{placeHolderName}}" 
+					id = "{{placeHolderName}}" 
+					(blur) = "setCurrentField()"
+				>
+			</span>
+			<span *ngIf = "placeHolderPrefix == 'To'">
+			 <input matInput
+					class="ang-filter-input"
+					[(ngModel)]="toFieldValue" 
+					[value]="toFieldValue"
+					[required]="filterMandatory"
+					[placeholder]="placeHolderName" 
+					name="{{placeHolderName}}" 
+					id="{{placeHolderName}}" 
+					(blur) = "setBetweenFieldValue()">
+			</span>
+		</mat-form-field>
+	</div>
+
+		<div *ngIf = " filterType == '4'"  class="filterType4">
+			<mat-form-field class="datePicker">
+				<span *ngIf = "placeHolderPrefix == 'From'">
+			       <input matInput  
+					[(ngModel)]="fromFieldValue"
+					[value]="fromFieldValue"
+					[matDatepicker]="datePicker" 
+					(dateChange)="setCurrentField();" 
+					[placeholder]="placeHolderName" 
+					[required]="filterMandatory"
+					name="{{placeHolderName}}" 
+					id="{{placeHolderName}}" >
+				</span>
+	            <span *ngIf = "placeHolderPrefix == 'To'">
+	        		<input matInput  
+					[(ngModel)]="toFieldValue" 
+					[value]="toFieldValue"
+					[min]="fromDate"
+					[required]="filterMandatory"
+					[matDatepicker]="datePicker" 
+					(dateChange)="setBetweenFieldValue()" 
+					[placeholder]="placeHolderName" 
+					name="{{placeHolderName}}" 
+					id="{{placeHolderName}}" >
+	            </span>
+				<mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+					<mat-datepicker #datePicker></mat-datepicker>
+				</mat-form-field>
+		</div>
+		<div #monthPickerEl class="date-picker" *ngIf="filterType == '5'">
+			<span class="desc">{{filterDescr}}</span>
+			<bb-month-picker [value]="filterValue" (changeMonth)="changeMonthValues($event);" (opened)="openCalender($event)"></bb-month-picker>
+		</div>
+		<div class="date-picker" *ngIf="filterType == '6'">
+			<span class="desc">{{filterDescr}}</span>
+			<bb-year-picker [value]="filterValue" (changeYear)="changeYearValues($event);" (opened)="openCalender($event)"></bb-year-picker>
+		</div>
+	</div>
+<!-- Added by Sujan for between operator [End] -->
+
+<ng-template #portal>
+	 <div role="dialog" class="ang-pophelp-panel">
+		<bb-pophelp [dataSource]="dataSource"
+		             [filterName]="filterName"
+					 [multi_opt]="multi_opt"
+					 [filterValue]="filterValue"
+					 [refId]="refId"
+                     [argName]="argName"
+                     [metadataName]="metadataName"
+					 [layout]="layout"
+					 [filterExprInput]="filterExprInput"
+					 (onClose)="closePohelp();"
+					 (onSelect)="setValue($event);">
+		 </bb-pophelp>
+	 </div> 
+</ng-template> 
+<ng-template #popupTemp>
+	 <div role="dialog" class="ang-pophelp-panel">
+		<bb-pophelp [dataSource]="dataSource"
+		             [filterName]="filterName"
+					 [multi_opt]="multi_opt"
+					 [filterValue]="filterValue"
+					 [refId]="refId"
+                     [argName]="argName"
+                     [metadataName]="metadataName"
+					 [layout]="layout"
+					 [filterExprInput]="filterExprInput"
+					 (onClose)="closePohelp();"
+					 (onSelect)="setValue($event);">
+		 </bb-pophelp>
+	 </div> 
+</ng-template> 
+
+
+
+

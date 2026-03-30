@@ -1,0 +1,30 @@
+
+
+<ng-template #portal>
+    <!-- <div class="pophelpContainer"> -->
+    <div>
+      <div class="Search_Menu_Container1 Search_Menu_pophelp " >
+        <!-- <div class="SearchMenu-header">
+          <span class="SearchMenu-cancel" (click)="onPophelpCancel();">
+            <i class="material-icons  cancelBtn" style="color: #9e9494 !important;cursor: pointer;">close</i>
+          </span>
+          <div class="SearchMenu-header-suggest">
+            {{ pophelpTitle }}
+          </div>
+          <span class="SearchMenu-cancel" (click)="onDone();" style="float:right;">
+            <i class="material-icons  doneBtn" style="color: #998b8b !important;cursor: pointer;">done</i>
+          </span>
+        </div> -->
+        <!-- <ang-pophelp style="position: relative;" [dataSource]="dataSource" [encodedParam]="encodedParam" [filterValue]="filterValue" [multi_opt]="'0'" [showHeader]="false"
+          [filterValue]="objNameInput" [refreshData]="true" [layoutTemplName]="'bislayout'" [refId]="pophelpTitle"
+          [showSearch]="true" (onClose)="onPophelpCancel();" (onSelect)="onSelectionChange($event)"
+          (onDblClick)="onDone();">
+        </ang-pophelp> -->
+        <bb-pophelp #popHelp style="position: relative;" [dataSource]="dataSource" [encodedParam]="encodedParam" [filterValue]="filterValue" [multi_opt]="'0'" [showHeader]="true"
+          [refreshData]="true" [layoutTemplName]="'bislayout'" [refId]="pophelpTitle"
+          [showSearch]="false" (onClose)="onPophelpCancel();" (onSelect)="onSelectionChange($event)"
+          (onDblClick)="onDone();" [callApiForSimpleLayout]="callApiForSimpleLayout" [tokenID]="tokenID" [jSessionId]="jSessionId" [pophelpParamMap]="pophelpParamMap" [overlayRef]="overlayRef">
+        </bb-pophelp>
+      </div>
+    </div>
+  </ng-template>

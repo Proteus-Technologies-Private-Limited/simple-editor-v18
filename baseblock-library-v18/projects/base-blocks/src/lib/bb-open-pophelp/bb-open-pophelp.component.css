@@ -1,0 +1,487 @@
+.pres-form-container {
+	padding-top: 15px;
+    background: #fff;
+    height: 100%;
+}
+
+.pres-form-field {
+/* 	height: 60px; */
+	margin-bottom: 15px;
+}
+
+.pres-form-field-selectType,
+.pres-form-field-target,
+.pres-form-field-descr,
+.pres-form-field-notes{
+	margin-bottom: 15px;
+}
+
+.field-icon-block {
+	display: inline-block;
+    /* width: 32px; */
+    width: 26px;
+    margin: 0 10px;
+    vertical-align: top;
+}
+
+.field-icon-cont {
+    background: #aeaeae;
+    border-radius: 100%;
+}
+
+.field-txt {
+    /* line-height: 32px; */
+    line-height: 26px;
+    color: #fff;
+    text-align: center;
+    display: block;
+}
+
+.field-input-cont {
+    display: inline-block;
+    width: calc(100% - 75px);
+    height: 40px;
+    border-bottom: 1px solid #ccc;
+    margin-right: 15px;
+    /* max-width: 300px; */
+    position: relative;
+}
+
+.form-field-header {
+	color: #575757;
+	font-size: 14px;
+	display: block;
+}
+
+.pres-id-info, .pres-date-cont, .pres-cust-name-cont {
+   margin-left: 54px;
+}
+
+.pres-id-title {
+	display: block;
+	padding-top: 4px;
+}
+
+.pres-id {
+	display: block;
+	color: #aeaeae;
+}
+
+.pres-date-title {
+	display: block;
+}
+
+.pres-date {
+	display: block;
+}
+
+.targ-aud-inp {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+
+.desc-text-field {
+	width: 100%;
+}
+
+mat-form-field {
+	width: 100%;
+}
+
+:host ::ng-deep .mat-form-field-infix {
+	border: 0;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+	background-color: #ccc;
+}
+
+/* Header */
+
+.icon-nav-left:before {
+  content: "\e925";
+}
+
+.icon-nav-right:before {
+  content: "\e926";
+}
+
+.icon-nav-right, .icon-nav-left {
+    font-size: 18px;
+    vertical-align: sub;
+}
+
+.icon-plus-circle:before {
+  content: "\e92d";
+}
+
+.icon-plus-circle {
+    font-size: 12px;
+    padding: 0 4px;
+}
+
+/* Header */
+
+
+.ang-pophelp-panel {
+	box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0
+		rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+	background: white;
+	position: inherit;
+}
+
+.ang-pophelp-icon {
+	margin: 0;
+    width: 20px;
+    height: 22px;
+    position: absolute;
+    cursor: pointer;
+    color: #666;
+    right: 0px;
+}
+
+.aud-chip-field {
+    display: inline-block;
+    width: 100%;
+    height: 150px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.all-aud-text {
+    display: block;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #ccc;
+}
+
+
+:host ::ng-deep .mat-standard-chip.mat-chip-with-trailing-icon{
+	padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 6px;
+    padding-left: 6px;
+    font-size: 12px;
+}
+
+
+.descrField
+{
+	display: block;
+    color: #aeaeae;
+    border-bottom: 1px solid #ccc;
+    margin-right: 15px;
+    position: relative;
+}
+
+
+@media only screen and (max-width: 800px) {
+    	.pres-form-field-selectType,
+		.pres-form-field-target,
+		.pres-form-field-descr,
+		.pres-form-field-notes{
+			padding-bottom: 15px;
+	 }
+	 .ang-pophelp-icon{
+	     right: -21px;
+	 }
+	 .pres-form-field-target{
+	 	 height: 122px !important;
+	 }
+}
+
+@media only screen and (max-width: 425px) {
+	  	.pres-form-field-selectType,
+		.pres-form-field-target,
+		.pres-form-field-descr,
+		.pres-form-field-notes{
+			padding-bottom: 15px;
+	 }
+	 
+	 
+	.aud-chip-field{
+		 height: 100px !important;
+	}	
+}
+
+/* FOR DESKTOP VIEW */
+@media only screen and (min-width: 801px) {
+	.form-view{
+         background-color: white;
+		 -webkit-column-count: 3;
+	     -moz-column-count: 3;
+	     column-count: 2;
+	     column-rule: 1px solid;
+	     column-rule-style: dashed;
+	     column-gap: 10px;
+	     column-gap: 10px;
+	}
+}
+
+/* FOR TABLET VIEW */
+@media only screen and (max-width: 800px) {
+	.form-view{
+         background-color: white;
+		 -webkit-column-count: 2;
+	     -moz-column-count: 2;
+	     column-count: 2;
+	     column-rule: 1px solid;
+	     column-rule-style: dashed;
+	     column-gap: 10px;
+	     column-gap: 10px;
+	}
+}
+
+/* FOR MOBILE VIEW */
+@media only screen and (max-width: 425px) {
+	.form-view{
+          background-color: white;
+		 -webkit-column-count: 1;
+	     -moz-column-count: 1;
+	     column-count: 1;
+	     column-rule: 1px solid;
+	     column-rule-style: dashed;
+	     column-gap: 10px;
+	     column-gap: 10px;
+	}
+	
+}
+
+.SearchMenu-suggestion {
+	float: right;
+    margin-top: 15px;/* by sai */
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+    vertical-align: middle;
+    color: #666;
+    font-size: 16px;
+    display: inline-block;
+    height: 27px;
+    width: 27px;
+    background-repeat: no-repeat;
+    background-image: url(/ibase/E12BROWSER/angplugin/assets/images/svg/keyboard_arrow_right.svg);
+    margin-left: -20px;
+}
+
+.SearchMenu-cancel {
+}
+.SearchMenu-cancel > i {
+    position: relative;
+    vertical-align: middle;
+    font-size: 20px;
+    padding: 10px;
+    color: #ffffff;
+}      
+.SearchMenu-cancel > span {
+    min-width: 40px;
+    text-align: start;
+    font-size: 14px;
+}
+
+.SearchMenu-header{
+    width: calc(100% - 2rem);
+    display: inline-block;
+    padding: .5rem 1rem;
+    background:var(--themeColor);
+    color: #fff;
+    font-size: 1em;
+    position: relative;
+   
+}
+
+.pophelpContainer{
+    background: white;
+    position: absolute;
+    width: 36%;
+    min-width: 396px;
+    height: calc(100% - 45px);
+    padding-bottom: 0px !important;
+}
+
+
+.Search_Menu_pophelp{
+	/*Changed by Sainath T. on 07-OCT-2019*/
+    /* height: 524px;
+    min-height: 500px; */
+    height: 100%;
+    min-height: 450px;
+    width: 363px;
+    min-width: 363px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.SearchMenu-header{
+    width: calc(100% - 2rem);
+    display: inline-block;
+    padding: .5rem 1rem;
+    background:var(--themeColor);
+    color: #fff;
+    font-size: 1em;
+    position: relative;
+   
+}
+
+.SearchMenu-header-suggest{
+    color: #666;
+    display: inline-block;
+    position: relative;
+    line-height: 40px;
+    height: 40px;
+    width: calc(100% - 42%);
+    vertical-align: middle;
+    text-align: center;
+    font-size: medium;
+    font-weight: 500;
+}
+
+.ang-pophelp-icon 
+{
+    /* margin: 10px 15px; */
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    cursor: pointer;
+    left: 95%;
+    /* left: 260px; */
+    color: #666666;
+}
+
+.inputField
+{
+    padding: 1px;
+}
+
+
+.groupBxHeaderLbl {
+    text-align: left;
+    color: #9b9898;
+    font-size: 18px;
+    position: relative;
+    top: 12px;
+    padding-left: 15px;
+}
+
+.show{
+    background-color:  transparent;
+}
+
+.hide{
+    background: rgb(255, 255, 255);
+}
+    
+.keyIconCss{
+	height: 10px;
+    width: 10px;
+    float: right;
+    padding: 18px;
+}
+
+.headerCss {
+    height: 45px;
+    width: calc( 100% - 30px);
+    text-align: left;
+    margin: 15px;
+}
+
+.buttonDivCss{
+    margin-left: 17px;
+    height: 30px;
+    width: 50px;
+    font-size: 15px;
+    color: #736c6c;
+}
+
+
+.buttonCss{
+    height: 25px;
+    width: 50px;
+    border-radius: 5px;
+    box-shadow: -1px 2px #888888;
+    cursor: pointer;
+    color: #6d6363;
+}
+
+
+.nextCss
+{
+    font-size: 17px;
+    margin: 10px;
+    position: relative;
+    top: 10px;
+    color: var(--primary);
+    font-family: "MuseoLight-300", sans-serif !important;
+    cursor: pointer;
+}
+
+.nextIcon
+{
+    position: relative;
+    font-size: 17px;
+}
+
+.footerContainer
+{
+    height: 55px;
+    background-color: #ffffff;
+    text-align: right;
+    position: fixed;
+    bottom: 0;
+    color: var(--primary);
+    font-size: 20px;
+    width: 100%;
+    right: 0;
+}
+
+.headerCss {
+    height: 45px;
+    width: calc( 100% - 30px);
+    text-align: left;
+    margin: 15px;
+}
+
+
+.mainPage-Container {
+    background: transparent;
+}
+
+.headerDisplay{
+    height: 0px;
+    line-height: 40px;
+    padding-left: 15px;
+    font-size: 13px;
+    font-family: robot!important;
+}
+
+::ng-deep.cdk-global-overlay-wrapper
+{
+    justify-content: flex-end !important;
+    display: flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+}
+
+::ng-deep.cdk-overlay-pane
+{
+    position: static !important;
+    margin-right: 0px !important;
+    pointer-events: auto !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    z-index: 1001 !important;
+}
+
+::ng-deep .cdk-overlay-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1000 !important;
+    pointer-events: auto !important;
+}

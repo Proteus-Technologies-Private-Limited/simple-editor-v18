@@ -1,0 +1,21 @@
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'" >
+		<span *ngIf="bbLabelPosition =='before'">
+			<ng-container *ngTemplateOutlet="content"></ng-container>
+			<input (bbChange)="bbChange.emit($event)" [name]="bbName"  [type]="bbType" [required]="bbRequired" [checked]="bbChecked" [value]="bbValue"  [(indeterminate)]="bbIndeterminate" [id]="bbId" [align]="bbAlign" [disabled]="bbDisabled">
+		</span>
+		<span *ngIf="bbLabelPosition =='after'" >
+				<input (bbChange)="bbChange.emit($event)" [name]="bbName"  [type]="bbType" [required]="bbRequired" [checked]="bbChecked" [value]="bbValue"  [(indeterminate)]="bbIndeterminate" [id]="bbId" [align]="bbAlign" [disabled]="bbDisabled">
+				<ng-container *ngTemplateOutlet="content"></ng-container>		
+		</span>
+	</span>
+	
+	<span *ngSwitchCase="'UX3'" >
+		<mat-checkbox  (change)="bbChange.emit($event)" [name]="bbName" [required]="bbRequired" [checked]="bbChecked" [value]="bbValue" [labelPosition]="bbLabelPosition" [(indeterminate)]="bbIndeterminate" [id]="bbId"  [disabled]="bbDisabled">
+		        <ng-container *ngTemplateOutlet="content"></ng-container>
+		</mat-checkbox>
+	</span>
+	
+	<ng-template #content><ng-content></ng-content></ng-template>
+
+</span>

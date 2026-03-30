@@ -1,0 +1,21 @@
+<span [ngSwitch]="uxDesign">
+	<span *ngSwitchCase="'UX1'">
+		<select [(ngModel)]="value" (selectionChange)="bbChange.emit();" (onOpen)="bbOnOpen.emit();" (onClose)="bbOnClose.emit();" [required]="bbRequired" [multiple]="bbMultiple" [disabled]="bbDisabled">
+			<option *ngFor="let option of options" [value]="option.bbValue" [disabled]="option.bbDisabled">
+				{{option.viewValue}}
+			</option>
+		</select>
+	</span>
+	
+	<span *ngSwitchCase="'UX3'">
+	<mat-form-field>
+		<mat-select  #mySelect  [(ngModel)]="value" (selectionChange)="bbChange.emit();" (onOpen)="bbOnOpen.emit();" (onClose)="bbOnClose.emit();" [required]="bbRequired"  [placeholder]="bbPlaceholder" [multiple]="bbMultiple" [disableRipple]="bbDisableRipple" [panelClass]="bbPanelClass" [disabled]="bbDisabled">
+			<mat-option *ngFor="let option of options" [value]="option.bbValue" [disabled]="option.bbDisabled">
+				{{option.viewValue}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	</span>
+	
+	<ng-template #content><ng-content></ng-content></ng-template>
+</span>
