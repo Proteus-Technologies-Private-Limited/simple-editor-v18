@@ -1,0 +1,434 @@
+:host {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+    min-height: 0;
+}
+
+.PanelLabel {
+    border-bottom: 1px solid #d9d9d9;
+    width: auto;
+    height: auto;
+    padding: 5px 2px 6px 2px;
+    margin: 0;
+    table-layout: fixed;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.hasCommand {
+    background-color: white;
+    vertical-align: middle;
+    cursor: pointer;
+    width: auto;
+}
+.subFormDetailFeed {
+    width: 100% !important;
+}
+
+.feedImgPnl {
+    padding-left: 0;
+    margin-top: 0;
+}
+.feedImgIconPnl-select {
+    border: 2px solid #7bc6ff !important;
+}
+.feedImgPnl {
+    padding-left: 0;
+    margin-top: 0;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+}
+.feedImgCss {
+    margin-right: 5px;
+}
+.flowPanelAlign {
+    float: left;
+}
+.animatePanel {
+    -webkit-animation: paneltransform 0.6s linear forwards;
+    animation: paneltransform 0.6s linear forwards;
+}
+.displayNone
+{
+    display: none !important;
+}
+.displayBlock
+{
+    display: block;
+}
+.checkedImage
+{
+    height: 12px;
+    width: 12px;
+    overflow: hidden;
+    vertical-align: top;
+    top: 18px!important;
+    position: absolute;
+    margin-top: -10px;
+    z-index: 2;
+    border: 2px solid #fff;
+    border-radius: 12px;
+}
+.checkedIcon
+{
+    height: 14px;
+    width: 14px;
+    overflow: hidden;
+    vertical-align: top;
+    position: relative;
+    z-index: 2;
+    border-radius: 12px;
+    margin-right: -8px;
+    align-self: flex-start;
+}
+
+.taxDeatilMainDiv
+{
+    overflow: visible;
+    width: 100%;
+}
+
+.taxHiddenFieldsTable
+{
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* Grid layout for form fields */
+.taxFormFieldsGrid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+}
+
+.taxFormFieldsGrid ::ng-deep .mat-form-field {
+    width: 100% !important;
+}
+
+.taxFormFieldRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.taxFieldIconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgb(51 70 105 / 40%);
+    overflow: hidden;
+}
+
+.taxFieldImg {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #a5afc3;
+}
+
+.taxFormField {
+    width: 100%;
+    flex: 1;
+}
+
+/* White background for all input fields - match description field look */
+.taxFormFieldsGrid ::ng-deep .mat-form-field-wrapper {
+    background: #fff !important;
+    border-radius: 4px;
+    padding-bottom: 0 !important;
+}
+
+.taxFormFieldsGrid ::ng-deep .mat-form-field-flex {
+    background: #fff !important;
+}
+
+.taxFormFieldsGrid ::ng-deep .mat-input-element {
+    background: #fff !important;
+    color: #293956 !important;
+    box-shadow: 0 1px #0003 !important;
+}
+
+.taxFormFieldsGrid ::ng-deep .mat-form-field-underline {
+    background-color: #dbdbdb !important;
+}
+
+/* Ensure disabled fields match enabled fields look */
+.taxFormFieldsGrid ::ng-deep .mat-form-field-disabled .mat-form-field-wrapper {
+    background: #fff !important;
+}
+.taxFormFieldsGrid ::ng-deep .mat-form-field-disabled .mat-form-field-flex {
+    background: #fff !important;
+}
+.taxFormFieldsGrid ::ng-deep .mat-form-field-disabled .mat-input-element {
+    background: #fff !important;
+    color: #293956 !important;
+    -webkit-text-fill-color: #293956 !important;
+    box-shadow: 0 1px #0003 !important;
+}
+.taxFormFieldsGrid ::ng-deep .mat-form-field-disabled .mat-form-field-underline {
+    background-color: #dbdbdb !important;
+}
+
+.taxFormFieldsGrid ::ng-deep .mat-form-field-ripple {
+    background-color: #ff9000 !important;
+}
+
+/* Feed row - use flex for icon + data on same line */
+.taxFeedRow {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    min-height: 36px;
+}
+
+/* Feed left and right margins */
+.PanelLabel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 12px;
+    position: relative;
+}
+
+/* Expanded feed detail - top and bottom margin */
+.displayBlock[id^="taxDataDiv"],
+div[id^="taxDataDiv"].displayBlock {
+    margin: 10px 0;
+    padding: 8px 0;
+}
+
+
+/* Action bar with checkbox and buttons */
+.taxActionBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.recalculateChBox
+{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.recalculateChBox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #334669;
+}
+
+.recalculateLabel {
+    font-size: 13px;
+    color: #333;
+    user-select: none;
+}
+
+.taxActionBtns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.taxBtn
+{
+    color: #333;
+    height: 28px;
+    font-size: 12px;
+    padding: 0 14px;
+    background-color: #e7e7e7;
+    background: #e7e7e7;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.taxBtn:hover
+{
+    background-color: #d5d5d5;
+}
+
+.taxBtn:disabled
+{
+    color: #999;
+    background-color: #f0f0f0;
+    background: #f0f0f0;
+    cursor: not-allowed;
+    border: 1px solid #ddd;
+}
+
+.taxBtnPrimary
+{
+    background-color: #334669;
+    background: #334669;
+    color: #fff;
+    border: 1px solid #334669;
+}
+
+.taxBtnPrimary:hover
+{
+    background-color: #2a3a57;
+    background: #2a3a57;
+}
+
+::ng-deep.mat-form-field.mat-focused .mat-form-field-ripple{
+    height: 1px !important;
+    background-color: #ff9000 !important;
+    transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1),opacity 100ms cubic-bezier(0.25, 0.8, 0.25, 1),background-color 300ms cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+::ng-deep.mat-form-field-disabled .mat-form-field-underline{
+    background-color: #dbdbdb !important;
+}
+::ng-deep.mat-button-wrapper{
+    color: #8d8d8d;
+}
+::ng-deep.mat-form-field-underline {
+    background-color: #dbdbdb !important;
+}
+::ng-deep.mat-form-field{
+    width: 100% !important;
+}
+::ng-deep.mat-form-field-infix{
+    padding: 5px 0px !important;
+}
+::ng-deep.mat-form-field-label{
+    color: #666 !important;
+    transition: transform .4s cubic-bezier(.25,.8,.25,1),color .4s cubic-bezier(.25,.8,.25,1),width .4s cubic-bezier(.25,.8,.25,1) !important;
+}
+::ng-deep.mat-form-field._mat-animation-noopable .mat-form-field-label{
+    font-size: 16px;
+}
+::ng-deep.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    font-size: 19px !important;
+}
+::ng-deep.mat-input-element{
+    caret-color: auto;
+}
+
+
+.multiline-tooltip
+{
+    white-space: pre-line;
+}
+
+::ng-deep.multiline-tooltip
+{
+    white-space: pre-line;
+}
+
+::ng-deep.mat-progress-spinner.mat-progress-spinner-indeterminate-animation[mode=indeterminate] circle {
+    transition-property: stroke !important;
+    animation-duration: 4000ms !important;
+    animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1) !important;
+    animation-iteration-count: infinite !important;
+}
+
+.tooltipImage {
+    background-image: url(/ibase/E12BROWSER/simpleditorplugin/assets/images/tooltip.svg);
+    background-repeat: no-repeat;
+    background-size: 14px;
+    background-position-y: 8px;
+    width: 20px;
+    height: 30px;
+}
+
+.tooltipWrapper {
+    position: relative;
+}
+
+.tooltipWrapper:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltipWrapper .tooltiptext {
+    visibility: hidden;
+    background-color: #fff!important;
+    color: #000!important;
+    border-radius: 6px!important;
+    padding: 6px!important;
+    box-shadow: 0 4px 15px -3px #0000004d, 0 0 0 1px #0000004d;
+    font-size: 12px!important;
+    height: auto!important;
+    width: 150px !important;
+    position: absolute;
+    z-index: 10!important;
+    margin-top: 20px;
+    right: 0;
+}
+
+.tooltiptext::before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    right: 10px;
+    left: auto;
+    margin-top: -20px;
+    border: 10px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.tooltipData
+{
+    padding-bottom: 6px;
+    white-space: initial;
+}
+
+
+.feedIcon {
+    border-radius: 16px !important;
+    height: 28px !important;
+    width: 28px !important;
+    background: #a5afc3 !important;
+    margin:2px !important
+}
+
+.taxFeedTable {
+    table-layout: fixed;
+    width: 100%;
+}
+.taxFeedTable td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+::ng-deep .mat-form-field-appearance-legacy.mat-form-field-disabled .mat-form-field-underline {
+    /* display: block !important; */
+}
+
+div[id^="taxDataDiv"] .flowPanelAlign {
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+
+div[id^="taxDataDiv"] .lblPadding {
+    margin-left: 4px;
+    margin-right: 2px;
+}

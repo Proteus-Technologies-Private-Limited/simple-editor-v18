@@ -1,0 +1,405 @@
+<div class="taxDeatilMainDiv">
+<div>
+	<div style="padding: 0px 0px 5px 0px; display: block;" id="Basic">
+	  <div class="taxFormFieldsGrid" style="padding: 10px;">
+
+		  <div class="taxFormFieldRow">
+			<div class="taxFieldIconWrap">
+				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_env'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_env'] + '&isOval=true'">
+			</div>
+			<mat-form-field class="taxFormField">
+				<mat-label>Tax Environment</mat-label>
+				<input matInput placeholder="Tax Environment" [(ngModel)]="this.allformValues[currentDetail][0]['tax_env']"
+				(focus)="setFocusFormNo(formNo)" (blur)="setSelectedText(currentDetail+'.'+domId+'.tax_env')" id="{{currentDetail}}.{{domId}}.tax_env"
+				(change)="updateTaxEnvDescription(allformValues[currentDetail][0]['tax_env'])" format="general"
+					[disabled]="editFlag == 'V'">
+				<div *ngIf="popHelpFieldList.includes('tax_env')"
+					[ngClass]="{disablePopHelp : editFlag == 'V'}"
+					(click)="openPopHelp('tax_env', allformValues[currentDetail][0]['tax_env'], formNo)"
+					class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+				</div>
+			</mat-form-field>
+		  </div>
+
+		  <div class="taxFormFieldRow">
+			<div class="taxFieldIconWrap">
+				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_class'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_class'] + '&isOval=true'">
+			</div>
+			<mat-form-field class="taxFormField">
+				<mat-label>Tax Class</mat-label>
+				<input matInput placeholder="Tax Class" [(ngModel)]="allformValues[currentDetail][0]['tax_class']"
+				(focus)="setFocusFormNo(formNo)" (blur)="setSelectedText(currentDetail+'.'+domId+'.tax_class')" id="{{currentDetail}}.{{domId}}.tax_class"
+				(change)="callLocalItemChange('tax_class', allformValues[currentDetail][0]['tax_class'], formNo)" format="general"
+					[disabled]="editFlag == 'V'">
+				<div *ngIf="popHelpFieldList.includes('tax_class')"
+					[ngClass]="{disablePopHelp : editFlag == 'V'}"
+					(click)="openPopHelp('tax_class', allformValues[currentDetail][0]['tax_class'], formNo)"
+					class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+				</div>
+			</mat-form-field>
+		  </div>
+
+		  <div class="taxFormFieldRow">
+			<div class="taxFieldIconWrap">
+				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + taxEnvDescr + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + taxEnvDescr + '&isOval=true'">
+			</div>
+			<mat-form-field class="taxFormField" floatLabel="never">
+				<input matInput placeholder="Description" [(ngModel)]="taxEnvDescr"
+				(focus)="setFocusFormNo(formNo)" (blur)="setSelectedText(currentDetail+'.'+domId+'.descr')" id="{{currentDetail}}.{{domId}}.descr"
+				(change)="callLocalItemChange('descr', taxEnvDescr, formNo)" format="general"
+				[disabled]="true">
+			</mat-form-field>
+		  </div>
+
+		  <div class="taxFormFieldRow">
+			<div class="taxFieldIconWrap">
+				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_chap'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_chap'] + '&isOval=true'">
+			</div>
+			<mat-form-field class="taxFormField">
+				<mat-label>Tax Chapter</mat-label>
+				<input matInput placeholder="Tax Chapter" [(ngModel)]="this.allformValues[currentDetail][0]['tax_chap']"
+				(focus)="setFocusFormNo(formNo)" (blur)="setSelectedText(currentDetail+'.'+domId+'.tax_chap')" id="{{currentDetail}}.{{domId}}.tax_chap"
+				(change)="callLocalItemChange('tax_chap', allformValues[currentDetail][0]['tax_chap'], formNo)" format="general"
+					[disabled]="editFlag == 'V'">
+				<div *ngIf="popHelpFieldList.includes('tax_chap')"
+					[ngClass]="{disablePopHelp : editFlag == 'V'}"
+					(click)="openPopHelp('tax_chap', allformValues[currentDetail][0]['tax_chap'], formNo)"
+					class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+				</div>
+			</mat-form-field>
+		  </div>
+	</div>
+</div>
+</div>
+
+<bb-progress-spinner #bbSpinner id="bbSpinner"></bb-progress-spinner>
+
+<div class="taxActionBar" id="doneBtnFlowPnlIDD" *ngIf="editFlag !== 'V'">
+	<label class="recalculateChBox">
+		<input type="checkbox" id="recalculateCheckBx" [(ngModel)]="recalculateOnTax" (change)="onRecalculate($event)">
+		<span class="recalculateLabel">Recalculate On Change</span>
+	</label>
+	<div class="taxActionBtns">
+		<button type="button" (click)="onCalculateTaxClick()" class="taxBtn" [disabled]="recalculateOnTax === true">ReCalculate</button>
+		<button type="button" (click)="applyTax()" class="taxBtn taxBtnPrimary">Apply</button>
+	</div>
+</div>
+
+<table cellspacing="0" cellpadding="0" style="width: 100%;">
+	<tbody>
+<tr *ngFor="let detail of alltaxFormValues['Taxes_'+domId]; let i = index;">
+	<td align="left" style="vertical-align: top; width: 100%;">
+		<div class="PanelLabel hasCommand subFormDetailFeed"
+			style="width: 100%;" (click)="toggleFeed(i+1)">
+			<table cellspacing="0" cellpadding="0" id="Detail-1.{{i + 1}}"
+				class="subFormDetailForm" style="width: 100%;">
+				<tbody>
+					<tr>
+						<td align="left" style="vertical-align: top; width: 100%;">
+							<div>
+								<div id = "taxFeedDiv{{i + 1}}" class="displayBlock taxFeedRow">
+								<div 
+									aria-hidden="true" style="display: none;">
+									<input type="checkbox" value="on"
+										title="undefined">
+										<label 
+											data-off="0FF" title="undefined">
+										</label>
+								</div>
+								<!-- <p class="checkedImage">
+									<img src="/ibase/webitm/images/selFeedImg.png">
+								</p> -->
+								<p class="checkedIcon">
+									<img src="/ibase/webitm/images/selFeedImg.svg">
+								</p>
+								 
+								<!-- <div
+									class="feedImgPnl feedImgCss flowPanelAlign feedImgIconPnl-select"
+									imgvisible="true">
+									<img class="feedIcon imgFeedIcon"
+										src="/ibase/CustomMenuImageServlet?fldValue=tax_descr&amp;object=tax_form&amp;objName=sorder&amp;ALT_FLD_VALUE=tax_descr&amp;isOval=true">
+								</div> -->
+								<div 
+								class="feedImgPnl feedImgCss flowPanelAlign feedImgIconPnl-select"
+								imgvisible="true">
+								<img class="feedIcon imgFeedIcon"
+									[src]="'/ibase/CustomMenuImageServlet?fldValue=' + detail.tax_descr + '&object=tax_form&objName=sorder&ALT_FLD_VALUE=' + detail.tax_descr + '&isOval=true'">
+							</div>
+								<table cellspacing="0" cellpadding="0" style="width: calc(100% - 40px);">
+									<tbody>
+										<tr>
+											<td align="left" style="vertical-align: top;">
+												<div
+													 id="Detail-1.{{i + 1}}"
+													style="overflow:visible; min-height: 25px;"
+													htmlvisible="true">
+													<table cellpadding="0" cellspacing="0"
+														class="taxFeedTable">
+														<tbody>
+															<tr>
+																<td style="width:2%;">#</td>
+																<td style="width:4%;">{{detail.line_no__tax}}</td>
+																<td style="width:20%;">{{detail.tax_descr}}</td>
+																<td style="width:10%;">{{detail.tax_code}}</td>
+																<td style="width:3%;">On</td>
+																<td style="width:2%;">₹</td>
+																<td
+																	style="text-align:right;width:14%;padding-right:4px;">{{detail.taxable_amt}}</td>
+																<td style="width:2%;">&#64;</td>
+																<td
+																	style="text-align:right;width:7%;padding-right:4px;">{{detail.tax_perc}}</td>
+																<td style="width:3%;">{{detail.rate_type}}</td>
+																<td
+																	style="text-align:right;width:2%;padding-right:5px;">=</td>
+																<td
+																	style="text-align:right;width:14%;padding-right:4px;">{{detail.tax_amt}}</td>
+																<td style="width:7%;">{{detail.curr_code__tran}}</td>
+																<td style="width:10%; overflow:visible; position:relative;">
+																	<div id="tooltipWrapper_{{i + 1}}">
+																		<!-- <img  src="simpleditorplugin/assets/images/tooltip.svg" style="height: 14px;width: 14px;"> -->
+																		<div class="tooltipWrapper tooltipImage">
+																			<span class="tooltiptext">
+																				<div class="tooltipData">ACCT Code: <b>{{detail.acct_code}}</b></div>
+																				<div class="tooltipData">CCTR Code: <b>{{detail.cctr_code}}</b></div>
+																			</span>
+																		</div>
+																	</div>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								</div>
+								<div id = "taxDataDiv{{i + 1}}" class="displayNone" (click)="$event.stopPropagation()">
+									<div
+									class="gwt-Label advFeedTitle flowPanelAlign lblPadding standardBrowserLabelEditor"
+									aria-hidden="true" isdisablefieldlabel="true">#</div>
+								<input type="text"
+									class="advFeedTitle textFieldEditor standardTextFieldEditor advFeedTitle-readonly disabled-field flowPanelAlign"
+									title="Detail-1.{{i + 1}}.line_no__tax"
+									 id=" Detail-1.{{i + 1}}.line_no__tax"  [value]="detail.line_no__tax"
+									tabindex="0" disabled="" readonly="" isdisablefield="true"
+									style="text-align: left; width: 41px;"
+									aria-hidden="true">
+									<div
+										class="gwt-Label display-none advFeedTitle flowPanelAlign lblPadding standardBrowserLabelEditor"
+										aria-hidden="true" isdisablefieldlabel="true">Tax Desc</div>
+									<input type="text"
+										class="advFeedTitle textFieldEditor advFeedTitle-readonly disabled-field standardTextFieldEditor flowPanelAlign"
+										title="Detail-1.{{i + 1}}.tax_descr"
+										id="Detail-1.{{i + 1}}.tax_descr" [value]="detail.tax_descr" tabindex="0" disabled="" readonly=""
+										isdisablefield="true"
+										style="text-align: left; width: 150px;"
+										aria-hidden="true">
+										<div
+											class="gwt-Label advFeedTitle flowPanelAlign lblPadding standardBrowserLabelEditor"
+											aria-hidden="true" isdisablefieldlabel="true">On ₹</div>
+										<input type="number"
+											class="advFeedTitle textFieldEditor standardTextFieldEditor advFeedTitle-readonly disabled-field flowPanelAlign"
+											id="Detail-1.{{i + 1}}.taxable_amt"  [value]="detail.taxable_amt"
+											tabindex="0" disabled="" readonly="" isdisablefield="true"
+											aria-hidden="true"
+											style="text-align: right; width: 68px;">
+											<div
+												class="gwt-Label advFeedTitle flowPanelAlign lblPadding standardBrowserLabelEditor"
+												aria-hidden="true" isdisablefieldlabel="true">&#64;</div>
+											<input type="number"
+												class="advFeedTitle textFieldEditor flowPanelAlign"
+												id="Detail-1.{{i + 1}}.tax_perc"  [value]="detail.tax_perc"
+												isdisablefield="true"
+												[disabled]="editFlag == 'V'"
+												(focus) = "onFeedBlurFocus('Detail-1.'+(i + 1)+'.tax_perc',detail.tax_perc,detail.line_no__tax,detail.line_no)"
+												(blur) = "detail.tax_perc = +$event.target.value; onFeedBlur('Detail-1.'+(i + 1)+'.tax_perc',detail.tax_perc,detail.rate_type,detail.max_rate,detail.min_rate)"
+												style="text-align: right; width: 40px;">
+												<div
+													class="gwt-Label advFeedTitle display-none standardBrowserLabelEditor flowPanelAlign lblPadding"
+													aria-hidden="true" isdisablefieldlabel="true"
+													style="display: none;">Type</div>
+												<select
+													class="listBoxStyle standardTextFieldEditor standardListBoxEditor flowPanelAlign"
+													id="Detail-1.{{i + 1}}.rate_type" [value]="detail.rate_type"
+													tabindex="0" disabled="" isdisablefield="true"
+													aria-hidden="true" style="width: 100px;">
+													<option value="F">Fixed</option>
+													<option value="P">Percentage</option>
+													<option value="M">Multiplier</option>
+												</select>
+												<div
+													class="gwt-Label advFeedTitle flowPanelAlign lblPadding standardBrowserLabelEditor"
+													aria-hidden="true" isdisablefieldlabel="true">=</div>
+												<input type="number"
+													class="advFeedTitle textFieldEditor standardTextFieldEditor advFeedTitle-readonly disabled-field flowPanelAlign"
+													id="Detail-1.{{i + 1}}.tax_amt" [value]="detail.tax_amt"
+													tabindex="0" disabled="" readonly="" isdisablefield="true"
+													aria-hidden="true"
+													style="text-align: right; width: 66px;">
+													<table cellspacing="0" cellpadding="0"
+														class="taxHiddenFieldsTable">
+														<tbody>
+															<tr>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.line_no" [value]="detail.line_no">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.ATTRIBUTE_NODE"
+																		value="<attribute pkNames=&quot;&quot; selected=&quot;N&quot; status=&quot;N&quot; updateFlag=&quot;A&quot;/>">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.ORIG_ATTRIBUTE_NODE"
+																		value="<attribute pkNames=&quot;&quot; selected=&quot;N&quot; status=&quot;N&quot; updateFlag=&quot;A&quot;/>">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.form_no" [value]="detail.form_no">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_code" [value]="detail.tax_code">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																	 id=" Detail-1.{{i + 1}}.chg_stat" [value]="detail.chg_stat">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		 id="Detail-1.{{i + 1}}.tax_form" [value]="detail.tax_form">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id=" Detail-1.{{i + 1}}.tax_form_date" [value]="detail.tax_form_date">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.acct_code" [value]="detail.acct_code">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.cctr_code" [value]="detail.cctr_code">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_class" [value]="detail.tax_class">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_chap" [value]="detail.tax_chap">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_base" [value]="detail.tax_base">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_env" [value]="detail.tax_env">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_set" [value]="detail.tax_set">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tran_code" [value]="detail.tran_code">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tran_id" [value]="detail.tran_id">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.effect" [value]="detail.effect">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.2.acct_code__reco" [value]="detail.acct_code__reco">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.cctr_code__reco" [value]="detail.cctr_code__reco">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.reco_perc" [value]="detail.reco_perc">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.reco_amount" [value]="detail.reco_amount">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.round" [value]="detail.round">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																	 id="Detail-1.{{i + 1}}.round_to" [value]="detail.round_to">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.posted" [value]="detail.posted">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.pay_tax" [value]="detail.pay_tax">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.series_edit" [value]="detail.series_edit">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.curr_code__tax" [value]="detail.curr_code__tax">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.tax_amt__tcurr" [value]="detail.tax_amt__tcurr">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.exch_rate" [value]="detail.exch_rate">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.exch_rate_tran" [value]="detail.exch_rate_tran">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.cc_editopt" [value]="detail.cc_editopt">
+																</td>
+																<td align="left" style="vertical-align: top;">
+																	<input type="hidden"
+																		id="Detail-1.{{i + 1}}.sales_pers" [value]="detail.sales_pers">
+																</td>
+															</tr>
+														</tbody>
+													</table>
+													</div>
+							</div>
+						</td>
+						<td align="left" class="displayNone" style="vertical-align: top; position: absolute; right: 15px;" id="refreshImg{{i + 1}}">
+							<table cellspacing="0" cellpadding="0" vertbtnpanel="false"
+								aria-hidden="true" style="height: 100%;">
+								<tbody>
+									<tr>
+										<td align="center" style="vertical-align: top;" (click)="$event.stopPropagation(); toggleFeed(i+1)">
+											<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABRUlEQVR42rVSu0oFMRC9goiFoj8gYiEIgliI2GhhYeerUO4fWFpYiCBsaaNc3c1kJonrVoLuBwhip4UvxMJKwcI/8A/Wk4VbLKuoEQNDwmTmnDOPRuO/jlVq1DI3rdabhnnDiSwaY/p+lJy1Wv1WZB225QEAlMBu8X42Wq8Eq0LyEoDeDkXmw0GI5hzzPRH1hPeH+QLlLAQDQMEObDdcgW8u8+mXASIy7LsNFofA1ZoCkRx/BxUnx/Ek6tqD3SDpBfYA23daj1WSnRuC/x0kMxUAFcfb+CjAfHJENPCZsjRNexFzB/bj2icnySw27hUKrjyzJRqPoqizHB02EL5lv0i4z7Is664BKKUG0ZxzBI+U0jFr3NflBoo8AvzJr3QbtHaKouhA8GW7Ns+K+qf84sA3ked51/fj0Zr/NF8wTkPm2m9yPgDTo7nv9fkIPQAAAABJRU5ErkJggg=="
+												width="16" height="16">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</td>
+</tr>
+</tbody>
+</table>
+</div>

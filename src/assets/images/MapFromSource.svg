@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="Map_From_Source" data-name="Map From Source" class="cls-1" d="M179.728,92.473H129.274L119.226,80.416a1.527,1.527,0,0,0-1.221-.552h-40.6A11.121,11.121,0,0,0,66.442,91.047v73.728a11.121,11.121,0,0,0,10.963,11.169H179.728a11.125,11.125,0,0,0,10.966-11.169V103.642A11.124,11.124,0,0,0,179.728,92.473Z"/>
+</svg>

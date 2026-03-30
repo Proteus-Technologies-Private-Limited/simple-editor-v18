@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <style>
+      .grid1 {
+        filter: url(#filter);
+      }
+
+      .grid2 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+    <filter id="filter" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#fff"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g class="grid1">
+    <path class="grid2" d="M73,64H85.333a9,9,0,0,1,9,9V85.333a9,9,0,0,1-9,9H73a9,9,0,0,1-9-9V73A9,9,0,0,1,73,64Z"/>
+    <path id="Rectangle_1_copy" data-name="Rectangle 1 copy" class="grid2" d="M122,64h12.333a9,9,0,0,1,9,9V85.333a9,9,0,0,1-9,9H122a9,9,0,0,1-9-9V73A9,9,0,0,1,122,64Z"/>
+    <path id="Rectangle_1_copy_2" data-name="Rectangle 1 copy 2" class="grid2" d="M171,64h12.333a9,9,0,0,1,9,9V85.333a9,9,0,0,1-9,9H171a9,9,0,0,1-9-9V73A9,9,0,0,1,171,64Z"/>
+    <path id="Rectangle_1_copy_3" data-name="Rectangle 1 copy 3" class="grid2" d="M73,113H85.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H73a9,9,0,0,1-9-9V122A9,9,0,0,1,73,113Z"/>
+    <path id="Rectangle_1_copy_3-2" data-name="Rectangle 1 copy 3" class="grid2" d="M122,113h12.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H122a9,9,0,0,1-9-9V122A9,9,0,0,1,122,113Z"/>
+    <path id="Rectangle_1_copy_3-3" data-name="Rectangle 1 copy 3" class="grid2" d="M171,113h12.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H171a9,9,0,0,1-9-9V122A9,9,0,0,1,171,113Z"/>
+    <path id="Rectangle_1_copy_4" data-name="Rectangle 1 copy 4" class="grid2" d="M73,162H85.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H73a9,9,0,0,1-9-9V171A9,9,0,0,1,73,162Z"/>
+    <path id="Rectangle_1_copy_4-2" data-name="Rectangle 1 copy 4" class="grid2" d="M122,162h12.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H122a9,9,0,0,1-9-9V171A9,9,0,0,1,122,162Z"/>
+    <path id="Rectangle_1_copy_4-3" data-name="Rectangle 1 copy 4" class="grid2" d="M171,162h12.333a9,9,0,0,1,9,9v12.333a9,9,0,0,1-9,9H171a9,9,0,0,1-9-9V171A9,9,0,0,1,171,162Z"/>
+  </g>
+</svg>

@@ -1,0 +1,656 @@
+<div *ngIf="isLoading" class="sl-loading-overlay">
+	<div class="sl-loading-spinner"></div>
+</div>
+<div *ngIf="objFormDetailsJson" id="simple-layout-ctr_simple_editor" class="simple-layout-ctr">
+	<div *ngIf="showHeaderForm && transMode !== 'I'" id="simple_editor_simple_headerDiv" class="sl-visualHeaderDiv">
+		<div id="simple_editor_simple_headerPnl" class="sl-headerPanel">
+			<div class="sl-headerInnerPnl">
+				<div class="sl-headerContentLeft">
+					<div class="sl-iconContainer">
+						<img [src]="objHeaderImg" class="objHeaderImgClass"
+							onerror=" this.src= 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+0lEQVR42mNgoBT8//8/FohXQ/FiInA+EDMjGwACk4D4wH/iwD8glkQ3AGT7FSIN+A3EUugGgGyfAMQdBPBEIP4ExDLoBgQQGV5MQPwNiBXQDYgh0gBuaHgJkWUAVL0OugBBA0CBBsS+QFwKVd8CxD5gr0AFIggY4ABV9xCIpwDxDSjfC2ZAERDLY8FiQMwClb8HxOFAPBOIk4H4GhBXggxYCMT3gfgRGn4OxHOBWBFqyRwgroOyFwHxZBAD5kReIBZAw4LQUGcG4gwgfgz1dyMQhwLxHVCYEBvysDB4CsSzgfgulO9DrAGSQOwMxLlQjSVQQ2XIyb3ayHwAjTAUhgoXO44AAAAASUVORK5CYII=' ">
+					</div>
+					<div class="sl-formTitleWrap">
+						<div *ngIf="compTitle" class="sl-formTitle">{{compTitle}}</div>
+						<div *ngIf="editFlag == 'A'" class="sl-formSubTitle">Adding New</div>
+						<div *ngIf="editFlag == 'E' || editFlag == 'V'" class="sl-formSubTitle">{{pkValues}}</div>
+					</div>
+				</div>
+				<div class="sl-headerContentRight">
+					<div *ngIf="transMode !== 'I' && editFlag !== 'V'" class="sl-saveBtn-ctr">
+						<div class="saveBtn btnShadow" (click)="editFlag == 'V' ? false : afterSaveClick(false)" [ngClass]="{disableBtn : editFlag == 'V'}">
+							<img src="/ibase/E12BROWSER/simpleditorplugin/assets/images/Done.svg" class="saveBtnClass">
+							<div class="doneCursor">Save</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="showHeaderForm && allformValues" [ngClass]="{enableHeaderAndDetail : pdfSrc}" class="mainContentDiv">
+		<div *ngIf="objFormDetailsJson" id="formContentDivID" #resizeElement class="formContentDiv">
+			<div *ngFor="let objForm of objFormDetailsJson | keyvalue : keyAscOrder; trackBy: trackByIndex">
+				<div *ngIf="objForm !== undefined && objForm !== null && objForm.key && objForm.key == '1'">
+					<div *ngFor="let grpBoxObject of objForm.value.groups | keyvalue; let i = index; trackBy: trackByIndex"
+						[ngStyle]="i === 0 ? {'display': 'block'} : {'display': 'none'}"
+						class="e12GroupBox e12GroupBox-1 grpBoxClass"
+						[id]="'simple_editor_' + grpBoxObject.key">
+					   <div *ngIf="grpBoxObject && grpBoxObject.value.grpNodeObj.text" class="groupBox-hdr-wrapper" 
+                 			(contextmenu)="onContextMenuClick($event, 'simple_editor_' + grpBoxObject.value.grpNodeObj.text)">
+							<div *ngIf="grpBoxObject.value.grpNodeObj && grpBoxObject.value.grpNodeObj.text"
+								class="groupBoxHeaderPnl" 
+								[ngClass]="{'simple_expandGroupBox': i === 0, 'simple_collapseGroupBox': i !== 0}"
+								(click)="hideShowGroupBtn('simple_editor_' + grpBoxObject.value.grpNodeObj.text)">
+								<div class="groupBxHeaderLbl">
+									{{ grpBoxObject.value.grpNodeObj.text }}
+								</div>
+							</div>
+							<div *ngIf="i === 0" class="show-more-ctr" >
+								<div class="show-more-btn" id="moreBtnForExtractId" (click)="onContextMenuClick($event, 'moreBtnForExtractId', true)">
+									<span class="show-more-title">Show All</span>
+									<img class="show-more-icon" src="/ibase/images/ExpandV.svg">
+								</div>
+							</div>
+							<div (click)="hideShowGroupBtn('simple_editor_' + grpBoxObject.value.grpNodeObj.text)" class="hideShowGroupBtn" [ngClass]="{'vision-ui-arrow_right': i !== 0}"></div>
+						</div>
+						<div *ngIf="grpBoxObject" class="freeFormContentThreeColumn" 
+							[ngClass]="{'expandGroupBoxChild': i === 0, 'collapseGroupBoxChild': i !== 0}">
+							<ng-container *ngFor="let yCordColMap of grpBoxObject.value.grpBox_contents | keyvalue; trackBy: trackByIndex">
+								<div id="containerID">
+								<!-- <ng-container *ngFor="let colNodeObj of yCordColMap.value | keyvalue; trackBy: trackByIndex"> -->
+									<ng-container *ngIf="yCordColMap.value && yCordColMap.value.name && yCordColMap.value.editStyle && yCordColMap.value.editStyle === 'ddlb'; else date">
+										<div class="mainInputField">
+											<div *ngIf="editFlag == 'V' || allformValues[yCordColMap.value.name + '_protect'] === '1' || yCordColMap.value.disabled === true || yCordColMap?.value?.tab === '32766'" class="disableSimpleFilterIcon" id="filterIconContainer">
+												<div *ngIf="(allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0" class="disabledOptionIcon">
+													{{ getDdlbIconText(yCordColMap.value.name) }}
+												</div>
+												<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="disabledOptionIcon"></div>
+											</div>
+											<div *ngIf="editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1' && yCordColMap.value.disabled !== true && yCordColMap?.value?.tab !== '32766'" class="simpleFilterIcon" id="filterIconContainer">
+												<div *ngIf="(allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0" class="optionIcon">
+														{{ getDdlbIconText(yCordColMap.value.name) }}
+												</div>
+												<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="optionIcon">
+												</div>
+											</div>
+											<div *ngIf="allformValues && allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null" class="headerSelectDiv">
+												<div class="labelMainDiv">
+													<div *ngIf="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'" class="requiredDiv">*</div>
+													<label class="matSelectLblText">{{ labelMapData.get(yCordColMap.value.name + '_t') }}</label>
+												</div>
+												<select id="{{'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name}}"
+													class="headerSelectField"
+													[(ngModel)]="allformValues[yCordColMap.value.name]"
+													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
+													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)">
+													<option *ngFor="let options of optionsMap.get(yCordColMap.value.name) | keyvalue; trackBy: trackByIndex" [value]="options.key">
+													{{ options.value }}
+													</option>
+												</select>
+											</div>
+										</div>
+									</ng-container>
+									<ng-template #date>
+										<ng-container *ngIf="yCordColMap.value && yCordColMap.value.name && yCordColMap.value.format && (yCordColMap.value.format === '[shortdate] [time]' || yCordColMap.value.format === 'dd/mm/yy'); else number">
+											<div class="mainInputField">
+												<div *ngIf="editFlag == 'V' || allformValues[yCordColMap.value.name + '_protect'] === '1' || yCordColMap.value.disabled === true || yCordColMap?.value?.tab === '32766'" class="disabledFilterIcon" id="filterIconContainer" >
+													<div *ngIf="((allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0)" class="disabledOptionIcon" id="{{'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name}}_Icon">
+													<span class="day">{{getFirstTwoCharOfDate(allformValues[yCordColMap.value.name].toString())}}</span>
+														<span class="month">{{getMonthOfDate(allformValues[yCordColMap.value.name].toString() )}}</span>
+													</div>
+													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="disabledOptionIcon" id="{{'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name}}_Icon"></div>
+												</div>
+												<div *ngIf="editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1' && yCordColMap.value.disabled !== true && yCordColMap?.value?.tab !== '32766'" class="dateFilterIcon" id="filterIconContainer">
+													<div *ngIf="((allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0)" class="optionIcon" id="{{'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name}}_Icon" >
+														<span class="day">{{getFirstTwoCharOfDate(allformValues[yCordColMap.value.name].toString())}}</span>
+														<span class="month">{{getMonthOfDate(allformValues[yCordColMap.value.name].toString() )}}</span>
+													</div>
+													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="optionIcon" id="{{'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name}}_Icon">
+													</div>
+												</div>
+												<div class="datePickerDiv">
+													<bb-day-picker
+														[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+														[label]="labelMapData.get(yCordColMap.value.name + '_t')"
+														[value]="allformValues[yCordColMap.value.name]"
+														[disabled]="editFlag === 'V' || allformValues[yCordColMap.value.name + '_protect'] === '1' || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+														[id]="'Detail'+ objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+														[format]="yCordColMap.value.format"
+														(bbFocus)="setFocusFormNo(objForm.key, 'Detail'+ objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
+														(bbChange)="bbDateChange($event)"
+														[isSimpleLayout]="true"
+														[placeholder]="yCordColMap.value.displayLabel"
+														(bbSetFocusOnError)="bbSetFocusOnError($event)"
+														(bbSetForceSave)="bbSetForceSave($event)"
+														(bbDateBlur)="bbDateBlur($event)"
+														[formWiseFormatJson] = "formWiseFormatJson">
+													</bb-day-picker>
+												</div>
+											</div>
+										</ng-container>
+									</ng-template>
+									<ng-template #number>
+										<ng-container *ngIf="yCordColMap.value && yCordColMap.value.name && yCordColMap.value.format && yCordColMap.value.format === '[number]'; else other">
+											<div class="mainInputField">
+												<div *ngIf="editFlag == 'V' || allformValues[yCordColMap.value.name + '_protect'] === '1' || yCordColMap.value.disabled === true || yCordColMap?.value?.tab === '32766'" class="disabledFilterIcon" id="filterIconContainer" >
+													<div *ngIf="(allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0" class="disabledOptionIcon">
+														{{ allformValues[yCordColMap.value.name].toString().substring(0,1).toUpperCase() }}
+													</div>
+													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="disabledOptionIcon"></div>
+												</div>
+												<div *ngIf="editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1' && yCordColMap.value.disabled !== true && yCordColMap?.value?.tab !== '32766'" class="numberFilterIcon" id="filterIconContainer">
+													<div *ngIf="(allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0" class="optionIcon">
+														{{ allformValues[yCordColMap.value.name].toString().substring(0,1).toUpperCase() }}
+													</div> 
+													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="optionIcon">
+													</div> 
+												</div>
+												<bb-number class="setNumFormLayout" [placeholder]="labelMapData.get(yCordColMap.value.name + '_t')"
+													[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+													[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
+													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)" [isSimpleLayout]="true">
+													<div *ngIf="yCordColMap.value.popHelp === 'true'"
+														[ngClass]="{disablePopHelp: editFlag == 'V' || false}"
+														(click)="openPopHelp(yCordColMap.value.name,allformValues[yCordColMap.value.name])"
+														class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+													</div>
+												</bb-number>
+											</div>
+										</ng-container>
+									</ng-template>	
+									<ng-template #other>
+										<ng-container *ngIf="yCordColMap.value && yCordColMap.value.name && allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && yCordColMap.value.height && yCordColMap.value.height > 30; else elseBlock">
+											<div *ngIf="(yCordColMap.value.displayLabel === undefined || yCordColMap.value.displayLabel === null || yCordColMap.value.displayLabel === '') && yCordColMap.value.disabled === true" class="noPlaceholderTextArIsDisableDiv">
+												<bb-textarea #textarea class="setFormLayout" class="basicField"
+													[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+													[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+													[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+													[format]="yCordColMap.value.format" [paramData]="allformValues"
+													(blur)="setSelectedText($event,'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													[noPlaceholderIsDisable]="true" [inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+													(preventItemChange)="onPreventItemChange($event)"
+													(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+													[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+													[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap?.value?.name" [compData]="compData" [pkValues]="pkValues" (onChangeValue)="setEmitValue($event,yCordColMap.value.name)"
+													[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+													[domID] = '1' [callApiForSimpleLayout] = "true">
+												</bb-textarea>
+											</div>
+											<div *ngIf="(yCordColMap.value.displayLabel === undefined || yCordColMap.value.displayLabel === null || yCordColMap.value.displayLabel === '') && yCordColMap.value.disabled !== true" class="noPlaceholderNotDisable">
+												<bb-textarea #textarea class="setFormLayout" class="basicField"
+													[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+													[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+													[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+													[format]="yCordColMap.value.format" [paramData]="allformValues"
+													(blur)="setSelectedText($event,'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													[noPlaceholderIsDisable]="false" 
+													[noPlaceholderNotDisable] = "true" 
+													[inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+													(preventItemChange)="onPreventItemChange($event)"
+													(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+													[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+													[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap?.value?.name" [compData]="compData" [pkValues]="pkValues" (onChangeValue)="setEmitValue($event,yCordColMap.value.name)"
+													[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+													[domID] = '1' [callApiForSimpleLayout] = "true">
+												</bb-textarea>
+											</div>
+											<div *ngIf="yCordColMap.value.displayLabel !== undefined && yCordColMap.value.displayLabel !== null && yCordColMap.value.displayLabel !== ''" class="mainInputField">
+												<bb-textarea #textarea class="setFormLayout" class="basicField" [placeholder]="yCordColMap.value.displayLabel"
+													[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+													[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+													[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+													[format]="yCordColMap.value.format" [paramData]="allformValues"
+													(blur)="setSelectedText($event,'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+													[noPlaceholderIsDisable]="false" 
+													[noPlaceholderNotDisable]="false"
+													[inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+													(preventItemChange)="onPreventItemChange($event)"
+													(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+													[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+													[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap?.value?.name" [compData]="compData" [pkValues]="pkValues" (onChangeValue)="setEmitValue($event,yCordColMap.value.name)"
+													[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+													[domID] = '1' (autoSuggSelectedData)="autoSuggSelectedData($event)"
+													[callApiForSimpleLayout] = "true">
+												</bb-textarea>
+											</div>
+										</ng-container>
+										<ng-template #elseBlock>
+											<ng-container *ngIf="allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null">
+												<div class="textBoxBlock">
+													<div *ngIf="(yCordColMap.value.displayLabel === undefined || yCordColMap.value.displayLabel === null || yCordColMap.value.displayLabel === '') && yCordColMap.value.disabled === true" class="noPlaceholderIsDisableDiv">
+														<bb-textbox #textbox class="setFormLayout" class="basicField" 
+															[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+															[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+															[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+															[dataType]="yCordColMap.value.dataType"
+															(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name,'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+															(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+															[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+															[format]="yCordColMap.value.format"
+															(blur)="setSelectedText($event, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+															[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+															[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap.value.name"
+															[ngClass]="{'pophelpNumDetaillignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === 'true' , 'numDetailAlignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === ''}"
+															[compData]="compData" [paramData]="allformValues" (itemChangeValues)="onItemChangeFromSuggestBox($event)"
+															(onChangeValue)="setEmitValue($event,yCordColMap.value.name)" [transMode]="transMode" [arrayOfDateFields]="arrayOfDateFields" primaryKey="false"
+															[noPlaceholderIsDisable]="true" [inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+															(preventItemChange)="onPreventItemChange($event)"
+															(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+															[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+															[domID] = '1' (autoSuggSelectedData)="autoSuggSelectedData($event)"
+															[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+															[allformValues]="allformValues" [index]="0">
+															<!-- (blur)="onInputChange(yCordColMap.value.name, objForm.key, $event)" -->
+														</bb-textbox>
+													</div>
+													<div *ngIf="(yCordColMap.value.displayLabel === undefined || yCordColMap.value.displayLabel === null || yCordColMap.value.displayLabel === '') && yCordColMap.value.disabled !== true" class="noPlaceholderNotDisable">
+														<bb-textbox #textbox class="setFormLayout" class="basicField" 
+														[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"
+														[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+														[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+														[dataType]="yCordColMap.value.dataType"
+														(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name,'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+														(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+														[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+														[format]="yCordColMap.value.format"
+														(blur)="setSelectedText($event, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name, 'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name, yCordColMap.value.dataType)"
+														[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+														[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap.value.name"
+														[ngClass]="{'pophelpNumDetaillignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === 'true' , 'numDetailAlignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === ''}"
+														[compData]="compData" [paramData]="allformValues" (itemChangeValues)="onItemChangeFromSuggestBox($event)"
+														(onChangeValue)="setEmitValue($event,yCordColMap.value.name)" [transMode]="transMode" [arrayOfDateFields]="arrayOfDateFields" primaryKey="false"
+														[noPlaceholderIsDisable]="false" 
+														[noPlaceholderNotDisable] = "true"
+														[inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+														(preventItemChange)="onPreventItemChange($event)"
+														(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+														[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+														[domID] = '1' (autoSuggSelectedData)="autoSuggSelectedData($event)"
+														[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+														[allformValues]="allformValues" [index]="0">
+														</bb-textbox>
+													</div>
+													<div *ngIf="yCordColMap.value.displayLabel !== undefined && yCordColMap.value.displayLabel !== null && yCordColMap.value.displayLabel !== ''" class="mainInputField">
+														<bb-textbox #textbox class="setFormLayout" class="basicField"
+															[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'" 
+															[placeholder]="yCordColMap.value.displayLabel"
+															[(ngModel)]="allformValues[yCordColMap.value.name]" [uxDesign]="'UX3'"
+															[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
+															[dataType]="yCordColMap.value.dataType"
+															(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
+															(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)"
+															[id]="'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name"
+															[format]="yCordColMap.value.format"
+															(blur)="setSelectedText($event, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
+															[drawPophelp]="yCordColMap.value.popHelp === 'true'" [popHelpRef]="popHelp" [formNo]="objForm.key"
+															[pophelpDataList]="pophelpDataList" [fieldName]="yCordColMap.value.name"
+															[ngClass]="{'pophelpNumDetaillignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === 'true' , 'numDetailAlignRight' : (yCordColMap.value.dataType === 'decimal' || yCordColMap.value.dataType === 'number') && yCordColMap.value.popHelp === ''}"
+															[compData]="compData" [paramData]="allformValues" (itemChangeValues)="onItemChangeFromSuggestBox($event)"
+															(onChangeValue)="setEmitValue($event,yCordColMap.value.name)" [transMode]="transMode" [arrayOfDateFields]="arrayOfDateFields" primaryKey="false"
+															[noPlaceholderIsDisable]="false" [inputID]="'Detail' + objForm.key + '-' + objForm.key + '-' + yCordColMap.value.name" [isSimpleLayout]="true"
+															(preventItemChange)="onPreventItemChange($event)"
+															(preventPopHelpItemChange)="onPreventPopHelpItemChange($event)"
+															[formWiseFormatJson] = "formWiseFormatJson" [limit]="yCordColMap.value.limit"
+															[domID] = '1' (autoSuggSelectedData)="autoSuggSelectedData($event)"
+															[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+															[allformValues]="allformValues" [index]="0">
+														</bb-textbox>
+													</div>
+												</div>
+											</ng-container>
+										</ng-template>
+									</ng-template>
+									<!-- </ng-container> -->
+								</div>
+							</ng-container>
+						</div>
+					</div>
+				</div>		
+				<!-- Detail form start -->
+				<div *ngIf="objForm !== undefined && objForm !== null && objForm.key && objForm.key !== '1'" class="e12GroupBox-2">
+					<div class="detailHeadingExtract detailHeadingTabExtract detailHeadingExtractFeed" style="display: flex;">
+						<div *ngIf="objForm.value !== undefined && objForm.value !== null && objForm.value.Title !== undefined && objForm.value.Title !== null" class="detailObjTitle">
+							<label class="datailHeaderLabelExtract" style="transition: none;">{{ objForm.value.Title }}</label>
+						</div>
+						<div class="showMoreDiv">
+							<div class="showMoreDiv1">
+								<div *ngIf="filteredActionArrayForForms && filteredActionArrayForForms[objForm.key]" class="showmore-section">
+									<ng-container *ngFor="let action of filteredActionArrayForForms[objForm.key] | slice:0:3" >
+										<button class="actionButtons" (click)="performLinksActions(objForm.key, action, allformValues['Detail' + objForm.key], '', true)">
+												<img *ngIf="action.image !== undefined" class="actionButtonImage" [src]="action.image !== null && action.image !== 'null' && action.image !== undefined ? '/' + action.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+												<!-- <img *ngIf="action.action_id !== undefined" class="actionButtonImage" [src]="action.image !== null && action.image !== 'null' && action.image !== undefined ? '/' + action.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'"> -->
+												<span *ngIf="action.link_title !== undefined" class="actionSpan">{{ action.link_title }}</span>
+												<span *ngIf="action.title !== undefined" class="actionSpan">{{ action.title }}</span>
+										</button>
+									</ng-container>
+									<button mat-icon-button class="showmore-button" (click)="showMoreActionBtn()" [matMenuTriggerFor]="menu2">
+										<!-- <span class="visioniconmore-v icon-more-v"></span> -->
+										<span>&#8942;</span>
+									</button>
+									<div class="actionsDiv enableRow">
+										<mat-menu #menu2="matMenu">
+											<div class="rowCountExtend">
+												<div class="rowLabelExtract">
+													<img src="/ibase/E12BROWSER/simpleditorplugin/assets/images/RowCount.svg">
+												</div>
+												<div class="setRowCount open-popup" (click)="openRowCountPopup(objForm.key)">Set Rows Count</div>
+											</div>
+											<div class="options-box" *ngFor="let action of filteredActionArrayForForms[objForm.key] | slice:3">
+												<div (click)="performLinksActions(objForm.key, action,  allformValues['Detail' + objForm.key], '', true)">
+													<div class="enableRow">
+														<div *ngIf="action.image !== undefined">
+															<img class="removeExtractDiv" [src]="action.image !== null && action.image !== 'null' && action.image !== undefined ? '/' + action.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+														</div>
+														<!-- <div *ngIf="action.action_id !== undefined">
+															<img class="removeExtractDiv" [src]="action.image !== null && action.image !== 'null' && action.image !== undefined ? '/' + action.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+														</div> -->
+														<div *ngIf="action.link_title !== undefined" class="OptionMenu">{{ action.link_title }}</div>
+														<div *ngIf="action.title !== undefined" class="OptionMenu">{{ action.title }}</div>
+													</div>
+												</div>
+											</div>
+										</mat-menu>
+									</div>
+								</div>
+								<div *ngIf = "openRowCount && openRowCount[objForm.key] == true" id="RowCount_{{objForm.key}}">
+									<bb-set-row-count #bbSetRowCount placeholder="Enter the Number of Rows"
+										[(ngModel)]="userInput" [compData]="compData" [Data]="allformValues"
+										[formNo]="objForm.key" [isPopupVisible]="true" (closeRowCountPopup)="closeRowCountPopup($event)">
+									</bb-set-row-count>
+								</div>
+							</div>  
+						</div>
+						<mat-menu #menu="matMenu" xPosition="before">
+						</mat-menu>
+					</div> 
+					<div class="tableDetailsContainer" id="tableDetails_{{objForm.key}}">
+						<div id="div1" *ngIf="allformValues">
+							<table id="tableDetail_{{objForm.key}}" class="extractTable addScrollBar"> 
+								<thead class="fixHeaderDetailTable">                
+									<tr class="stickyHeader bckGrndColorForRow">
+										<div *ngIf="finalColumnsObjArray && finalColumnsObjArray[objForm.key]" class="detailRowTitle">
+											<div *ngFor="let detailNodeObj of finalColumnsObjArray[objForm.key]; trackBy: trackByIndex" class="detailRowTitle_1">
+												<th *ngIf="detailNodeObj.displayLabel !== undefined" id="Detail{{objForm.key}}.{{detailNodeObj.name}}_t_t" class="leftTableHorizontalRow" [ngClass]="{mandatoryRedImgSL :  false, hideCellData : (detailNodeObj.isVisible && detailNodeObj.isVisible == '0')}" [style.min-width]="(+detailNodeObj.width + 25) + 'px'">
+													{{ detailNodeObj.displayLabel }}
+													<span [style.color]="detailNodeObj.required == 'true' ? 'red' : 'inherit'">
+														{{ detailNodeObj.required == 'true' ? '*' : '' }}
+													</span>
+												</th>
+												<th *ngIf="detailNodeObj.displayLabel == undefined && labelMapData.get(detailNodeObj.name + '_t') !== undefined && labelMapData.get(detailNodeObj.name + '_t') !== null && labelMapData.get(detailNodeObj.name + '_t') !== '' && (detailNodeObj.isVisible && detailNodeObj.isVisible == '1')" id="Detail{{objForm.key}}.{{detailNodeObj.name}}_t_t" class="leftTableHorizontalRow" [ngClass]="{mandatoryRedImgSL :  false, hideCellData : (detailNodeObj.isVisible && detailNodeObj.isVisible == '0')}" [style.min-width]="(+detailNodeObj.width + 25) + 'px'">
+													{{ (labelMapData.get(detailNodeObj.name + '_t')).replaceAll(':','') }}
+													<span [style.color]="detailNodeObj.required == 'true' ? 'red' : 'inherit'">
+														{{ detailNodeObj.required == 'true' ? '*' : '' }}
+													</span>
+												</th>
+											</div>
+										</div>
+									</tr>
+								</thead> 
+								<tbody>
+									<ng-container *ngIf="allformValues && allformValues['Detail' + objForm.key] !== undefined && allformValues['Detail' + objForm.key] !== null">
+										<tr *ngFor="let detail of allformValues['Detail' + objForm.key]; let i = index; trackBy: trackByIndex"	[ngClass]="{disableRowSelectionOnView : editFlag == 'V'}"	id="selected_Detail{{objForm.key}}_RowNo_{{detail.domID}}"	(click)="rowSelected('Detail' + objForm.key, i, detail.domID, false)"	class="bckGrndColorForRow">
+											<ng-container *ngIf="finalColumnsObjArray && finalColumnsObjArray[objForm.key]">
+												<ng-container *ngFor="let colNodeVal of finalColumnsObjArray[objForm.key]; trackBy: trackByIndex">
+													<ng-container *ngIf="detail[colNodeVal.name] !== undefined && detail[colNodeVal.name] !== null && colNodeVal.editStyle && colNodeVal.editStyle === 'ddlb'; else date">
+															<td class="addBorderToFeeds" [style.width]="calculateWidthOthers(colNodeVal.width)" [ngClass]="{hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0')}">
+																<select class="tableDetailRow detailSelectRow"
+																		id="Detail{{objForm.key}}.{{detail.domID}}.{{colNodeVal.name}}"
+																		[required]="colNodeVal.required === 'true' || colNodeVal.required === 'yes'"
+																		(focus)="onDetailFieldFocus(objForm.key,'Detail' + objForm.key +'.'+(detail.domID)+'.'+colNodeVal.name, i, colNodeVal.name)"
+																		(blur)="onDetailFieldBlur($event,'Detail' + objForm.key +'.'+(detail.domID)+'.'+colNodeVal.name)"
+																		[(ngModel)]="detail[colNodeVal.name]"
+																		[ngClass]="{disableCellData : editFlag == 'V' || detail[colNodeVal.name + '_protect'] === '1' || colNodeVal.isPrimaryKey || (editFlag == 'E' && colNodeVal.disabled) || yCordColMap?.value?.tab === '32766' || colNodeVal.disabled, hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0')}"
+																		primaryKey="false"
+																		[disabled]="isFieldDisabled(colNodeVal.name, colNodeVal, objForm.key, i)" >
+																		<option *ngFor="let options of optionsMap.get(colNodeVal.name) | keyvalue; trackBy: trackByIndex" [value]="options.key">
+																			{{ options.value }}
+																		</option>
+																</select>
+															</td>
+													</ng-container>
+													<ng-template #date>
+														<ng-container *ngIf="detail[colNodeVal.name] !== undefined && detail[colNodeVal.name] !== null && colNodeVal.format && (colNodeVal.format === '[shortdate] [time]' || colNodeVal.format === 'dd/mm/yy'); else number">
+															<td class="addBorderToFeeds" [style.width]="calculateWidthOthers(colNodeVal.width)" [ngClass]="{hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0')}">
+																<div class="tableDetailRow tableDetailDateFeed"
+																	[ngClass]="{disableCellData: editFlag == 'V' || detail[colNodeVal.name + '_protect'] === '1' || colNodeVal.isPrimaryKey || colNodeVal.disabled, hideCellData: (colNodeVal.isVisible && colNodeVal.isVisible == '0')}">
+																	<bb-day-picker
+																		[required]="colNodeVal.required === 'true' || colNodeVal.required === 'yes'"
+																		[label]="labelMapData.get(colNodeVal.name + '_t')"
+																		[value]="detail[colNodeVal.name]"
+																		[disabled]="isFieldDisabled(colNodeVal.name, colNodeVal, objForm.key, i)"
+																		[id]="'Detail' + objForm.key + '.' + detail.domID + '.' + colNodeVal.name"
+																		[format]="colNodeVal.format"
+																		(bbFocus)="onDetailFieldFocus(objForm.key, 'Detail' + objForm.key +'.'+(detail.domID)+'.'+colNodeVal.name, i, colNodeVal.name)"
+																		(bbChange)="bbDateChange($event)"
+																		[isSimpleLayout]="true"
+																		[placeholder]="colNodeVal.displayLabel"
+																		(bbSetFocusOnError)="bbSetFocusOnError($event)"
+																		(bbSetForceSave)="bbSetForceSave($event)"
+																		(bbDateBlur)="bbDateBlur($event)"
+																		[formWiseFormatJson]="formWiseFormatJson">
+																	</bb-day-picker>
+																</div>
+															</td> 
+														</ng-container>
+													</ng-template>
+													<ng-template #number>
+														<!-- <ng-container *ngIf="detail.hasOwnProperty(colNodeVal.name) && detail[colNodeVal.name] !== undefined && detail[colNodeVal.name] !== null && colNodeVal.dataType && (colNodeVal.dataType === 'decimal' || colNodeVal.dataType === 'number'); else other"> -->
+															<ng-container *ngIf="detail.hasOwnProperty(colNodeVal.name) && colNodeVal.dataType && (colNodeVal.dataType === 'decimal' || colNodeVal.dataType === 'number'); else other">
+															<td class="addBorderToFeeds" [style.width]="calculateWidthOthers(colNodeVal.width)" [ngClass]="{hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0')}"> 
+																<input type="number" class="tableDetailRow" 
+																	id="Detail{{objForm.key}}.{{detail.domID}}.{{colNodeVal.name}}"
+																	[required]="colNodeVal.required === 'true' || colNodeVal.required === 'yes'" 
+																	(focus)="onDetailFieldFocus(objForm.key,'Detail' + objForm.key +'.'+(detail.domID)+'.'+colNodeVal.name,i, colNodeVal.name)"
+																	(blur)="onDetailFieldBlur($event,'Detail' + objForm.key +'.'+(detail.domID)+'.'+colNodeVal.name)"
+																	[(ngModel)]="detail[colNodeVal.name]"
+																	[ngClass]="{disableCellData : editFlag == 'V' || colNodeVal.isPrimaryKey || detail[colNodeVal.name + '_protect'] === '1' || (editFlag == 'E' && colNodeVal.disabled) || yCordColMap?.value?.tab === '32766' || colNodeVal.disabled, hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0'), tableDetailNumAlignRight : colNodeVal.popHelp === 'true', tableDetailAlignRight: colNodeVal.popHelp !== 'true'}"
+																	primaryKey="false"
+																	(input)="checkMaxLengthForNum($event, colNodeVal.limit); openAutosuggest(colNodeVal.name, detail[colNodeVal.name], objForm.key, i, detail.domID, 'Detail' + objForm.key+'.'+(detail.domID)+'.'+colNodeVal.name)"
+																	[disabled]="isFieldDisabled(colNodeVal.name, colNodeVal, objForm.key, i)"> 
+																	<div *ngIf="colNodeVal.name === 'tax_amt' && taxFormInfo.includes(objForm.key)" 
+																		class="taxAmtBtn enableRow showDeleteBtn "  
+																		id="taxBtn_{{detail.domID}}"
+																		(click)="openTaxScreen('Detail' + objForm.key, i, 'Detail' + objForm.key+'.'+(detail.domID)+'.'+colNodeVal.name, true)">
+																		<p class="removeExtractDet">
+																			<img src="/ibase/E12BROWSER/simpleditorplugin/assets/images/taxForExtract.svg" class="detailNumRow">
+																		</p>
+																	</div> 
+																<bb-autosuggest-transaction #bbAutoSuggest *ngIf="('' + (detail[colNodeVal.name] ?? '')).length >= 2 && (colNodeVal.popHelp === 'true')"
+																		(itemChangeValues)="onItemChangeFromSuggestBox($event)" (preventEnterKeyItemChange)="onPreventEnterKeyItemChange($event)"
+																		(preventItemChange)="onPreventItemChange($event)" (onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="detail" 
+																		[fieldName] ="colNodeVal.name" id ="Detail{{objForm.key}}.{{detail.domID}}.{{colNodeVal.name}}" [transMode]="transMode" [formWiseFormatJson] = "formWiseFormatJson"
+																		[domID] = 'detail.domID' (autoSuggestData)="autoSuggSelectedData($event)"
+																		[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+																		[allformValues]="allformValues" [index]="i">
+																</bb-autosuggest-transaction>
+																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766'))"
+																	[ngClass]="{disablePopHelp : editFlag == 'V' || colNodeVal.isPrimaryKey || (editFlag == 'E' && colNodeVal.disabled) || yCordColMap?.value?.tab === '32766' || colNodeVal.disabled}"
+																	primaryKey="false"
+																	(click)="openPopHelp(colNodeVal.name, detail[colNodeVal.name], objForm.key,i,colNodeVal.displayLabel)"
+																	class="detailWizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+																</div> 
+															</td>
+														</ng-container>
+													</ng-template>
+													<ng-template #other>
+														<ng-container>
+															<td *ngIf="detail[colNodeVal.name] !== undefined && detail[colNodeVal.name] !== null && colNodeVal.format === '[general]'" class="addBorderToFeeds" [style.width]="calculateWidth(colNodeVal.width)" [ngClass]="{hideCellData : (colNodeVal.isVisible && colNodeVal.isVisible == '0')}">
+																<input 
+																	type="text" class="tableDetailRow"
+																																		id="Detail{{objForm.key}}.{{detail.domID}}.{{colNodeVal.name}}"
+																	[required]="colNodeVal.required === 'true' || colNodeVal.required === 'yes'"
+																	(focus)="onDetailFieldFocus(objForm.key, 'Detail' + objForm.key + '.' + detail.domID + '.' + colNodeVal.name, i, colNodeVal.name)"
+																	(blur)="onDetailFieldBlur($event, 'Detail' + objForm.key + '.' + detail.domID + '.' + colNodeVal.name)"
+																	[(ngModel)]="detail[colNodeVal.name]"
+																	[disabled]="isFieldDisabled(colNodeVal.name, colNodeVal, objForm.key, i)"
+																	[ngClass]="{disableCellData : editFlag == 'V' || colNodeVal.isPrimaryKey || detail[colNodeVal.name + '_protect'] === '1' || (editFlag == 'E' && colNodeVal.disabled) || yCordColMap?.value?.tab === '32766' || colNodeVal.disabled, hideCellData : false, tableDetailNumAlignRight : false, tableDetailAlignRight: false}"
+																	primaryKey="false"
+																	(input)="openAutosuggest(colNodeVal.name, detail[colNodeVal.name], objForm.key, i, detail.domID, 'Detail' + objForm.key + '.' + detail.domID + '.' + colNodeVal.name)"
+																	[maxlength]="colNodeVal.limit  > 0 ? colNodeVal.limit : null">
+																<bb-autosuggest-transaction #bbAutoSuggest *ngIf="('' + (detail[colNodeVal.name] ?? '')).length >= 2 && (colNodeVal.popHelp === 'true')"
+																	(itemChangeValues)="onItemChangeFromSuggestBox($event)" (preventEnterKeyItemChange)="onPreventEnterKeyItemChange($event)"
+																	(preventItemChange)="onPreventItemChange($event)" (onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="detail" 
+																	[fieldName] ="colNodeVal.name" id ="Detail{{objForm.key}}.{{detail.domID}}.{{colNodeVal.name}}" [transMode]="transMode" [formWiseFormatJson] = "formWiseFormatJson"
+																	[domID] = 'detail.domID' (autoSuggestData)="autoSuggSelectedData($event)"
+																	[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
+																	[allformValues]="allformValues" [index]="i">
+																</bb-autosuggest-transaction>
+																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766'))"
+																	[ngClass]="{disablePopHelp : editFlag == 'V' || colNodeVal.isPrimaryKey || (editFlag == 'E' && false) || yCordColMap?.value?.tab === '32766' || false}"
+																	primaryKey="false"
+																	(click)="openPopHelp(colNodeVal.name, detail[colNodeVal.name], objForm.key, i, colNodeVal.displayLabel)"
+																	class="detailWizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+																</div>
+															</td>
+														</ng-container>
+													</ng-template>
+												</ng-container>
+											</ng-container>
+
+											<div class="showmore-actionDiv">
+												<span class="showmore-section" >
+													<button mat-icon-button class="showmore-button" [matMenuTriggerFor]="menu" (click)="getActionLinkData(objForm.key, 'Detail' + objForm.key+'.'+(detail.domID)+'', detail.domID, i)"> <!--(click)="linkDataForDetail(objForm.key, 'Detail' + objForm.key+'.'+(detail.domID)+'', detail.domID, i)" -->
+														<!-- <span class="visioniconmore-v icon-more-v"></span> -->
+														<span>&#8942;</span>
+														<div>
+															<div class="actionsDiv enableRow"> 
+																<mat-menu #menu="matMenu">
+																	<div class="enableRow " id="feedView_{{detail.domID}}" (click)="openInFeedView(detail,objForm.key, i, 'Detail' + objForm.key+'.'+(detail.domID)+'')">
+																		<div class="options-box">
+																			<img src="/ibase/E12BROWSER/simpleditorplugin/assets/images/Show_All.svg" class="removeExtractDiv"><span class="OptionMenu">Show All</span>
+																		</div>
+																	</div>
+																	<div id="linksList" *ngIf="linksDataForTransaction" [ngClass]="{'actionScroll': linksDataForTransaction?.length > 0}">
+																		<div class="options-box" *ngFor="let link of linksDataForTransaction; let j = index; trackBy: trackByIndex">
+																			<div *ngIf="+link.form_no === +objForm.key || +link.formNo === +objForm.key" (click)="performLinksActions(objForm.key, link, allformValues['Detail' + objForm.key], i, false)">
+																				<div class="enableRow">
+																					<div *ngIf="link.image !== undefined">
+																						<img class="removeExtractDiv" [src]="link.image !== null && link.image !== 'null' && link.image !== undefined ? '/' + link.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+																					</div>
+																					<!-- <div *ngIf="link.action_id !== undefined">
+																						<img class="removeExtractDiv" [src]="link.image !== null && link.image !== 'null' && link.image !== undefined ? '/' + link.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+																					</div> -->
+																					<div *ngIf="link.link_title !== undefined" class="OptionMenu">{{ link.link_title }}</div>
+																					<div *ngIf="link.title !== undefined" class="OptionMenu">{{ link.title }}</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div *ngIf="editFlag == 'E' || editFlag == 'A'" class="enableRow" id="deleteBtn_{{detail.domID}}"
+																		(click)="deleteSelectedDetail('Detail' + objForm.key,objForm.key, i)">
+																		<div  class="options-box">
+																			<img src="/ibase/E12BROWSER/simpleditorplugin/assets/images/Delete_.svg" class="removeExtractDiv">
+																			<span class="OptionMenu">Delete</span> 
+																		</div>
+																	</div> 
+																</mat-menu>
+															</div> 
+														</div>
+													</button>
+												</span>
+											</div> 
+										</tr>
+									</ng-container>
+								</tbody> 
+							</table>
+						</div>
+						<div class="add-btn-container">
+							<button mat-button class="addNewItem" *ngIf="editFlag == 'E' || editFlag == 'A'" (click)="addDetail('Detail'+objForm.key, objForm.key)" mat-fab>
+								<div class="addNewButtonTxt"><mat-icon svgIcon="add"></mat-icon> Add New </div>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</div>
+	<div>
+		<bb-open-pophelp #popHelp (itemChangeValues)="onItemChangeFromPophelp($event)"
+		(valueSelected)="selectedValueFromPopHelp($event)" [compData]="compData" [paramData]="allformValues"
+		[positionObj]="positionPopHelp" [transMode]="transMode" [formWiseFormatJson] = "formWiseFormatJson" [isPreventPopHelpItemChange]="isPreventPopHelpItemChange"></bb-open-pophelp>
+ 	</div>
+</div>
+
+<!-- Context menu backdrop -->
+<div *ngIf="showContextMenu" (click)="closeContextMenu()"
+  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999;"></div>
+<!-- Context menu popup -->
+<div *ngIf="showContextMenu" class="sidePanelPopUp" id="expColpseOptForExtractTemp"
+  [style.left.px]="contextMenuX" [style.top.px]="contextMenuY"
+  style="position: fixed; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+    <span id="collapseET" class="expandCollapse" (click)="expAndCollOnOptionsClick('C')">
+      <img class="actionIcons actionImg" src="/ibase/images/Collapse.svg" width="20" height="20"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div class="actionTitle">Collapse</div>
+    </span>
+    <span id="expandET" class="expandCollapse" (click)="expAndCollOnOptionsClick('E')">
+      <img class="actionIcons actionImg" src="/ibase/images/Expand.svg" width="20" height="20"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div class="actionTitle">Expand</div>
+    </span>
+    <span id="collapseAllET" class="expandCollapse" (click)="expAndCollOnOptionsClick('CO')">
+      <img class="actionIcons actionImg" src="/ibase/images/CollapseV.svg" width="20" height="20"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div class="actionTitle">Collapse all</div>
+    </span>
+    <span id="expandAllET" class="expandCollapse" (click)="expAndCollOnOptionsClick('EX')">
+      <img class="actionIcons actionImg" src="/ibase/images/ExpandV.svg" width="20" height="20"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div class="actionTitle">Expand all</div>
+    </span>
+</div>
+<ng-template #taxDetails>
+  	<div class="bubbleBox-no-grad taxDetailOverlay">
+		<div class="taxDetailHeading">
+			<button class="popupcloseForTax" (click)="closeTaxOverlay()">&#10005;</button>
+			<div class="headerMainText">
+				<div class="iconContainer">
+					<img src="/ibase/images/menuImages/mob/sorder_header.png">
+				</div>
+				<div class="formTitleWrap">
+					<div class="sl-formTitle">Tax Calculation</div>
+				</div>
+			</div>
+			<div class="taxHeaderActions" *ngIf="editFlag !== 'V'">
+				<div class="saveBtn" (click)="taxDetailsComp.onDone()">
+					<img src="/ibase/Insight/angplugin/assets/images/Done.svg" style="height: 12px; cursor: pointer;">
+					<div class="doneCursor">Done</div>
+				</div>
+			</div>
+		</div>
+		<tax-details #taxDetailsComp [popHelpFieldList]="popHelpFieldList" [editFlag]="editFlag" [cuurentValidationRow]="cuurentValidationRow" [formNo] = "currentFormNo" [currentRecordDomId] = "currentDomID"
+		[allformValues]="allformValues" [taxResponseData]="taxResponseData" [compData]="compData" (closeTax)="closeTaxOverlay()" (taxItemChange)="onTaxItemChange($event)"
+		(openPophelpFromTaxSceen)="openPophelpFromChildComponent($event)" (applyTaxScreen)="applyTaxScreen()"  (callItemchangeFormTax)="callItemchangeFormTax($event)"
+		(setSelectedTextfromTax)="setSelectedText($event)" >
+		</tax-details>
+  	</div>
+</ng-template>
+<ng-template #BBFeedView>  
+	<bb-feed-view class ="bubbleBox-no-grad tnc-bubblebox bbFeedViewDiv"
+		[feedFormData] = "currentFeedData" [feedFormNo] = "currentFormNumber" [feedIndex] = "currentIndexForDetailForm" [editFlag]="editFlag"
+		(onOpenPophelp)="openPophelpFromChildComponent($event)"	(callItemchangeForFeedView)="callItemchangeForFeedView($event)" (itemChangeValues)="onItemChangeFromSuggestBox($event)" (autoSuggSelectedData)="autoSuggSelectedData($event)" (onCloseClick)="closeFeedViewOverlay($event)"
+		[allformValues]="allformValues" [pluginMetadata]="pluginMetadata" [userInfo]="userInfo" [popHelpFieldList] ="popHelpFieldList"
+		[objectDetails]="objectDetails" (feedFormDataChanged)="onFeedFormDataChanged($event)"  (focusOnFeedView)="focusOnFeedView($event)"
+		(blurOnFeedView)="blurOnFeedView($event)" (onDelete) = "onDelete($event)" [pophelpDataList] = "pophelpDataList" [transMode] = "transMode" 
+		[formWiseFormatJson] = "formWiseFormatJson" [popHelpRef] = "popHelp" [primaryKey] ="false"
+		(bbFeedSetFocusOnError)="bbSetFocusOnError($event)" [objFormWiseJson]="objFormWiseJson"
+		[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID" [objName]="objName">
+	</bb-feed-view> 
+</ng-template>
+
+<ng-template #OpenAgGrid>
+      <bb-ag-grid style="background: white; width: 100%" [gridData]="gridData" (onClose)="onClose($event)" (onAgGridDone)="onAgGridDone($event)">
+	  </bb-ag-grid>
+  </ng-template>

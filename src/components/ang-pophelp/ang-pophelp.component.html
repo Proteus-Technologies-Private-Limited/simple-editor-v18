@@ -1,0 +1,288 @@
+<div *ngIf = "showHeader" class="ang-pophelp-header-cont">
+	<button mat-button class="pophelp-back-button" 
+		touch-click (onTouchClick)="closePophelp();" >
+		<span>X Cancel</span>
+	</button>
+
+	<i class="material-icons pophelp-srch-icon">search</i>
+	<input #search class="search-val-inp" type="text" placeholder="Search" [(ngModel)]="searchValue" (ngModelChange)="onFilterTextChange($event)">
+	
+	<button mat-button class="pophelp-done-button" 
+		touch-click (onTouchClick)="submitSelection();" >
+		<span>Done</span>
+	</button>
+</div>
+<div *ngIf = "showSearch" class="ang-pophelp-header-cont">
+	<i class="material-icons pophelp-srch-icon">search</i>
+	<input #search class="search-val-inp" type="text" placeholder="Search" [(ngModel)]="searchValue" [autofocus]="true" (ngModelChange)="onFilterTextChange($event)">
+</div>
+
+<ng-container *ngTemplateOutlet="loading ? loader : layoutTempl"></ng-container>
+<ng-template #loader>
+	<div id="angPophelpLoader" class="ang-pophelp-loader-container" [style.height]="isMobile ? 'calc(100% - 110px)' : '380px'">
+<!-- 		<mat-spinner class="ang-pophelp-loader"></mat-spinner> -->
+		<img class="ang-dashboard-loader" src="simpleditorplugin/assets/images/svg/loading.svg" /> 
+	</div>
+</ng-template>
+	
+<ng-template #layoutTempl>	
+	<ng-container [ngSwitch]="layoutTemplName">          
+		<ng-container *ngSwitchCase="'datatree'">      
+			<ng-container *ngTemplateOutlet="datatree"></ng-container>
+		</ng-container> 
+		<ng-container *ngSwitchCase="'bislayout'">      
+			<ng-container *ngTemplateOutlet="bislayout"></ng-container>
+		</ng-container>                         
+		<ng-container *ngSwitchDefault >      
+			<ng-container *ngTemplateOutlet="simple"></ng-container>
+		</ng-container>                         
+	</ng-container>  
+</ng-template>
+
+<ng-template #datatree>	
+	<div class="pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">	
+		<bb-treeview 
+				[items]="pophelpData"
+				[itemTemplate]="'right-expand'"
+				[layout]="layout"
+				[selectedValues]="filterValue"
+				(onSelect)="valueSelected($event);" >
+		</bb-treeview>
+	</div>
+</ng-template>
+
+<ng-template #simple>
+	<div *ngIf="multi_opt === '0'" class="pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<bb-radio-group required name="'pophelp'" [(ngModel)]="selectedVal">
+				<div *ngFor="let detail of pophelpData | searchBy:searchValue" class="pophelp-opt">
+					<div class="pophelp-icon-sect">
+						<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+					</div>
+					<div class="pophelp-detail-sect">
+						<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-START -->
+						<ng-container *ngIf = "layout && layout != null && layout !='' && isLayout; else normal">
+							<span> 
+							<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+							</span>
+							</ng-container>
+							<ng-template #normal>
+							<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+							</ng-template>
+						<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-END -->
+						<bb-radio-button [checked]="filterValue === detail.id" 
+										(change)="valueSelected(detail.id, detail.value, detail);" 
+										[value]="detail.id" 
+										[labelPosition]="'after'">
+							{{detail.id}}
+						</bb-radio-button>
+					</div>
+				</div>
+			</bb-radio-group>
+		</span>	
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+
+	<div *ngIf="multi_opt === '1'" class="pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<bb-checkbox class="pophelp-opt sel-all-opt" [checked]="isAllChecked" [indeterminate]="isIndeterminate" (bbChange)="selectAll();">Select All</bb-checkbox>
+			
+			<div *ngFor="let detail of pophelpData | searchBy:searchValue" class="pophelp-opt">
+				<div class="pophelp-icon-sect">
+					<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+				</div>
+				<div class="pophelp-detail-sect">
+					<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-START -->
+					<ng-container *ngIf = "layout && layout != null && layout !='' && isLayout; else normal">
+						<span> 
+							<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+						</span>
+						</ng-container>
+						<ng-template #normal>
+						<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+						</ng-template>
+					<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-END -->
+					<bb-checkbox [checked]="checkIsChecked(detail.id)" 
+								(bbChange)="valueSelected(detail.id, detail.value, detail)">
+						{{detail.id}}
+					</bb-checkbox>
+				</div>
+			</div>
+		</span>
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+
+	<div *ngIf="!multi_opt || multi_opt > 1" class="pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngFor="let detail of pophelpData | searchBy:searchValue"  
+			  touch-click (onTouchClick)="valueSelected(detail.id, detail.value, detail)"
+			  class="pophelp-opt" [ngClass]="{'pop-help-selected' : filterValue === detail.id}" (dblclick)="submitOnDoubleClick();">
+			<div class="pophelp-icon-sect">
+				<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+			</div>
+			<div class="pophelp-detail-sect">
+			<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-START -->
+			<ng-container *ngIf = "layout != null && layout !=''; else normal">
+				<span> 
+					<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+				</span>
+				</ng-container>
+				<ng-template #normal>
+				<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+				</ng-template>
+			<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-END -->
+			</div>
+		</span>
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+</ng-template>
+
+<ng-template #bislayout>	
+	<div *ngIf="multi_opt === '0'" class="bis-pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<bb-radio-group required name="'pophelp'" [(ngModel)]="selectedVal">
+				<!-- By Sainath T. on 24-01-19 [keyup enter event to select & submit value]-->
+				<!-- By Sainath T. on 02-08-19 [Pass true to filter on Label]-->
+				<div *ngFor="let detail of pophelpData | searchBy: searchValue: true" class="pophelp-opt" 
+					touch-click (onTouchClick)="valueSelected(detail.id, detail.value, detail); submitSelKeyValue();"
+					(dblclick) = "valueSelected(detail.id, detail.value, detail); submitOnDblClick();"
+					(keyup.enter)= "valueSelected(detail.id, detail.value, detail); submitOnDblClick();"
+					>
+					<div class="pophelp-icon-sect">
+						<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+					</div>
+					<div class="pophelp-detail-sect">
+					<!--By Sainath T. on 23/11/18 [To Change display structure of pophelp ]-START -->
+						<ng-container *ngIf = "layout != null && layout !=''; else normal">
+						<span> 
+							<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+						</span>
+						</ng-container>
+						<ng-template #normal>
+								<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+						</ng-template>
+					<!--By Sainath T. on 23/11/18 [To Change display structure of pophelp ]-START -->
+						<bb-radio-button [checked]="filterValue === detail.id" 
+										[value]="detail.id" 
+										[labelPosition]="'after'">
+										<!-- (change)="valueSelected(detail.id);" -->
+							{{detail.id}}
+						</bb-radio-button>
+					</div>
+				</div>
+			</bb-radio-group>
+		</span>	
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+
+	<div *ngIf="multi_opt === '1'" class="bis-pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<!-- added by Sainath T. on 26-03-2020 [call submitSelection to reslove select all issue]-->
+			<bb-checkbox class="pophelp-opt sel-all-opt" [checked]="isAllChecked" [indeterminate]="isIndeterminate" (bbChange)="selectAll();submitSelection();">Select All</bb-checkbox>
+			
+			<div *ngFor="let detail of pophelpData | searchBy:searchValue" class="pophelp-opt" 
+				 touch-click (onTouchClick)="valueSelected(detail.id, detail.value, detail); submitSelection();"
+				 (dblclick) = "valueSelected(detail.id, detail.value, detail); submitOnDblClick();">
+				<div class="pophelp-icon-sect">
+					<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+				</div>
+				<div class="pophelp-detail-sect">
+					<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-START -->
+					<ng-container *ngIf = "layout != null && layout !=''; else normal">
+						<span> 
+							<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+						</span>
+						</ng-container>
+						<ng-template #normal>
+						<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+						</ng-template>
+					<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-END -->
+					<bb-checkbox [checked]="checkIsChecked(detail.id)" >
+								<!--(bbChange)="valueSelected(detail.id)"-->
+						{{detail.id}}
+					</bb-checkbox>
+				</div>
+			</div>
+		</span>
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+
+	<div *ngIf="!multi_opt || multi_opt > 1" class="bis-pophelp-list-container" [style.height]="isMobile ? 'calc(100% - 90px)' : '400px'">
+		<span *ngFor="let detail of pophelpData | searchBy:searchValue" 
+			   class="pophelp-opt" [ngClass]="{'pop-help-selected' : filterValue === detail.id}"
+			   touch-click (onTouchClick)="valueSelected(detail.id, detail.value, detail)"
+			   (dblclick) = "valueSelected(detail.id, detail.value, detail); submitOnDblClick();">
+			<div class="pophelp-icon-sect">
+				<span class="pophelp-det-icon">{{detail.value.charAt(0).toUpperCase()}}</span>
+			</div>
+			<div class="pophelp-detail-sect">
+				<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-START -->
+				<ng-container *ngIf = "layout != null && layout !=''; else normal">
+					<span> 
+						<pophelp-layout-display [detailJson] = "detail" [templateLayout] = "layout" ></pophelp-layout-display>
+					</span>
+					</ng-container>
+					<ng-template #normal>
+					<span class="pop-help-detail">{{detail.value}} -{{detail.id}}</span>
+					</ng-template>
+				<!--By Sainath T. on 03/112/2018 [To Change display structure of pophelp ]-END -->
+			</div>
+		</span>
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+<!-- 
+	<div *ngIf="multi_opt == '0'" class="bis-suggest-list-container">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<bb-radio-group required name="'pophelp'" [(ngModel)]="selectedVal">
+				<div *ngFor="let detail of pophelpData" class="bis-suggest-opt" (click)="valueSelected(detail.id); submitSelection();" >
+					<div class="pophelp-detail-sect">
+						<span *ngIf='filterValue === detail.id' class="bis-suggest-item-dot"></span>
+						<span class="bis-suggest-item">{{detail.value}} - {{detail.id}}</span>
+					</div>
+				</div>
+			</bb-radio-group>
+		</span>	
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+
+	<div *ngIf="multi_opt == '1'" class="bis-suggest-list-container">
+		<span *ngIf="loaded && pophelpData.length > 0">
+			<bb-checkbox class="pophelp-opt sel-all-opt" [checked]="isAllChecked" [indeterminate]="isIndeterminate" (bbChange)="selectAll();">Select All</bb-checkbox>
+			<div *ngFor="let detail of pophelpData" class="pophelp-opt" (click)="valueSelected(detail.id); submitSelection();" >
+				<div class="pophelp-detail-sect">
+					<span *ngIf='checkIsChecked(detail.id)' class="suggest-item-dot"></span>
+					<span class="suggest-item">{{detail.value}} - {{detail.id}}</span>
+				</div>
+			</div>
+		</span>
+		<span *ngIf="loaded && pophelpData.length == 0" class="no-result-msg">
+			No Results
+		</span>
+	</div>
+	
+-->	
+</ng-template>
+	
+<div *ngIf = "showFooter" class="ang-pophelp-footer-cont">
+	<div class="pophelp-refresh-sect">
+		<button mat-button class="pophelp-refresh-button" 
+		touch-click (onTouchClick)="refreshPophelp();">
+			<i class="material-icons add-icon" style="padding: 0px;">autorenew</i>
+		</button>
+		<span class="pophelp-refresh-text">Refresh</span>
+	</div>	
+</div>
+

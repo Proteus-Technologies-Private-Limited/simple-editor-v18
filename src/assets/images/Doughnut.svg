@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #ffc103;
+        stroke-linecap: round;
+        stroke-width: 28px;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M128,64a64,64,0,1,1-64,64"/>
+</svg>

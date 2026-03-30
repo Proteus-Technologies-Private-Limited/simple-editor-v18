@@ -1,0 +1,17 @@
+<pdf-viewer class="pdfSelectionViewer" 
+	[src]="pdfSrc" 
+    [render-text]="true" style="display: block;" 
+	(error)="onError()" 
+    (after-load-complete)="loadComplete($event)" > 
+    
+    </pdf-viewer>
+              
+        <div class="assc-loader-container"  style="top: calc(30% - 25px);" 
+        *ngIf="status == 'loading' && isError == false ">
+<!-- 			<mat-spinner class="clm-loader"></mat-spinner> -->
+			<img  class="clm-loader" src="simpleditorplugin/assets/images/svg/loading.svg" />
+		</div>
+<div id='noDocumentFound' *ngIf="isError" style="top: calc(50% - 25px); position: absolute; left: calc(70% - 25px); pointer-events: none;" >
+      No Document Found.
+    </div>
+   <!--  [zoom]="0.85"  --> 

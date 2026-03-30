@@ -1,0 +1,14 @@
+<div id = 'bb-common-footer' [ngClass]="{'bb-common-footer-container-mob' : isMobile,'bb-common-footer-container-brow': !isMobile, 'bb-commom-footer-sales-planning' :  !isMobile && isSalesPlanning}" 
+ [ngStyle]="{'height' : isMobile ? '45px' : '42px'}">  <!--  [ngStyle]="{'background' : isMobile ? 'var(--primary)' : '', 'height' : isIos ? '60px' : '45px'}" -->
+	<div class="bb-common-footer-title-block"> <!-- [ngStyle]="{'padding-top' : isIos ? '12px' : '0px'}" -->
+		<div class="bb-footer-close-button">
+			<ng-content select="back-button"></ng-content>
+		</div>
+        <div class="bb-footer-center-button">
+			<ng-content select="center-button"></ng-content>
+		</div>
+		<div class="bb-footer-confirm-button">
+			<ng-content select="confirm-button"></ng-content>
+		</div>
+	</div>
+</div>

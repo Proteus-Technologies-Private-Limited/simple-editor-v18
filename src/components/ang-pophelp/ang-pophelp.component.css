@@ -1,0 +1,244 @@
+.pophelp-opt {
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.sel-all-opt {
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.pophelp-list-container {
+    overflow-y: auto;
+/*     height: 400px; */
+}
+
+.bis-pophelp-list-container {
+    overflow-y: auto;
+    /*height: 360px;*/
+    height: calc( 100% - 155px) !important;   /* By Sainath T. 11/12/18 for refresh pophelp button */
+}
+
+.ang-pophelp-header-cont {
+    border-bottom: 1px solid #d9d9d9;
+    background-color: #f3f2f2;
+}
+
+.ang-pophelp-header-title {
+	font-size: 18px;
+    vertical-align: sub;
+}
+
+.pophelp-back-button {
+    padding: 4px 10px;
+    min-width: 40px;
+	color: #666666;
+    text-align: start;
+    font-size: 14px;
+}
+
+.back-icon {
+	font-size: 32px;
+}
+
+.pophelp-done-button {
+    padding: 4px 10px;
+    min-width: 45px;
+    color: #666666;
+    float: right;
+    text-align: center;
+}
+
+.done-button.mat-button-ripple.mat-ripple {
+	border-radius: 100%;
+}
+
+.done-icon {
+    vertical-align: middle;
+    font-size: 24px;
+}
+
+.pop-help-selected {
+	background: rgba(176, 176, 176, 0.43);
+}
+
+.pop-help-detail {
+    display: block;
+    padding-bottom: 5px;
+}
+
+.pophelp-icon-sect, .pophelp-detail-sect {
+	display: inline-block;
+}
+
+.pophelp-icon-sect {
+    width: 32px;
+    height: 32px;
+    vertical-align: top;
+}
+
+.pophelp-detail-sect {
+	width: calc(100% - 44px);
+    padding-left: 5px;
+}
+
+.pophelp-det-icon {
+	height: 32px;
+    width: 32px;
+    background-position: 100%;
+    border-radius: 50%;
+    background: #a9a8a8;
+    display: inline-block;
+    line-height: 32px;
+    text-align: center;
+    color: white;
+}
+
+.pophelp-refresh-button {
+	display: block;
+    color: white;
+    background-color: #a9a8a8;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    margin-left: 8px;
+    line-height: 32px;
+    border-radius: 100%;
+}
+
+.pophelp-refresh-button.mat-button-ripple.mat-ripple {
+	border-radius: 100%;
+}
+
+.pophelp-refresh-icon {
+	vertical-align: text-top;
+	padding-right: 6px;
+	font-size: 18px;
+}
+
+.pophelp-refresh-text {
+	display: block;
+    font-size: 14px;
+    padding: 4px 0;
+}
+
+.pophelp-refresh-sect {
+	float: right;
+    margin-right: 20px;
+    padding-top: 5px;
+}
+
+.ang-pophelp-footer-cont {
+    background-color: #f3f2f2;
+    height: 60px;
+}
+
+.no-result-msg {
+	text-align: center;
+	display: block;
+    padding: 15px 0;
+}
+
+.feed-view-det-text {
+    height: 32px;
+    display: block;
+}
+
+.search-val-inp {
+    height: 44px;
+    border: none;
+    background: #f3f2f2;
+    padding: 0 10px;
+    width: calc(100% - 200px);
+    display: inline-block;
+}
+.pophelp-srch-icon {
+    color: #666666;
+    vertical-align: middle;
+    font-size: 20px;
+    padding-left: 10px;
+}
+
+:host ::ng-deep .mat-radio-label-content, :host ::ng-deep span.mat-checkbox-label {
+    white-space: initial;
+}
+
+/* :host ::ng-deep .mat-radio-container, :host ::ng-deep .mat-radio-outer-circle {
+	height: 14px;
+    width: 14px;
+}
+ */
+
+:host ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #666666;
+}
+:host ::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #666666;
+}
+
+:host ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+	background-color: #666666;
+}
+
+.ang-pophelp-loader {
+    position: relative;
+    margin: 0 calc(50% - 50px);
+    margin-top: 20px;
+    height: 60px;
+}
+
+.ang-pophelp-loader-container {
+	/*height: 380px;*/
+}
+
+.bis-suggest-list-container {
+    overflow-y: auto;
+    height: calc(100% - 50px);
+}
+.bis-suggest-opt {
+    display: block;
+    /* padding: 10px; */
+    cursor: pointer;
+    border-top: 1px solid #f2f2f2;
+}
+.bis-suggest-item{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 40px;
+    cursor: pointer;
+}
+    
+.bis-suggest-item-dot{
+    background-color: #4285f4;
+    height: 8px;
+    width: 8px;
+    border-radius: 50px;
+    position: relative;
+    display: inline-block;
+    float: left;
+    padding: 0;
+    margin: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    .search-val-inp{
+        /*width: calc( 100% - 100px );*/
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .search-val-inp{
+        /*width: 100% ;*/
+    }
+}
+
+.ang-dashboard-loader {
+    position: relative;
+    margin: 0 calc(50% - 50px);
+    margin-top: 20px;
+}

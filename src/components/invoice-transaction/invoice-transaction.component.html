@@ -1,0 +1,609 @@
+
+<div _ngcontent-c28="" class="contentHeaderLabel" >
+	<img id="" class="contentHeaderMenuImage" src="/ibase/images/menuImages/web/Galaxy/sales.png" onerror=" this.src= 'images/errMenu.png' ">
+	Import Orders
+	<div *ngIf="showAdd == false" class="invoice-transaction-tabs">
+		<div id="overview-tab" (click)="openOverviewTemplate()"  class="overview-tab" [ngClass]="showOverview == true? 'selected-tab' :  ''">
+			Overview
+		</div>
+		<div id="trace-tab" (click)="openTraceTemplate()" [ngClass]="showTrace == true ? 'selected-tab' :  ''" class="trace-tab">
+			Trace
+		</div>
+		<div (click)="openFormTemplate()" id="form-tab" [ngClass]="showForm == true? 'selected-tab' :  ''" class="form-tab" >
+			Form
+		</div>
+	</div>
+</div>
+
+<div class="invoice-transaction-content" >
+
+	<div *ngIf="data && !showOverview; else OverviewTemp" class="mainContentDiv">
+
+		<div *ngIf="showAdd == false" class="contentDiv" >
+			<div *ngIf="showTrace" class="innercontentTraceDiv">
+				<div  class="traceTemplate">
+					<div class="traceLinkContainer">
+						<div *ngFor="let traceLink of traceLinks;" class="traceLink" [ngClass]="traceLink == selectedTraceTab ? 'selected-tab' : ''" (click)="openTraceLink(traceLink)">{{traceLink}}</div>
+					</div>
+					<div class="linkData">
+						{{traceLinkData}}
+					</div>
+				</div>
+			</div>
+			<div *ngIf="showForm" class="innercontentdiv">
+				<div class="customerDetails">
+
+					<div class="labelsGroup" > 
+						<label class="detailLabel" >Customer Code:</label> 
+						<input class="detailValue" type="text" disabled id="detail.1.1.ent_code" [(ngModel)]="data.ent_code"/>
+					</div>
+
+					<div class="labelsGroup" > 
+						<label class="detailLabel" >Customer Name:</label> 
+						<input class="custNameVal" type="text" disabled id="detail.1.1.ent_name" [(ngModel)]="data.ent_name"/>
+					</div> 
+
+				</div>
+				
+				<div class="labelsGroup" >
+					<label class="detailLabel" >Order Number :</label> 
+					<input class="detailValue" type="text" label="order_no" id="detail.1.1.order_no" [(ngModel)]="data.order_no"/> 
+				</div>
+				
+				<div class="labelsGroup">
+					<label class="detailLabel" >Order Date :</label> 
+					<input class="detailValue" type="text" label="order_dt" id="detail.1.1.order_dt" [(ngModel)]="data.order_dt"/> 
+				</div>
+			</div>
+			
+			<div  id="tableDetails" *ngIf="data.lines && showForm" class="tableGroup">
+				<div class="headingOrderRow">
+					<input type="text" disabled class="tColumn1 tableTitle headerBackgroud" value="Sr.No" />
+					<input type="text" disabled class="tColumn2 tableTitle headerBackgroud" value="Item Code" />
+					<input type="text" disabled class="tColumn3 tableTitle headerBackgroud"value="Item Description" />
+					<input type="text" disabled class="tColumn4 tableTitle headerBackgroud" value="Packing" />
+					<input type="text" disabled class="tColumn5 tableTitle headerBackgroud" value="Quantity" />
+					<input type="text" disabled class="tColumn6 tableTitle headerBackgroud" value="Std Qty" />
+					<input type="text" disabled class="tColumn7 tableTitle headerBackgroud" value="Unit" />
+					<!-- <input type="text" disabled class="tableTitle" value="totqty" style="width: 60px;" /> -->
+					<!-- <input type="text" disabled class="tableTitle" value="Free" style="width: 50px;" /> -->
+					<!-- <input type="text" disabled class="tableTitle" value="Cost" style="width: 60px;" /> -->
+					<!-- <input type="text" disabled class="tableTitle" value="Total" style="width: 70px;" /> -->
+				</div>
+				<!--Changed by Nikhil on 05-12-2022 description-->
+				<div  *ngFor="let order of data.lines; let indx = index;" class="ordersTable">
+					<!--<div *ngIf="order" class="orderRow" [ngClass]="order.item_code == '' ? 'rowIndicator' : ''">-->
+					<div *ngIf="order" class="orderRow" [ngClass]= "getRowBg(order)" >
+						<div *ngIf="order.item_code == ''" class="showEmptyField"></div>
+						<input type="text" id="detail.2.{{indx+1}}.sr_no" [(ngModel)]="order.sr_no" class="tColumn1 cellData tableDetail"/>
+						<div class="tColumn2" style="display: flex; align-items: center; padding: 0 2px;" >
+							<input type="text" id="detail.2.{{indx+1}}.item_code" [(ngModel)]="order.item_code" 
+								class="tableDetail" style="min-width: 120px; max-width: 120px;" (ngModelChange)="applyIndication($event, order, 'detail.2.'+(indx+1)+'.item_code')" 
+								(blur)="onBlur(indx, 'detail.2.'+(indx+1)+'.item_code')"/>
+								<!-- <div *ngIf="isPopHelp" (click)="openPophelp(order, 'item_code', order.extr_item_code == '' || order.extr_item_code == undefined ? order.item_code : order.extr_item_code, indx);" class="item-code-pophelp-icon"></div>		 -->
+								<div *ngIf="isPopHelp" (click)="openPophelp(order, 'item_code',order.item_code, indx);" class="item-code-pophelp-icon"></div>				
+								<div id ="indicator.item_code.{{indx+1}}" [ngClass]="setBackgroundColor('detail.2.'+(indx+1)+'.item_code')" class="attrIndicator" (click)="openAttribute(order,'detail.2.'+(indx+1)+'.item_code', indx)">
+								<span class="tooltiptext">
+									<div class="tooltipData">SKU Name: <b>{{order.extract_descr}}</b></div>
+									<div class="tooltipData">{{order.phy_attr_lbl_1}}: <b>{{order.extract_phy_attrib_1}}</b></div>
+									<div class="tooltipData">{{order.phy_attr_lbl_2}}: <b>{{order.extract_phy_attrib_2}}</b></div> 
+									<div class="tooltipData">{{order.phy_attr_lbl_3}}: <b>{{order.extract_phy_attrib_3}}</b></div>
+									<div class="tooltipData">{{order.phy_attr_lbl_4}}: <b>{{order.extract_phy_attrib_4}}</b></div>
+									<div class="tooltipData">Packing: <b>{{order.packing}}</b></div>
+								</span>
+							</div>
+						</div>
+						<!-- <input type="text" (blur)="setSelectedText('detail.2.'+(indx+1)+'.extract_descr')" id="detail.2.{{indx+1}}.descr" [(ngModel)]="order.descr" style="min-width: 250px;" class="tableDetail" /> -->
+						<div class="tColumn3" style="display: flex; padding: 0 2px;">
+							<input type="text" id="detail.2.{{indx+1}}.descr" [(ngModel)]="order.descr" class="tableDetail" style="min-width: 230px; max-width: 230px; font-size: 12px; border: none; height: 26px;" />
+							<div (click)="setSelectedText('detail.2.'+(indx+1)+'.extract_descr')" class="searchImgDiv">
+								<img src="simpleditorplugin/assets/images/Search_Scope.png" class="cursor itemDescrIcon" >
+							</div>
+						</div>
+						<input type="text" id="detail.2.{{indx+1}}.packing" [(ngModel)]="order.packing" class="tColumn4 tableDetail" />
+						<input type="text" id="detail.2.{{indx+1}}.quantity" [(ngModel)]="order.quantity" class="tColumn5 cellData tableDetail" />
+						<div class="tColumn6" style="display: flex; align-items: center; padding: 0 2px;" >
+							<input type="text" id="detail.2.{{indx+1}}.stan_qty" [(ngModel)]="order.stan_qty" style="min-width: 60px; max-width: 60px;" class="cellData tableDetail" (ngModelChange)="openStandQty($event, 'detail.2.'+(indx+1)+'.stan_qty')"/>
+							<div id="stanQty.stan_qty.{{indx+1}}" [ngClass]="setStdBackgroundColor(order, 'detail.2.'+(indx+1)+'.stan_qty')" class="standQtyImgDiv" (click)="openStandQtyPopup(order,'detail.2.'+(indx+1)+'.stan_qty', indx)">
+							</div>
+						</div>
+						<input type="text" id="detail.2.{{indx+1}}.unit" [(ngModel)]="order.unit" class="tColumn7 tableDetail" />
+						<input type="hidden" id="detail.2.{{indx+1}}.extract_descr" [(ngModel)]="order.extract_descr" style="min-width: 50px;"/>
+						<!-- <input type="text" (blur)="setSelectedText('detail.2.'+(indx+1)+'.totqty')"  id="detail.2.{{indx+1}}.totqty" [(ngModel)]="order.totqty" class="cellData tableDetail" style="width: 60px;"  /> -->
+						<!-- <input type="text" id="detail.2.{{indx+1}}.free" [(ngModel)]="order.free" class="cellData tableDetail" style="width: 50px;" /> -->
+						<!-- <input type="text" (blur)="setSelectedText('detail.2.'+(indx+1)+'.cost')"  id="detail.2.{{indx+1}}.cost" [(ngModel)]="order.cost" class="cellData tableDetail" style="width: 60px;"/>
+						<input type="text" (blur)="setSelectedText('detail.2.'+(indx+1)+'.total')"  id="detail.2.{{indx+1}}.total" [(ngModel)]="order.total" class="cellData tableDetail" style="width: 70px;"/> -->
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- Code for table template creation  START -->
+			<!-- <div class="labelsGroup" >
+
+				 <div *ngFor="let details of tableColumns; let indx = index;">
+				 	<div *ngIf="indx==0" >
+					 	<input disabled class="detailLabel" style="width: 200px;" value="Column name">
+					 	<input disabled class="detailLabel" style="width: 200px;" value="Sample value" />
+				 	</div>
+					
+					<input type="text" [(ngModel)]="details.col" (click) = "setSelectedText('table.col.'+(indx+1))" id = "table.col.{{indx+1}}"  style="width: 200px;"/>
+					<input type="text" [(ngModel)]="details.val" (click) = "setSelectedText('table.val.'+(indx+1))" id = "table.val.{{indx+1}}" style="width: 200px;"/>
+					 
+				</div>
+				 
+				<button (click)= "addNewColumn()" class="detailLabel" > New_Column</button>
+			</div>
+			<div class="customerDetails">
+
+				<div class="labelsGroup" > 
+					<label class="detailLabel" >Table start:</label> 
+					<input class="detailValue" type="text" (blur)="setSelectedText('tableStart')" id="tableStart" /> 
+				</div>
+
+				<div class="labelsGroup" > 
+					<label class="detailLabel" >Table end:</label> 
+					<input class="detailValue" type="text"  (blur)="setSelectedText('tableEnd')" id="tableEnd" /> 
+				</div>
+
+			</div> -->
+				
+		</div>
+	</div>
+
+	<ng-template #OverviewTemp>
+		<div *ngIf="showAdd == false" class="overviewContentDiv" >
+			<div *ngIf="showOverview" class="overviewTabDiv">
+				<form [formGroup]="overviewReactiveForms"  class="overview-form">
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="Document Type" [(ngModel)]="overViewModel['doc_type']" formControlName="doc_type" id="doc_type" [disabled]="true" maxlength="30" />
+						<mat-error *ngIf="overviewReactiveForms.get('doc_type').hasError('required')" >
+							{{requiredMessage}}
+						</mat-error>
+					</mat-form-field>
+						<!-- <mat-form-field class="full-form-field hideElement">
+						<mat-select placeholder="Received From Type" [(ngModel)]="overViewModel['ent_type']" formControlName="ent_type" id="ent_type" [disabled]="true">
+							<mat-option value="C" selected>Customer</mat-option>
+						</mat-select>
+					</mat-form-field> -->
+					<!-- Added by vaishali -->
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="Received From Type" [(ngModel)]="overViewModel['ent_type']" formControlName="ent_type" id="ent_type" [disabled]="true" />
+					</mat-form-field>
+					<!-- Added by vaishali -->
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="Received From Code" [(ngModel)]="overViewModel['ent_code']" value="overViewModel['ent_code']" id="ent_code" formControlName="ent_code" maxlength="10" />
+						<div *ngIf="isPopHelp" (click)="openPophelp(overViewModel, 'ent_code', overViewModel['ent_code'], '1');" class="cust-code-pophelp-icon"></div>
+						<mat-error *ngIf="overviewReactiveForms.get('ent_code').hasError('required')" >
+							{{requiredMessage}}
+						</mat-error>
+					</mat-form-field>
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="Distribution Channel" [(ngModel)]="overViewModel['order_type']" formControlName="order_type" id="order_type" maxlength="50" />
+						<mat-error *ngIf="overviewReactiveForms.get('order_type').hasError('required')" >
+							{{requiredMessage}}
+						</mat-error>
+					</mat-form-field>
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="File Type" [(ngModel)]="overViewModel['file_type']" formControlName="file_type" id="file_type" maxlength="50"/>
+					</mat-form-field>
+					<mat-form-field class="full-form-field">
+						<!-- <mat-select placeholder="Processing Method" [(ngModel)]="overViewModel['proc_mtd']"
+							formControlName="proc_mtd" (selectionChange)="onChangeProcMethod($event)" >
+							<mat-option *ngFor="let procMethod of procListJsonData" [value]="procMethod"> 
+								{{ procMethod.includes('PPH') ? 'Handwritten' : procMethod }}
+							</mat-option>
+						</mat-select> -->
+						<mat-select placeholder="Processing Method" class="selectInputClass" [(ngModel)]="overViewModel['proc_mtd']"
+							formControlName="proc_mtd" (selectionChange)="onChangeProcMethod($event)">
+							<mat-option *ngFor="let procMethod of procListJsonData" [value]="procMethod.key">
+								{{ procMethod.value }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+					<mat-form-field class="full-form-field">
+						<input matInput placeholder="Received From Name" [(ngModel)]="overViewModel['ent_name']" formControlName="ent_name" id="ent_name" maxlength="50" />
+						<mat-error *ngIf="overviewReactiveForms.get('ent_name').hasError('required')" >
+							{{requiredMessage}}
+						</mat-error>
+					</mat-form-field>
+					<!--Added by pranjali To  add feild in import order [Start] 08-Feb-2024-->
+					<mat-form-field  class="full-form-field">
+						<input matInput placeholder="Keyword 1" [(ngModel)]="overViewModel['keyword1']"
+						formControlName="keyword1" id="keyword1"> 
+					</mat-form-field>
+					<mat-form-field  class="full-form-field">
+						<input matInput placeholder="Keyword 2" [(ngModel)]="overViewModel['keyword2']"
+						formControlName="keyword2" id="keyword2"> 
+					</mat-form-field>
+					<!--Added by pranjali To  add feild in import order [End] -->
+
+					<!-- <mat-form-field class="full-form-field">
+						<mat-select placeholder="Processing Method" [(ngModel)]="overViewModel['proc_mtd']" formControlName="proc_mtd" >
+							<mat-option value="PP-AID-AIL-UC" selected>PP-AID-AIL-UC</mat-option>
+							<mat-option value="PP-AID-IL-UC" selected>PP-AID-IL-UC</mat-option>
+							<mat-option value="PP-AIT-AIL-UC" selected>PP-AID-AIL-UC</mat-option>
+							<mat-option value="PP-AIT-IL-UC" selected>PP-AIT-IL-UC</mat-option>
+							<mat-option value="PT-AID-AIL-UC" selected>PT-AID-IL-UC</mat-option>
+							<mat-option value="PT-AID-IL-UC" selected>PT-AID-IL-UC</mat-option>
+							<mat-option value="PT-AIT-AIL-UC" selected>PT-AIT-IL-UC</mat-option>
+							<mat-option value="PT-AIT-IL-UC" selected>PT-AIT-IL-UC</mat-option>
+							<mat-option value="PO-AID-AIL-UC" selected>PO-AID-IL-UC</mat-option>
+							<mat-option value="PO-AID-IL-UC" selected>PO-AID-IL-UC</mat-option>
+							<mat-option value="PO-AIT-AIL-UC" selected>PO-AIT-IL-UC</mat-option>
+							<mat-option value="PO-AIT-IL-UC" selected>PO-AIT-IL-UC</mat-option>
+						</mat-select>
+					</mat-form-field> -->
+					<!-- <mat-form-field class="full-form-field">
+						<textarea matInput placeholder="Processing Instructions" [(ngModel)]="overViewModel['proc_instr']" formControlName="proc_instr" rows="12" ></textarea>
+					</mat-form-field> -->
+					<mat-form-field  class="full-form-field hideElement">
+						<input type="hidden" placeholder="" matInput [(ngModel)]="overViewModel['ai_proc_temp']"
+						formControlName="ai_proc_templ" id="ai_proc_templ"> 
+					</mat-form-field>
+					<mat-form-field  class="full-form-field hideElement">
+						<input type="hidden" placeholder="" matInput [(ngModel)]="overViewModel['ai_proc_variables']" 
+						formControlName="ai_proc_variables" id="ai_proc_templ"> 
+					</mat-form-field>
+				</form>
+				<div class="formHeader" (click)="expandcollapse()">
+					<div class="formHeaderLbl">Processing Variables</div>
+					<div>
+						<div [ngClass]="{'vision-ui-arrow_up': this.isleftSidePanelOpen}" class="vision-ui-arrow_down expandCollapseArrow"></div>
+				   </div>
+				</div>
+				<div class="overview-form-2" *ngIf="this.isleftSidePanelOpen">
+					<form *ngIf="overViewModel['ai_proc_variables']" [formGroup]="procData">
+						<div *ngFor="let order of overViewModel['ai_proc_variables']['Details']">
+							<ng-container *ngIf="order.type !== 'hidden'">
+								<mat-form-field *ngIf="order.type == 'dropdown'; else otherwise" class="full-form-field">
+									<mat-select placeholder="{{order.displayName}}" [(ngModel)]="order['defaultValue']" [formControlName]="order.name"
+										id="{{order.name}}" required="{{order.mandatory == 'true' ? true : false}}">
+										<mat-option *ngFor="let dispObj of order['ddlb_options']" [value]="dispObj.dispValue"> 
+											{{ dispObj.dispName }}
+										</mat-option>
+									</mat-select>
+									<mat-error *ngIf="procData.get(order.name).errors?.required">
+										{{requiredMessage}}
+									</mat-error>
+								</mat-form-field>
+                                <ng-template #otherwise>
+									<mat-form-field *ngIf="order.max_length <= 100; else elseCondition"  class="full-form-field">
+												<input type="text" id="{{order.name}}" placeholder="{{order.displayName}}" matInput [maxlength]="order.max_length" [(ngModel)]="order['defaultValue']" [value]="order.defaultValue"
+												[formControlName]="order.name"  required="{{order.mandatory == 'true' ? true : false}}"  > 
+												<mat-error *ngIf="procData.get(order.name).errors?.required">
+													{{requiredMessage}}
+												</mat-error>
+									</mat-form-field>
+									<ng-template #elseCondition>
+										<mat-form-field  class="full-form-field">
+											<!-- <textarea type="text" placeholder="{{order.displayName}}" [maxlength]="order.max_length" [(ngModel)]="order['defaultValue']" [value]="order.defaultValue" id="{{order.name}}" -->
+												<textarea type="text" placeholder="{{order.displayName}}" [(ngModel)]="order['defaultValue']" [value]="order.defaultValue" id="{{order.name}}"
+												matInput [formControlName]="order.name" required="{{order.mandatory == 'true' ? true : false}}" rows="8" 
+												(keydown)="keyDownEventOnTxtArea($event)"  >
+											</textarea>
+											<mat-error *ngIf="procData.get(order.name).errors?.required">
+												{{requiredMessage}}
+											</mat-error>
+										</mat-form-field>
+									</ng-template>
+									<mat-form-field *ngIf="order.mandatory == 'true'" class="full-form-field test">
+										<input type="text" matInput id="{{order.name}}_t" [(ngModel)]="order['displayName']" [value]="order.displayName"
+										[formControlName]="order.name +'_t'" > 
+									</mat-form-field>
+								</ng-template>
+							</ng-container>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-container *ngIf="showAdd == false">
+        <div *ngIf="pdfSrc; else excelFile" class="filecontentdiv" [ngClass]="showOverview ? 'filecontentOvrWidth' : 'fileContentWidth'">
+            <pdf-viewer-editor (onAllPagesLoad)="onPageLoad()" id="pdf-viewer-editor" [pdfSrcNew]="pdfSrc" [isHoriScrollReq]="true"></pdf-viewer-editor>
+        </div>
+        <ng-template #excelFile>
+            <div *ngIf="xlsSrc; else otherFiles" class="filecontentdiv" [ngClass]="showOverview ? 'filecontentOvrWidth' : 'fileContentWidth'">
+                <table class="excel-table">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let head of headData">{{ head }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of excelFileData">
+                            <td *ngFor="let cell of row">{{ cell }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <ngx-doc-viewer [url]="xlsSrc" viewer="google" style="height: 100%;width: 100%;">
+			</ngx-doc-viewer> -->
+            </div>
+        </ng-template>
+        <ng-template #otherFiles>
+            <div *ngIf="safeSrc" class="documentViewerDiv" [ngClass]="showOverview ? 'documentViewerOvrWidth' : 'documentViewerWidth'">
+                <iframe #myIframe (load)="addTextSelection()" id="pdf-viewer-editor" class="documentViewerFrame" [src]="safeSrc"></iframe>
+            </div>
+        </ng-template>
+    </ng-container>
+
+</div>
+
+<div *ngIf ="showAdd == false" class="buttons-div" >
+ 	<span class="saveYML" (click)="SaveOrUpdateYML()">SaveOrUpdateYML 
+ 		<span class="vision-ui-finish " class ="saveYMLIcon  vision-ui-finish"></span>
+ 	</span> 
+	<span class="refreshBtn" (click)="getLayoutAIData()">
+		<span id="inv-tran-refreshIcon" class="refreshUI vision-ui-refresh_small icon-refresh-small">
+		</span>
+		Refresh
+	</span>
+	<span class="close-btn" (click)="cancel()">Close</span>
+	<span class="download-button" (click)="downloadExcelFile()"><span class="vision-ui-excel_download" style="margin: 0 4px;"></span><span>Download <!--Excel File--> </span></span>
+	<span class="save-button" (click)="save()">Save</span>
+</div>
+		
+<div *ngIf = "showAdd" class="add-button" >
+	<button (click)="addContent();" mat-fab class="add_Attachmennt-Button">
+		<mat-icon class="icon" style=" margin-top: -10px;" ><i class="icon-display material-icons" style="line-height: 0.5;" >add</i></mat-icon>
+	</button>
+</div>
+<ng-template #openAttri>
+	<div class="attribute-container-browser">
+		<div class="filter-header-container-browser">
+			<div class="closeBtn">
+				<img src="simpleditorplugin/assets/images/Close.svg" class="imgalignment"
+					style="height: 12px; width: 12px; margin: 0px;" (click)="closeFilter($event);">
+			</div>
+			<div>
+				<div class="headTitle">Phrase Dictionary</div>
+			</div>
+		</div>
+		<!-- Changed by vikas on 18-07-23 for updated ui -->
+		<div class="filter-body-container">
+			<div class="attributeMainDiv">
+				<div class="container1">
+					<div class="attributePanel" style="position: relative !important;margin-top:79px !important;">
+						<div class="attributeLabel">Extracted Description:</div>
+						<mat-form-field class="full-form-field">
+							<input matInput  [(ngModel)]="systemAttribute['extract_descr']" 
+								[disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+					</div>
+					<div class="attributePanel">
+						<div class="attributeLabel">System Item Code:</div>
+						<mat-form-field class="full-form-field">
+							<input matInput  [(ngModel)]="systemAttribute['system_item_code']" 
+								[disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+						<div class="attributeLabel">System Lookup Description:</div>
+						<mat-form-field class="full-form-field">
+							<input matInput  [(ngModel)]="systemAttribute['system_item_descr']" 
+								[disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+					</div>
+					<div class="attributePanel">
+						<div class="attributeLabel">Vector Item Code:</div>
+						<mat-form-field class="full-form-field">
+							<input matInput  [(ngModel)]="systemAttribute['vector_item_code']" 
+								[disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+						<div class="attributeLabel">Vector Lookup Description:</div>
+						<mat-form-field class="full-form-field">
+							<input matInput  [(ngModel)]="systemAttribute['vector_descr']" 
+								[disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="container2">
+					<div class="attributePanel">
+						<div class="attributeLabel">AI Phrase:</div>
+						<div style="margin-top: 10px;">
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_1}}" [(ngModel)]="systemAttribute['extract_phy_attrib_1']" 
+										[disabled]="disableMapping" class="form-field-input" (blur)="setMappingAttribute('phy_attrib_1','product')" >
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_2}}" [(ngModel)]="systemAttribute['extract_phy_attrib_2']" 
+										[disabled]="disableMapping" class="form-field-input" (blur)="setMappingAttribute('phy_attrib_2','delivery')" >
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_3}}" [(ngModel)]="systemAttribute['extract_phy_attrib_3']"
+										[disabled]="disableMapping" class="form-field-input" (blur)="setMappingAttribute('phy_attrib_3','strength')" >
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_4}}" [(ngModel)]="systemAttribute['extract_phy_attrib_4']" 
+										[disabled]="disableMapping" class="form-field-input" (blur)="setMappingAttribute('phy_attrib_4','size')" >
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="Packing" [(ngModel)]="systemAttribute['extract_packing']" 
+										[disabled]="disableMapping" class="form-field-input" (blur)="setMappingAttribute('packing','packing')" >
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<div class="attributePanel">
+						<div class="attributeLabel">Master Phrase:</div>
+						<div style="margin-top: 10px;">
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_1}}" [(ngModel)]="systemAttribute['phy_attrib_1']" 
+										[disabled]="disableMapping" class="form-field-input">
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_2}}" [(ngModel)]="systemAttribute['phy_attrib_2']" 
+										[disabled]="disableMapping" class="form-field-input">
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_3}}" [(ngModel)]="systemAttribute['phy_attrib_3']" 
+										[disabled]="disableMapping" class="form-field-input">
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_4}}" [(ngModel)]="systemAttribute['phy_attrib_4']" 
+										[disabled]="disableMapping" class="form-field-input">
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="Packing" [(ngModel)]="systemAttribute['packing']" 
+										[disabled]="disableMapping" class="form-field-input">
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<div class="attributePanel">
+						<div class="attributeLabel">Available in Dictionary:</div>
+						<div style="margin-top: 10px;">
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_1}}" [(ngModel)]="definedAttributeObj['defined_phy_attrib_1']" class="form-field-input" disabled>
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_2}}" [(ngModel)]="definedAttributeObj['defined_phy_attrib_2']" class="form-field-input" disabled>
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_3}}" [(ngModel)]="definedAttributeObj['defined_phy_attrib_3']" class="form-field-input" disabled>
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="{{systemAttribute.phy_attr_lbl_4}}" [(ngModel)]="definedAttributeObj['defined_phy_attrib_4']" class="form-field-input" disabled>
+								</mat-form-field>
+							</div>
+							<div class="fieldDiv">
+								<mat-form-field class="full-form-field">
+									<input matInput placeholder="Packing" [(ngModel)]="definedAttributeObj['defined_packing']" class="form-field-input" disabled>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="mappingRadioBtnDiv" style="position: relative; top: 80px;"> -->
+						<div class="mappingRadioBtnDiv">
+						<mat-radio-group [(ngModel)]="mappingJson['phy_attrib_1']" 
+							style="height: 60px; display: flex; position: relative; top: 10px;" [disabled]="disableMapping" >
+							<mat-radio-button *ngFor="let map1 of mappingArr['phy_attrib_1']" (change)="setRadioValue('phy_attrib_1',map1)"
+								[disabled]="disableMapping" [value]="map1">
+								{{map1}}
+							</mat-radio-button>
+						</mat-radio-group> 
+						<mat-radio-group [(ngModel)]="mappingJson['phy_attrib_2']" 
+							style="height: 60px; display: flex; position: relative; top: 10px;">
+							<mat-radio-button *ngFor="let map2 of mappingArr['phy_attrib_2']" (change)="setRadioValue('phy_attrib_2',map2)" 
+								[disabled]="disableMapping" [value]="map2">
+								{{map2}}
+							</mat-radio-button>
+						</mat-radio-group> 
+						<mat-radio-group [(ngModel)]="mappingJson['phy_attrib_3']" 
+							style="height: 60px; display: flex; position: relative; top: 10px;">
+							<mat-radio-button *ngFor="let map3 of mappingArr['phy_attrib_3']" (change)="setRadioValue('phy_attrib_3',map3)" 
+								[disabled]="disableMapping" [value]="map3">
+								{{map3}}
+							</mat-radio-button>
+						</mat-radio-group> 
+						<mat-radio-group [(ngModel)]="mappingJson['phy_attrib_4']" 
+							style="height: 60px; display: flex; position: relative; top: 10px;">
+							<mat-radio-button *ngFor="let map4 of mappingArr['phy_attrib_4']" (change)="setRadioValue('phy_attrib_4',map4)" 
+								[disabled]="disableMapping" [value]="map4">
+								{{map4}}
+							</mat-radio-button>
+						</mat-radio-group> 
+						<mat-radio-group [(ngModel)]="mappingJson['packing']" 
+							style="height: 60px; display: flex">
+							<mat-radio-button *ngFor="let map5 of mappingArr['packing']" (change)="setRadioValue('packing',map5)" 
+								[disabled]="disableMapping" [value]="map5">
+								{{map5}}
+							</mat-radio-button>
+						</mat-radio-group> 
+					</div>
+				</div>
+			</div>
+			<div class="noteAtBottom">
+				* - Global Dictionary
+			</div>
+		</div>
+		<div *ngIf="!disableMapping" class="footerBtn">
+			<div class="doneBtn" (click)="applyFilter($event);">
+				<img src="simpleditorplugin/assets/images/Done.svg" class="cursor" style="height: 12px;">
+				<div class="doneCursor">Apply</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #standQtyTemp>
+	<div class="quantity-container-browser">
+		<div class="filter-header-container-browser">
+			<div class="closeBtn">
+				<img src="simpleditorplugin/assets/images/Close.svg" class="imgalignment" style="height: 12px; width: 12px; margin: 0px;" (click)="closeStandFilter($event);">
+			</div>
+			<div>
+				<div class="headTitle">Standard Quantity</div>
+			</div>
+		</div>
+		<div class="filter-body-container">
+			<div class="standardMainDiv">
+				<div class="attributePanel" style="width: 100%">
+					<div>
+						<mat-form-field class="full-form-field">
+							<input matInput placeholder="Customer Unit:" [(ngModel)]="standQtyJson.packing" [disabled]="disableMapping" class="form-field-input" readonly>
+						</mat-form-field>
+					</div>
+					<div>
+						<mat-form-field class="full-form-field">
+							<input matInput placeholder="Standard Unit:" [(ngModel)]="standQtyJson.std_unit" [disabled]="disableMapping" class="form-field-input" maxlength="3" required>
+						</mat-form-field>
+					</div>
+					<div>
+						<mat-form-field class="full-form-field">
+							<input matInput placeholder="Master Unit:" [(ngModel)]="standQtyJson.unit" [disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+					</div>
+					<div>
+						<mat-form-field class="full-form-field">
+							<input matInput placeholder="Factor:" [(ngModel)]="standQtyJson.factor" [disabled]="disableMapping" class="form-field-input">
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="!disableMapping" class="footerBtn">
+			<div class="doneBtn" (click)="applyStandQty($event);">
+				<img src="simpleditorplugin/assets/images/Done.svg" class="cursor" style="height: 12px;">
+				<div class="doneCursor">Apply</div>
+			</div>
+		</div>
+	</div>
+</ng-template>
+<ng-template #popupTemp>
+	<div role="dialog" class="item-code-pophelp-panel">
+	   <bb-pophelp [dataSource]="dataSource"
+					[filterName]="filterName"
+					[multi_opt]="multi_opt"
+					[filterValue]="filterValue"
+					(onClose)="closePohelp();"
+					(onSelect)="setValue($event);"
+					(onSelectPophelpDetails)="onItemChange($event);">
+		</bb-pophelp>
+	</div> 
+</ng-template> 

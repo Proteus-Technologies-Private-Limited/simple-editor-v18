@@ -1,0 +1,109 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "cache": {
+      "enabled": false
+    },
+    "analytics": false
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "simple-editor-v18": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/simpleditorplugin",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills":"src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets",
+             "src/favicon.ico",
+              "src/ang-plugins.js"
+            ],
+            "styles": [
+              "src/styles.css",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/assets/css/font-style.css",
+              "src/assets/css/ag-grid.css",
+              "src/goggleApi.css",
+              "src/assets/css/material-theme.css",
+              "node_modules/@angular/cdk/overlay-prebuilt.css",
+              "src/assets/css/styles.css",
+              "src/assets/css/font-style.css",
+              "src/assets/css/ag-grid.css",
+              "src/assets/css/ag-theme-alpine.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "none"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": true,
+              "vendorChunk": false,
+              "extractLicenses": false,
+              "sourceMap": false,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "simple-editor-v18:build:production"
+            },
+            "development": {
+              "buildTarget": "simple-editor-v18:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "src/styles.css",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23" height="21" viewBox="0 0 23 21">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #bababa;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="star" class="cls-1" d="M2807.5,1337.88l7.11,4.12-1.88-7.77,6.27-5.22-8.27-.69-3.23-7.32-3.23,7.32-8.27.69,6.27,5.22-1.88,7.77Z" transform="translate(-2796 -1321)"/>
+</svg>

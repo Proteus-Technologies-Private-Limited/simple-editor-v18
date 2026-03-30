@@ -1,0 +1,962 @@
+.extract-template-content
+{
+    /* max-height: 690px; */
+    /* height: 441px; */
+    /* height: calc(100% - 116px); */
+    height: calc(100% - 62px);
+    padding: 15px;
+    top: 0;
+    font-size: 15px;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+}
+
+.backDrpOfGrpBox{
+    opacity: 0;
+}
+
+.bgColorForDeleteBtnTd{
+    background-color: transparent !important;
+}
+
+.changeBackGroundForSelectedRow{
+    background-color: #fff7d4 !important;
+}
+
+.bckGrndColorForRow{
+    background-color: #fff;
+}
+
+.deleteDetailBtnExtract{
+    position: sticky;
+    margin-top: 4px;
+    background-color: #EF4130;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    /* background: #db4437; */
+    /* position: absolute; */
+    cursor: pointer;
+    box-shadow: 0px 2px 5px #666;
+    z-index: 1;
+    float: right;
+    right: 1px;
+    display: none;
+    margin-right: 4px;
+}
+
+.detailHeadingExtract{
+    border: none !important;
+    line-height: 33px;
+    color: #555;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    background: transparent;
+    background-image: -moz-linear-gradient(top, #f4f6fc, #e2e6f8);
+    background-image: -o-linear-gradient(top, #f4f6fc, #e2e6f8);
+    background-image: white;
+    /* -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.05); */
+    /* box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.05); */
+    font-family: Arial, Helvetica, Helvetica Neue, Verdana, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.detailHeadingTabExtract{
+   height: 35px!important;
+    border: 0!important;
+    border-radius: 3px;
+    padding-left: 0 !important;
+    margin-top: -1 !important;
+    padding-top: 4 !important;
+}
+
+.datailHeaderLabelExtract{
+    color: #000 !important;
+   opacity: 1!important;
+    border-bottom: none!important;
+    font-weight: bold !important;
+    margin: 0px !important;
+    z-index: 1;
+    padding: 1px;
+    font-size: 14px;
+}
+
+.showDeleteBtn{
+    display: block !important;
+}
+
+.removeExtractDet{
+    color: #fff;
+    position: relative;
+    margin-top: 3px;
+    display: block;
+    text-align: center;
+    line-height: 13px;
+    font-size: 24px;
+    height: 22px;
+    width: 22px;
+    font-family: "Roboto";
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.contentHeaderLabel
+{
+    top: 0;
+    z-index: 66;
+    background-color: transparent;
+    font-size: 18px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.contentHeaderMenuImage
+{
+    padding: 0 8px;
+}
+
+.mainContentDiv
+{
+    width: calc(50% - 5px);
+    overflow: hidden;
+}
+
+.contentDiv
+{
+    /* width: calc(50% - 5px); */
+    width: calc(100% - 10px);
+    /* padding: 0; */
+    padding: 0 5px;
+    /* overflow-y: hidden; */
+    overflow-y: auto;
+    /* background-color: transparent; */
+    background-color: #fff;
+    position: relative;
+    margin: 0 5px 0 0;
+    /* overflow-x: hidden; */
+    overflow-x: auto;
+
+}
+
+.innercontentdiv
+{
+    width: 100%;
+}
+
+.filecontentdiv
+{
+    overflow: auto;
+    width: calc(60% - 21px);
+    padding: 8px;
+    background-color: white;
+    margin: 0 0px 0 5px;
+}
+
+.documentViewerDiv
+{
+    width: calc(60% - 21px);
+    padding: 0px;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    background-color: #fff;
+    margin: 0 0 0 5px;
+    border: none!important;
+}
+
+.documentViewerFrame
+{
+    height: 100%;
+    width: 100%;
+    border: none !important;
+}
+
+.invoice-transaction-field-wrapper 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invoice-transaction-field-icon 
+{
+    display: inline-flex;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    background: #c4b8ae;
+    color: #FFFFFF;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+
+.invoice-transaction-field 
+{
+    flex-grow: 1;
+    padding-left: 10px;
+}
+
+.mat-form-field[ref=invoice-transaction] 
+{
+    width: 100%;
+}
+
+.headingOrderRow
+{
+    top: 0px;
+    position: sticky;
+    display: flex;
+}
+
+.orderRow
+{
+	display: flex;
+}
+
+.pdfSelectionViewer
+{
+	   display: inline-block;
+}
+
+.add_Attachmennt-Button 
+{
+    background-color: var(--primary) !important;
+    height: 45px !important;
+    width: 45px !important;
+    /* height: 55px !important;
+    width: 55px !important; */
+}
+
+.plusBtnDetail{
+    background-color: var(--primary) !important;
+    height: 40px !important;
+    width: 40px !important;
+    position: absolute;
+    float: right;
+    right: 12px;
+    top: calc(100% - 18px);
+    z-index: 1;
+}
+
+.addBorderToFeeds{
+    border-right: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd!important;
+}
+
+.tabelDetailRow{
+    /* border-right: 1px solid #ddd!important;
+    border-bottom: 1px solid #ddd!important; */
+    border: none;
+    white-space: nowrap;
+    background-color: transparent !important;
+    font-size: 12px !important;
+    margin-left: -0.5%;
+    color: black !important;
+    height: 30px;
+    padding: 0px 2px;
+}
+
+.tableHorizontalRow{
+    text-align: left;
+    border-collapse: collapse!important;
+    border: 1px solid #ddd!important;
+    border-top: none!important;
+    border-left: none!important;
+    padding: 5px 0px 0px 10px !important;/*Changed by Pravin K on 4-NOV-20*/
+    line-height: 1.2;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: normal;
+}
+
+.extractTable{
+    display: block;
+    position: relative;
+    top: 0;
+    background-color: white;
+    border-radius: 2px;
+    border-spacing: 0;
+}
+
+.stickyHeader{
+    position: sticky !important;
+}
+
+.add_Attachmennt-Button_custom
+{
+    background-color: var(--primary) !important;
+    height: 30px !important;
+    width: 30px !important;
+}
+
+.material-icons_custom{
+    font-family: 'Material Icons' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 0.5;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    color: inherit;
+}
+
+.toolTipForExtract{
+    font-size: 30px;
+}
+
+.disableRowSelectionOnView{
+    pointer-events: none;
+}
+
+.add-button 
+{
+    bottom: 10px;
+    right: 10px;
+    height: 45px;
+    width: 45px;
+    position: absolute;
+    z-index: 1;
+}
+
+.buttons-div 
+{
+	width: 100%;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    align-items: center;
+    display: flex;
+}
+
+.save-button 
+{
+    bottom: 0;
+    right: 0px;
+    height: 40px;
+    min-width: 60px;
+    position: absolute;
+    z-index: 1;
+    /*color: var(--primary)!important;*/
+    color: #01a27f !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 16px 0 8px;
+    justify-content: center;
+}
+
+.save-button:after
+{
+	top: 13px;
+    font-family: elegant-icons!important;
+    font-style: normal!important;
+    font-weight: 400!important;
+    font-variant: normal!important;
+    text-transform: none!important;
+    content: "\57";
+    position: absolute;
+    font-size: 15px;
+    right: 15px;
+}
+
+.cancel-button
+{
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    min-width: 60px;
+    position: absolute;
+    z-index: 1;
+    /*color: var(--primary)!important;*/
+    color: #01a27f !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    justify-content: center;
+}
+
+.cancel-button:before
+{
+    content: "X";
+    margin: 0px 3px 0 0;
+    font-size: 15px;
+}
+
+.download-button
+{
+    bottom: 0;
+    right: 84px;
+    height: 40px;
+    min-width: 60px;
+    position: absolute;
+    z-index: 1;
+    /*color: var(--primary)!important;*/
+    color: #01a27f !important;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    justify-content: center;
+}
+
+.itemDetailsTableTitle 
+{
+    text-align: center;
+    width: 60%;
+}
+
+.labelsGroup
+{
+	background-color: #fff;
+    padding: 4px 8px;
+}
+
+.tableGroup
+{
+	width: 100%;
+    position: relative;
+    background-color: #fff;
+    /* width: calc(100% - 16px);
+    position: absolute;
+    top: 90px;
+    padding: 0 8px;
+    overflow-y: auto;
+    height: calc(100% - 90px);
+    overflow-x: auto; */
+}
+
+.customerDetails
+{
+    display: flex;
+    background-color: #fff;
+}
+
+.detailLabel
+{
+	width: 120px; 
+	display: inline-block;
+}
+
+.detailValue
+{
+	width: 90px;
+}
+::ng-deep.mat-button-wrapper{
+    color: #8d8d8d;
+}
+::ng-deep.mat-form-field-ripple {
+    height: 1px !important;
+    background-color: #ff9000 !important;
+}
+::ng-deep.mat-form-field-underline {
+    background-color: #dbdbdb !important;
+}
+::ng-deep.mat-form-field{
+    width: 97% !important;
+}
+::ng-deep.mat-form-field-infix{
+    /*Change by shrutika on 16-02-2021 for mat form fieldUI same as compact layout*/
+    /*padding: 5px 0px !important;*/
+     padding: 5px 0 2px 0 !important;
+}
+::ng-deep.mat-form-field-label{
+    color: #666 !important;
+    transition: transform .4s cubic-bezier(.25,.8,.25,1),color .4s cubic-bezier(.25,.8,.25,1),width .4s cubic-bezier(.25,.8,.25,1) !important;
+}
+:host ::ng-deep.mat-form-field._mat-animation-noopable .mat-form-field-label{
+    /*Change by shrutika on 16-02-2021 for mat form fieldUI same as compact layout*/
+   /* font-size: 16px !important; */
+    font-size: 15px !important;
+}
+::ng-deep.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    font-size: 19px !important;
+}
+::ng-deep.mat-input-element{
+    caret-color: auto;
+}
+
+.popHelpIconForExtract{
+    margin-top: -15px !important;
+}
+
+.mat-tooltip.tooltip{
+    font-size: 27px;
+}
+.ang-pophelp-icon {
+	margin: 0;
+    width: 20px;
+    height: 22px;
+    position: absolute;
+    cursor: pointer;
+    color: #666;
+    right: 0px;
+}
+.cellData
+{
+    text-align: right;
+}
+/* bb-autosuggest mat-form-field {
+    width: 97% !important;
+} */
+
+.rightAlignForTable{
+    text-align: right !important;
+}
+
+.disableCellData{
+    /* background-color: transparent; */
+    color: #888 !important;
+    pointer-events: none !important;
+}
+
+.disablePopHelp{
+    display: none !important;
+}
+
+.mandatoryFldsForDet{
+    display: flex;
+    border: 1px solid #66666694;
+    /* border-width: 2px;
+    border-style: inset; */
+    /* border-color: initial;
+    border-image: initial; */
+}
+
+.enableHeaderAndDetail{
+    display: block !important;
+}
+
+.disabledFieldAng{
+    /* border: none; */
+    color: #888 !important;
+    background-color: transparent;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    text-rendering: optimizeLegibility;
+    /* font-size: 14px; */
+    /* padding-right: 5px; */
+    -webkit-appearance: none;
+    pointer-events: none;
+}
+
+.disableBtn{
+    color: transparent !important;
+    cursor: none;
+}
+
+.enableBtn{
+    color: #01a27f!important;
+}
+
+.expandGroupBox{
+    background-color: transparent;
+}
+
+.popHelpForExtract{
+    background-size: 50%;
+}
+
+.moreBtnForExtractDiv{
+    /* Added by Pravn k on 14-OCT-20 START */
+    display: inline-block;
+    width: 100%;
+    /* align-items: center; */
+    /* Added by Pravn k on 14-OCT-20 END */
+}
+
+.moreBtnForExtract{
+    /* color: #fff;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%; */
+
+    /* height: 22px;
+    width: 22px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    padding: 5px; */
+
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.expandGroupBoxChild{
+    display: block;
+    background-color: #fff;
+}
+
+.collapseGroupBox{
+    background-color: #fff;
+}
+
+.collapseGroupBoxChild{
+    display: none;
+}
+
+.formContentDiv{
+    /* background-color: #fff; */
+    background-color: transparent;
+    /* padding: 20px; */
+    /* height: calc(100% - 40px); */
+    height: 100%;
+    /* overflow: auto; */
+    overflow-y: auto;
+    padding-right: 12px;
+}
+.transactionNavBar{
+    height: 50px;
+    transition: 0.3s;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #efefef;
+}
+
+.formBorderForTransaction{
+    border: none;
+    padding : 8px;
+}
+ .enableRow
+ {
+     pointer-events: all;
+ }
+ .actionsDiv
+ {
+     position: sticky;
+     right: 1px;
+     display: flex;
+     align-content: center;
+     flex-direction: row;
+     justify-content: flex-end;
+ }
+ 
+ .errorField{
+    border-bottom: 2px dotted #ff4b4b;
+}
+
+.indicatorForRow{
+    margin-left: 6px;
+    position: absolute;
+    margin-top: 8px;
+    background-color: #ef4130;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.removeIndicatorForRow{
+    margin-left: 6px;
+    position: absolute;
+    margin-top: 8px;
+    background-color: #ef4130;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    z-index: 1;
+    display: none;
+} 
+.taxDetailOverlay
+{
+    background: #fafafa;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 3px solid rgba(2, 2, 2, 0.4);
+}
+
+.popupcloseForTax
+{
+    top: 65px;
+    line-height: 12px;
+    width: 20px;
+    left: 170px;
+    padding-left: 5px;
+    padding-top: 2px;
+    font-size: 10px;
+    border: 2px solid white;
+    text-transform: uppercase;
+    background: #606061;
+    color: #fff;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.dropDownForHeader
+{
+    display: block;
+    background: white;
+    outline: none;
+    outline-color: transparent;
+    font-weight: lighter;
+    font-size: 14px;
+    box-sizing: border-box;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    border-right-color: #fff;
+    border-bottom-color: #ccc;
+    border-radius: 0;
+    -webkit-appearance: menulist !important;
+    height: 18px;
+}
+
+/* Added by Pravin K on 30-JUL-20[For cteate template popup] START */
+ .highlightPDFText
+ {
+   background-color: #144dee;
+ }
+.showmore-section  {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+}
+.right-icons
+{
+    float: right;
+    margin-top: -5px;
+    color: black;
+    font-size: 22px;
+    cursor: pointer;
+}
+.right-add-icons
+{
+    float: right;
+    margin-top: 15px;
+    color: black;
+    font-size: 22px;
+    cursor: pointer;
+    
+}
+.column-add-icons
+{
+    margin-top: 10px;
+    color: #000;
+    font-size: 22px;
+    width: 150px;
+    background-color: #e7e8e9 ;
+    border-radius: 7px;
+    height: 50px;
+    margin-right: 5px;
+    line-height: 50px;
+    cursor: pointer;
+}
+.column-name
+{
+    height: 30px;
+    width: 130px;
+    line-height: 3;
+}
+.templateLabelsGroup
+{
+    background-color: #e7e8e9;
+    padding: 4px 8px;
+    display: flex;
+    margin-top: 6px;
+    border-radius: 7px;
+}
+.template-title
+{
+    font-size: large;
+    height: 43px;
+    width: 95%;
+
+}
+.doneDiv
+{
+    background-color: #e7e8e9;
+    padding: 4px 8px;
+    display: flex;
+    margin-top: 6px;
+    border-radius: 7px;
+    height: 30px;
+    line-height: 32px;
+}
+.doneIcon
+{
+    padding-left: 180px;
+    margin-top: 7px;
+}
+.done-Button
+{
+    color: var(--primary, #aeaeae);
+    font-size: large;
+    cursor: pointer;
+
+}
+input:checked ~ .checkmark
+{
+    display:  red;
+    background-color: green;
+
+    /* display:  var(--primary, #aeaeae);
+    background-color:var(--primary, #aeaeae); */
+}
+.column-text{
+    width: 129px;
+    height: 50px;
+    background-color: #e7e8e9;
+    border: antiquewhite;
+    margin-right: 5px;
+    padding-left: 5px;
+}
+.column-text-edit-icon
+{
+   /* right: 30px;*/
+   margin-bottom: 5px;
+    top: 2px;
+    position: relative;
+    color: black;
+}
+
+.label-edit-icon
+{
+    margin-top: 15px;   
+    color: black;
+}
+.columns-row
+{
+    padding-top: 5px;
+    display:flex;
+}
+/* Added by Pravin K on 30-JUL-20[For cteate template popup] END */
+ .errorFieldforHeader{
+    border-bottom: 2px dotted #ff4b4b;
+    width: 94%;
+}
+/* added By Pravin k on 31-AUG-20 START*/
+.inputTxtDev
+{
+    border-radius: 7px;
+    background: #e7e8e9;
+    margin-right: 5px;
+    width: 160px;
+}
+/* added By Pravin k on 31-AUG-20 END*/
+.firstFieldErrorField
+{
+    border-bottom: 2px dotted #ff4b4b;
+    padding-left: 17px;
+}
+::ng-deep.mat-datepicker-toggle-default-icon
+{
+    width: 1em;
+}
+/* Added by Pravn k on 14-OCT-20 START */
+.table_start_end_icon
+{
+    /* fill: gray; */
+    width: 12px;
+    padding-top: 6px;
+    padding-left: 6px;
+}
+.table_start_end_icon_active
+{
+   fill: white;
+}
+
+.table_icon_background_deactive
+{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+.table_done_cancel_icon
+{
+    position: absolute; 
+    top: 5px; 
+    color: gray; 
+    line-height: 1.7; 
+    font-size: 15px;
+
+}
+.table_template_selection
+{
+    width: 100%; height:  
+    calc(100% + 25px); 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    /* background-color: rgba(0,0,0,.8);      */
+    opacity: 0.9;      
+    background: gray; 
+    z-index: 2; 
+    display: block;
+}
+.table_template_labels
+{
+    width: 140px; 
+    font-size: 10px; 
+    height: 30px; 
+    position: absolute; 
+    color: white;
+}
+.tableStartIcon
+{
+    margin-top: 4px;
+    margin-left: 4px;
+}
+.tableEndIcon
+{
+    margin-top: 4px;
+    margin-left: 4px; 
+    right: 5px;  
+    bottom: 5px;  
+    position: absolute; 
+    float: right;
+}
+
+.extract_data_icon
+{
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    width: 20px;
+    float: right;
+    margin: auto;
+    padding-bottom: 2px;
+}
+/* Added by Pravn k on 14-OCT-20 END */
+
+/*Added by shrutika on 16-02-2021 for mat form fieldUI same as compact layout*/
+::ng-deep.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-18px) scale(.9) perspective(100px) translateZ(.001px) !important
+}
+
+::ng-deep.mat-select-trigger
+{
+    display: inline-table;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    padding-top: 3px;
+}

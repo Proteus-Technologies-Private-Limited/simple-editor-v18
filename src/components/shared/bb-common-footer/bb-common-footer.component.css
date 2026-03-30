@@ -1,0 +1,78 @@
+
+.bb-common-footer-container-mob {
+	/* text-align: center;
+    padding: 4px; */
+    /* border-bottom: 1px solid lightgray; */
+    position: fixed;
+    box-shadow: 0 -3px 9px 0 rgba(0, 0, 0, 0.03);
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    right: 0;
+    height: 45px;
+    background: #fff;
+    width: 100%;
+    opacity: 0.95;
+}
+.bb-common-footer-container-brow{
+     position: absolute;
+     box-shadow: 0 -3px 9px 0 rgba(0,0,0,.03);
+     bottom: 0;
+     left: 0;
+     display: flex;
+     align-items: center;
+     right: 0;
+     background: #fff;
+     width: 100%;
+     opacity: .95;
+}
+
+
+.bb-commom-footer-sales-planning{
+ /* position: absolute !important;
+ width: calc(100% + 18px) !important;
+ left: -8px !important; */
+}
+
+.bb-footer-close-button {
+	display: block;
+    width: 25%;
+    /* vertical-align:top; */
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+    margin-left: 4px;
+}
+
+.bb-footer-confirm-button {
+    display: block;
+    width: 25%;
+    /* vertical-align: top; */
+    font-weight: 700;
+    cursor: pointer;
+    text-align: right;
+    margin-right: 4px;
+}
+.bb-footer-center-button {
+    display: block;
+    width: 50%;
+    /* vertical-align: top; */
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+}
+
+.bb-common-footer-title-block {
+   align-items:  center;
+   display:  inline-flex;
+   width:  100%;
+}
+
+
+/* .icon-nav-right:before {
+    content: "\e926";} */
+
+    /* .icon-nav-left[_ngcontent-c32], .icon-nav-right[_ngcontent-c32] {
+    font-size: 18px;
+    vertical-align: sub;} */

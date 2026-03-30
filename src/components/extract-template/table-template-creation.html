@@ -1,0 +1,66 @@
+<div style="display: flex;">
+	<span class="template-title"> Create  Table template </span>
+	<span (click)="setDialogFor('')" class="vision-ui-cross right-icons" > </span> 
+
+</div>
+<div class="">
+
+	<div class="templateLabelsGroup" > 
+		<bb-textbox  class="batteryStatus" 
+				    [(ngModel)]="data.tableStart"
+					[placeholder]="'Table Start '" 
+					[uxDesign]="'UX3'"
+					style="width: 95%;" >
+		</bb-textbox>
+
+		<span *ngIf="data.tableStart" class="vision-ui-edit label-edit-icon" ></span>
+		<span *ngIf="! data.tableStart" class="vision-ui-add  right-add-icons" 
+			(click)="setDialogFor('tableStart')" > </span> 
+	
+	</div>
+
+	<div  class="templateLabelsGroup" > 
+		<bb-textbox class="batteryStatus" 
+				    [(ngModel)]="data.tableEnd"
+					[placeholder]="'Table end '" 
+					[uxDesign]="'UX3'" 
+					style="width: 95%;" >
+		</bb-textbox>
+
+		<span *ngIf="data.tableEnd" class="vision-ui-edit label-edit-icon" ></span> 
+		<span *ngIf="! data.tableEnd" class="vision-ui-add  right-add-icons" 
+		(click)="setDialogFor('tableEnd')" > </span> 
+	</div>
+	
+</div>
+
+<div class="" style=" max-height: 300px; overflow: auto; " >
+	<div style="display: flex;" >
+		<span  class="column-name" style="width: 220px;"> Column name </span>
+		<span   class="column-name" style="width: 220px;" > Column value</span>
+		<span   class="column-name" style="width: 150px;" > Blank value</span>
+	</div>
+	<div *ngFor="let details of data.tableColumns; let indx = index;" class="columns-row">
+		
+        <div class="inputTxtDev" >
+            <input type="text"  [(ngModel)]="details.col" id = "table.col.{{indx+1}}"  class="column-text"/>
+            <span class="vision-ui-edit column-text-edit-icon" ></span>
+        </div>
+        <div class="inputTxtDev" >
+            <input type="text"  [(ngModel)]="details.val"  id = "table.val.{{indx+1}}" class="column-text"/>
+            <span class="vision-ui-edit column-text-edit-icon" ></span>
+        </div>
+		<input type="checkbox" [(ngModel)]="details.isNull"  id = "table.val.{{indx+1}}" style="width: 20px;"/>
+
+	</div>
+	<div class ="" style="display: flex;">
+		<span class="vision-ui-add column-add-icons " (click)="setDialogFor('tableHeading')" > </span>
+		<span class="vision-ui-add column-add-icons " style="margin-left: 20px;" (click)="setDialogFor('tableValue')"  > </span>
+	</div>
+
+</div>
+<div class="doneDiv" >
+	<span class="vision-ui-check doneIcon " > </span>  
+
+<span (click)= "setDialogFor('done')"  class="done-Button" > Done </span>
+</div>

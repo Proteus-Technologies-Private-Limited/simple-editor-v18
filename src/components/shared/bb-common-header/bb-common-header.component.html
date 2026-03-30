@@ -1,0 +1,18 @@
+<div class="bb-common-header-container" [ngStyle]="{'background' : isMobile ? 'var(--primary)' : '', 'height' : isIos ? '60px' : '45px'}">
+	<div class="bb-common-header-title-block" [ngStyle]="{'padding-top' : isIos ? '12px' : '0px'}">
+		<div class="bb-header-close-button">
+			<ng-content select="back-button"></ng-content>
+		</div>
+		<div class="bb-common-header-title-cont">
+			<span class="bb-common-header-title">
+				<ng-content select="page-title"></ng-content>
+			</span>
+		</div>
+		<div class="bb-header-confirm-button">
+			<ng-content select="confirm-button"></ng-content>
+		</div>
+	</div>
+	<div class="bb-common-header-subtitle">
+		<ng-content select="page-subtitle"></ng-content>
+	</div>
+</div>

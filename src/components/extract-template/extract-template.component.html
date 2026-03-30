@@ -1,0 +1,1157 @@
+<!-- <div class="contentHeaderLabel"><img id="" class="contentHeaderMenuImage"
+    src="/ibase/images/menuImages/web/Galaxy/sales.png" onerror=" this.src= 'images/errMenu.png' ">Extract Template
+</div> -->
+<!-- <div class="transactionNavBar"></div> -->
+<div class="extract-template-content">
+
+  <div *ngIf="showHeaderForm" [ngClass]="{enableHeaderAndDetail : pdfSrc}" style="display: none;"
+    class="mainContentDiv">
+    <!-- <transaction-details></transaction-details> -->
+    <div class="formContentDiv">
+        <!--Added By pravin k on 4-NOV-20 [icon for data extraction]  START -->
+        <div style="float: right; display: flex;"> 
+            <div style="display: grid; ">
+                <span class="vision-ui-add" style=" color: gray;height: 22px; font-size: 20px; cursor: pointer; "> </span>
+                <button class="" style="margin-right: 5px;
+                -webkit-font-smoothing: antialiased; cursor: pointer;
+                border-radius: 5px;  color: gray;
+                border: 1px solid #9e9e9e;"  (click)="setDialogFor('keyword')">{{selectKeyword}}</button>
+            </div>   
+
+            <!-- <label class="datailHeaderLabelExtract"  (click)= "setDialogFor('keyword')"style="transition: none;">Add Keywords</label> -->
+            <div style="display: grid; ">
+                <img class="extract_data_icon" (click)="SaveOrUpdateYML()" src="simpleditorplugin/assets/images/svg/extract.svg">
+                <button _ngcontent-ars-c1="" class="" style="  margin-right: 5px; -webkit-font-smoothing: antialiased;
+                    cursor: pointer; border-radius: 5px; color: gray; border: 1px solid #9e9e9e; ">Extract Data</button>
+            </div>
+        </div>
+        <!--Added By pravin k on 4-NOV-20 [icon for data extraction]  END -->
+      <!-- Basic -->
+      <div>
+        <div style="padding: 0px 0px 5px 0px; display: block;" class="e12GroupBox" id="Basic">
+          <div style="display: inline-flex; width: calc(100% - 14px);"
+            (contextmenu)="onContextMenuClick($event, 'Basic')" class="groupBoxHeaderPnl expandGroupBox"
+            (click)="hideShowGroupBtn('Basic')">
+            <div style="width: calc(100% - 20px)" class="groupBxHeaderLbl">Basic</div>
+            <div style="font-size: 25px; color: gray;" class="vision-ui-arrow_down"></div>
+          </div>
+          <div class="freeFormContentTwoColumn expandGroupBoxChild" style="padding: 10px;">
+            <mat-form-field>
+              <input matInput placeholder="Order date : " [matDatepicker]="order_date" (focus)="setFocusFormNo('1','Detail1.1.order_date')"
+                (blur)="setSelectedText('Detail1.1.order_date')" [(ngModel)]="allformValues['order_date']"
+                id="Detail1.1.order_date"
+                (dateChange)="callLocalItemChange('order_date', allformValues['order_date'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V' || editFlag == 'A'">
+              <mat-datepicker-toggle matSuffix [for]="order_date"></mat-datepicker-toggle>
+              <mat-datepicker #order_date [disabled]="editFlag == 'V' || editFlag == 'A'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('order_date')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'A'}"
+                (click)="openPopHelp('order_date',allformValues['order_date'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <!-- </div> -->
+            <!-- [ngClass]="editFlag == 'V' ? 'disableBtn' : 'enableBtn'" -->
+            <!-- mandatoryRedImg -->
+            <mat-form-field>
+              <input matInput placeholder="Customer : " (focus)="setFocusFormNo('1','Detail1.1.cust_code')"
+                (blur)="setSelectedText('Detail1.1.cust_code')" id="Detail1.1.cust_code"
+                [(ngModel)]="allformValues['cust_code']"
+                (change)="callLocalItemChange('cust_code', allformValues['cust_code'], 1)" format="general"
+                (keyup)="onKeypressdetail1($event,'cust_code', allformValues['cust_code'], 1)"
+                [disabled]="editFlag == 'V' || editFlag == 'E'">
+              <div *ngIf="popHelpFieldList.includes('cust_code')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                (click)="openPopHelp('cust_code',allformValues['cust_code'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="allformValues['name']" (focus)="setFocusFormNo('1','Detail1.1.name')" id="Detail1.1.name"
+                (blur)="setSelectedText('Detail1.1.name')"
+                (change)="callLocalItemChange('name', allformValues['name'], 1)" format="general" rows="3"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              </textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Order type : " [(ngModel)]="allformValues['order_type']"
+                (focus)="setFocusFormNo('1','Detail1.1.order_type')" (blur)="setSelectedText('Detail1.1.order_type')" id="Detail1.1.order_type"
+                (change)="callLocalItemChange('order_type', allformValues['order_type'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E'">
+              <div *ngIf="popHelpFieldList.includes('order_type')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                (click)="openPopHelp('order_type',allformValues['order_type'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Customer PO No : " [(ngModel)]="allformValues['cust_pord']"
+                (focus)="setFocusFormNo('1','Detail1.1.cust_pord')" (blur)="setSelectedText('Detail1.1.cust_pord')" id="Detail1.1.cust_pord"
+                (change)="callLocalItemChange('cust_pord', allformValues['cust_pord'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E'">
+              <div *ngIf="popHelpFieldList.includes('cust_pord')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('cust_pord',allformValues['cust_pord'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Customer PO Date : " [matDatepicker]="pord_date"
+                (focus)="setFocusFormNo('1','Detail1.1.pord_date')" (blur)="setSelectedText('Detail1.1.pord_date')"
+                [(ngModel)]="allformValues['pord_date']" id="Detail1.1.pord_date"
+                (dateChange)="callLocalItemChange('pord_date', allformValues['pord_date'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="pord_date"></mat-datepicker-toggle>
+              <mat-datepicker #pord_date [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('pord_date')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('pord_date',allformValues['pord_date'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Cust Code Bill : " [(ngModel)]="allformValues['cust_code__bil']"
+                (focus)="setFocusFormNo('1','Detail1.1.cust_code__bil')" (blur)="setSelectedText('Detail1.1.cust_code__bil')"
+                id="Detail1.1.cust_code__bil"
+                (change)="callLocalItemChange('cust_code__bil', allformValues['cust_code__bil'], 1)" format="general"
+                [disabled]="editFlag == 'V'">
+              <div *ngIf="popHelpFieldList.includes('cust_code__bil')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('cust_code__bil',allformValues['cust_code__bil'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Division : " [(ngModel)]="allformValues['item_ser']"
+                (focus)="setFocusFormNo('1','Detail1.1.item_ser')" (blur)="setSelectedText('Detail1.1.item_ser')" id="Detail1.1.item_ser"
+                (change)="callLocalItemChange('item_ser', allformValues['item_ser'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E'">
+              <div *ngIf="popHelpFieldList.includes('item_ser')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                (click)="openPopHelp('item_ser',allformValues['item_ser'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Remarks : " [(ngModel)]="allformValues['remarks']"
+                (focus)="setFocusFormNo('1','Detail1.1.remarks')" (blur)="setSelectedText('Detail1.1.remarks')" id="Detail1.1.remarks"
+                (change)="callLocalItemChange('remarks', allformValues['remarks'], 1)" format="general"
+                [disabled]="editFlag == 'V'">
+              <div *ngIf="popHelpFieldList.includes('remarks')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('remarks',allformValues['remarks'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Max Order Value : " [(ngModel)]="allformValues['max_ord_value']"
+                (focus)="setFocusFormNo('1','Detail1.1.max_ord_value')" (blur)="setSelectedText('Detail1.1.max_ord_value')"
+                id="Detail1.1.max_ord_value"
+                (change)="callLocalItemChange('max_ord_value', allformValues['max_ord_value'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('max_ord_value')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                (click)="openPopHelp('max_ord_value',allformValues['max_ord_value'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Order Value : " [(ngModel)]="allformValues['tot_value']"
+                (focus)="setFocusFormNo('1','Detail1.1.tot_value')" (blur)="setSelectedText('Detail1.1.tot_value')" id="Detail1.1.tot_value"
+                (change)="callLocalItemChange('tot_value', allformValues['tot_value'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'" type="number"
+                style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('tot_value')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('tot_value',allformValues['tot_value'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Date : " [matDatepicker]="sch_1" (focus)="setFocusFormNo('1','Detail1.1.sch_1')"
+                (blur)="setSelectedText('Detail1.1.sch_1')" [(ngModel)]="allformValues['sch_1']" id="Detail1.1.sch_1"
+                (dateChange)="callLocalItemChange('sch_1', allformValues['sch_1'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_1"></mat-datepicker-toggle>
+              <mat-datepicker #sch_1 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_1')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_1',allformValues['sch_1'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Shipment -->
+        <!-- <hr class="formBorderForTransaction"> -->
+        <div style="padding: 0px 0px 5px 0px; display: none;" class="e12GroupBox" id="Shipment">
+          <div style="display: inline-flex; width: calc(100% - 14px);"
+            (contextmenu)="onContextMenuClick($event, 'Shipment')" class="groupBoxHeaderPnl collapseGroupBox"
+            (click)="hideShowGroupBtn('Shipment')">
+            <div style="width: calc(100% - 20px)" class="groupBxHeaderLbl">Shipment</div>
+            <div style="font-size: 25px; color: gray;" class="vision-ui-arrow_right"></div>
+          </div>
+          <div class="freeFormContentTwoColumn collapseGroupBoxChild" style="padding: 10px;">
+            <mat-form-field>
+              <input matInput placeholder="Shipping site : " [(ngModel)]="allformValues['site_code__ship']"
+                (focus)="setFocusFormNo('1','Detail1.1.site_code__ship')" (blur)="setSelectedText('Detail1.1.site_code__ship')"
+                id="Detail1.1.site_code__ship"
+                (change)="callLocalItemChange('site_code__ship', allformValues['site_code__ship'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('site_code__ship')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('site_code__ship',allformValues['site_code__ship'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['site_descr']" (focus)="setFocusFormNo('1','Detail1.1.site_descr')"
+                (blur)="setSelectedText('Detail1.1.site_descr')" id="Detail1.1.site_descr"
+                (change)="callLocalItemChange('site_descr', allformValues['site_descr'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('site_descr')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('site_descr',allformValues['site_descr'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Customer address : " [(ngModel)]="allformValues['customer_addr1']"
+                (focus)="setFocusFormNo('1','Detail1.1.customer_addr1')" (blur)="setSelectedText('Detail1.1.customer_addr1')"
+                id="Detail1.1.customer_addr1"
+                (change)="callLocalItemChange('customer_addr1', allformValues['customer_addr1'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('customer_addr1')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('customer_addr1',allformValues['customer_addr1'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['customer_addr2']" (focus)="setFocusFormNo('1','Detail1.1.customer_addr2')"
+                (blur)="setSelectedText('Detail1.1.customer_addr2')" id="Detail1.1.customer_addr2"
+                (change)="callLocalItemChange('customer_addr2', allformValues['customer_addr2'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('customer_addr2')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('customer_addr2',allformValues['customer_addr2'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['customer_addr3']" (focus)="setFocusFormNo('1','Detail1.1.customer_addr3')"
+                (blur)="setSelectedText('Detail1.1.customer_addr3')" id="Detail1.1.customer_addr3"
+                (change)="callLocalItemChange('customer_addr3', allformValues['customer_addr3'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('customer_addr3')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('customer_addr3',allformValues['customer_addr3'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['customer_city']" (focus)="setFocusFormNo('1','Detail1.1.customer_city')"
+                (blur)="setSelectedText('Detail1.1.customer_city')" id="Detail1.1.customer_city"
+                (change)="callLocalItemChange('customer_city', allformValues['customer_city'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('customer_city')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('customer_city',allformValues['customer_city'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['state_descr']" (focus)="setFocusFormNo('1','Detail1.1.state_descr')"
+                (blur)="setSelectedText('Detail1.1.state_descr')" id="Detail1.1.state_descr"
+                (change)="callLocalItemChange('state_descr', allformValues['state_descr'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('state_descr')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('state_descr',allformValues['state_descr'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [(ngModel)]="allformValues['country_descr']" (focus)="setFocusFormNo('1','Detail1.1.country_descr')"
+                (blur)="setSelectedText('Detail1.1.country_descr')" id="Detail1.1.country_descr"
+                (change)="callLocalItemChange('country_descr', allformValues['country_descr'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('country_descr')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('country_descr',allformValues['country_descr'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Transport Mode : " [(ngModel)]="allformValues['trans_mode']"
+                (focus)="setFocusFormNo('1','Detail1.1.trans_mode')" (blur)="setSelectedText('Detail1.1.trans_mode')" id="Detail1.1.trans_mode"
+                (change)="callLocalItemChange('trans_mode', allformValues['trans_mode'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E'">
+              <div *ngIf="popHelpFieldList.includes('trans_mode')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                (click)="openPopHelp('trans_mode',allformValues['trans_mode'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Delivery Schedules -->
+        <!-- <hr class="formBorderForTransaction"> -->
+        <div style="padding: 0px 0px 5px 0px; display: none;" class="e12GroupBox" id="Delivery Schedules">
+          <div style="display: inline-flex; width: calc(100% - 14px);"
+            (contextmenu)="onContextMenuClick($event, 'Delivery Schedules')" class="groupBoxHeaderPnl collapseGroupBox"
+            (click)="hideShowGroupBtn('Delivery Schedules')">
+            <div style="width: calc(100% - 20px)" class="groupBxHeaderLbl">Delivery Schedules</div>
+            <div style="font-size: 25px; color: gray;" class="vision-ui-arrow_right"></div>
+          </div>
+          <div class="freeFormContentTwoColumn collapseGroupBoxChild" style="padding: 10px;">
+            <!-- <div>
+          <label class="labelflickerFixPosition">Status : </label>
+          <select class="listBoxStyle  materializedListBoxEditor" style="width: 97%;">
+            <option></option>
+          </select>
+        </div> -->
+            <mat-form-field>
+              <input matInput placeholder="Schedule 1 Quantity % : " [(ngModel)]="allformValues['sch_ratio_1']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_1')" (blur)="setSelectedText('Detail1.1.sch_ratio_1')"
+                id="Detail1.1.sch_ratio_1" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_1', allformValues['sch_ratio_1'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_1')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_1',allformValues['sch_ratio_1'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 2 : " [matDatepicker]="sch_2"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_2')" (blur)="setSelectedText('Detail1.1.sch_2')"
+                [(ngModel)]="allformValues['sch_2']" id="Detail1.1.sch_2"
+                (dateChange)="callLocalItemChange('sch_2', allformValues['sch_2'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_2"></mat-datepicker-toggle>
+              <mat-datepicker #sch_2 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_2')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_2',allformValues['sch_2'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 2 Quantity % : " [(ngModel)]="allformValues['sch_ratio_2']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_2')" (blur)="setSelectedText('Detail1.1.sch_ratio_2')"
+                id="Detail1.1.sch_ratio_2" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_2', allformValues['sch_ratio_2'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_2')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_2',allformValues['sch_ratio_2'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 3 : " [matDatepicker]="sch_3"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_3')" (blur)="setSelectedText('Detail1.1.sch_3')"
+                [(ngModel)]="allformValues['sch_3']" id="Detail1.1.sch_3"
+                (dateChange)="callLocalItemChange('sch_3', allformValues['sch_3'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_3"></mat-datepicker-toggle>
+              <mat-datepicker #sch_3 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_3')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_3',allformValues['sch_3'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 3 Quantity % : " [(ngModel)]="allformValues['sch_ratio_3']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_3')" (blur)="setSelectedText('Detail1.1.sch_ratio_3')"
+                id="Detail1.1.sch_ratio_3" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_3', allformValues['sch_ratio_3'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_3')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_3',allformValues['sch_ratio_3'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 4 : " [matDatepicker]="sch_4"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_4')" (blur)="setSelectedText('Detail1.1.sch_4')"
+                [(ngModel)]="allformValues['sch_4']" id="Detail1.1.sch_4"
+                (dateChange)="callLocalItemChange('sch_4', allformValues['sch_4'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_4"></mat-datepicker-toggle>
+              <mat-datepicker #sch_4 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_4')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_4',allformValues['sch_4'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 4 Quantity % : " [(ngModel)]="allformValues['sch_ratio_4']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_4')" (blur)="setSelectedText('Detail1.1.sch_ratio_4')"
+                id="Detail1.1.sch_ratio_4" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_4', allformValues['sch_ratio_4'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_4')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_4',allformValues['sch_ratio_4'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 5 : " [matDatepicker]="sch_5"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_5')" (blur)="setSelectedText('Detail1.1.sch_5')"
+                [(ngModel)]="allformValues['sch_5']" id="Detail1.1.sch_5"
+                (dateChange)="callLocalItemChange('sch_5', allformValues['sch_5'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_5"></mat-datepicker-toggle>
+              <mat-datepicker #sch_5 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_5')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_5',allformValues['sch_5'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 5 Quantity % : " [(ngModel)]="allformValues['sch_ratio_5']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_5')" (blur)="setSelectedText('Detail1.1.sch_ratio_5')"
+                id="Detail1.1.sch_ratio_5" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_5', allformValues['sch_ratio_5'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_5')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_5',allformValues['sch_ratio_5'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 6 : " [matDatepicker]="sch_6"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_6')" (blur)="setSelectedText('Detail1.1.sch_6')"
+                [(ngModel)]="allformValues['sch_6']" id="Detail1.1.sch_6"
+                (dateChange)="callLocalItemChange('sch_6', allformValues['sch_6'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_6"></mat-datepicker-toggle>
+              <mat-datepicker #sch_6 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_6')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_6',allformValues['sch_6'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 6 Quantity % : " [(ngModel)]="allformValues['sch_ratio_6']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_6')" (blur)="setSelectedText('Detail1.1.sch_ratio_6')"
+                id="Detail1.1.sch_ratio_6" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_6', allformValues['sch_ratio_6'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_6')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_6',allformValues['sch_ratio_6'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 7 : " [matDatepicker]="sch_7"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_7')" (blur)="setSelectedText('Detail1.1.sch_7')"
+                [(ngModel)]="allformValues['sch_7']" id="Detail1.1.sch_7"
+                (dateChange)="callLocalItemChange('sch_7', allformValues['sch_7'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_7"></mat-datepicker-toggle>
+              <mat-datepicker #sch_7 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_7')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_7',allformValues['sch_7'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 7 Quantity % : " [(ngModel)]="allformValues['sch_ratio_7']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_7')" (blur)="setSelectedText('Detail1.1.sch_ratio_7')"
+                id="Detail1.1.sch_ratio_7" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_7', allformValues['sch_ratio_7'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_7')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_7',allformValues['sch_ratio_7'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 8 : " [matDatepicker]="sch_8"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_8')" (blur)="setSelectedText('Detail1.1.sch_8')"
+                [(ngModel)]="allformValues['sch_8']" id="Detail1.1.sch_8"
+                (dateChange)="callLocalItemChange('sch_8', allformValues['sch_8'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_8"></mat-datepicker-toggle>
+              <mat-datepicker #sch_8 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_8')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_8',allformValues['sch_8'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 8 Quantity % : " [(ngModel)]="allformValues['sch_ratio_8']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_8')" (blur)="setSelectedText('Detail1.1.sch_ratio_8')"
+                id="Detail1.1.sch_ratio_8" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_8', allformValues['sch_ratio_8'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_8')"
+                (click)="openPopHelp('sch_ratio_8',allformValues['sch_ratio_8'], 1)"
+                [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 9 : " [matDatepicker]="sch_9"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_9')" (blur)="setSelectedText('Detail1.1.sch_9')"
+                [(ngModel)]="allformValues['sch_9']" id="Detail1.1.sch_9"
+                (dateChange)="callLocalItemChange('sch_9', allformValues['sch_9'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_9"></mat-datepicker-toggle>
+              <mat-datepicker #sch_9 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_9')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_9',allformValues['sch_9'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 9 Quantity % : " [(ngModel)]="allformValues['sch_ratio_9']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_9')" (blur)="setSelectedText('Detail1.1.sch_ratio_9')"
+                id="Detail1.1.sch_ratio_9" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_9', allformValues['sch_ratio_9'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_9')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_9',allformValues['sch_ratio_9'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 10 : " [matDatepicker]="sch_10"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_10')" (blur)="setSelectedText('Detail1.1.sch_10')"
+                [(ngModel)]="allformValues['sch_10']" id="Detail1.1.sch_10"
+                (dateChange)="callLocalItemChange('sch_10', allformValues['sch_10'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_10"></mat-datepicker-toggle>
+              <mat-datepicker #sch_10 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_10')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_10',allformValues['sch_10'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 10 Quantity % : " [(ngModel)]="allformValues['sch_ratio_10']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_10')" (blur)="setSelectedText('Detail1.1.sch_ratio_10')"
+                id="Detail1.1.sch_ratio_10" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_10', allformValues['sch_ratio_10'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_10')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_10',allformValues['sch_ratio_10'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 11 : " [matDatepicker]="sch_11"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_11')" (blur)="setSelectedText('Detail1.1.sch_11')"
+                [(ngModel)]="allformValues['sch_11']" id="Detail1.1.sch_11"
+                (dateChange)="callLocalItemChange('sch_11', allformValues['sch_11'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_11"></mat-datepicker-toggle>
+              <mat-datepicker #sch_11 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_11')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_11',allformValues['sch_11'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 11 Quantity % : " [(ngModel)]="allformValues['sch_ratio_11']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_11')" (blur)="setSelectedText('Detail1.1.sch_ratio_11')"
+                id="Detail1.1.sch_ratio_11" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_11', allformValues['sch_ratio_11'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_11')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_11',allformValues['sch_ratio_11'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Delivery Schedule Date 12 : " [matDatepicker]="sch_12"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_12')" (blur)="setSelectedText('Detail1.1.sch_12')"
+                [(ngModel)]="allformValues['sch_12']" id="Detail1.1.sch_12"
+                (dateChange)="callLocalItemChange('sch_12', allformValues['sch_12'], 1)" format="dateBox"
+                [disabled]="editFlag == 'V'">
+              <mat-datepicker-toggle matSuffix [for]="sch_12"></mat-datepicker-toggle>
+              <mat-datepicker #sch_12 [disabled]="editFlag == 'V'"></mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('sch_12')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_12',allformValues['sch_12'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Schedule 12 Quantity % : " [(ngModel)]="allformValues['sch_ratio_12']"
+                (focus)="setFocusFormNo('1','Detail1.1.sch_ratio_12')" (blur)="setSelectedText('Detail1.1.sch_ratio_12')"
+                id="Detail1.1.sch_ratio_12" step="0.01"
+                (change)="callLocalItemChange('sch_ratio_12', allformValues['sch_ratio_12'], 1)" format="general"
+                [disabled]="editFlag == 'V'" type="number" style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('sch_ratio_12')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('sch_ratio_12',allformValues['sch_ratio_12'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <!-- <div style="position: relative; overflow: visible; padding: 15px; width: 87%;">
+          <div class="label1 fontstylewidget customYesNoLblFlkerPosition left">Confirmed :</div>
+          <div class="right customdiv responsivePnlWidth">
+            <label class="switch" style="border-radius: 34px"><input type="checkbox" class="textBox1"
+                style="width:40px; border-bottom:1px solid #dbdbdb; border-top:1px solid #dbdbdb; border-left:1px solid #dbdbdb; border-right:1px solid #dbdbdb; line-height:0; box-sizing:border-box; padding:1px 5px 0 0; background-color:white; margin-bottom:32px;">
+              <div class="slider round"></div>
+            </label></div>
+        </div> -->
+          </div>
+        </div>
+
+        <!-- Others -->
+        <!-- <hr class="formBorderForTransaction"> -->
+        <div style="padding: 0px 0px 5px 0px; display: none;" class="e12GroupBox" id="Others">
+          <div style="display: inline-flex; width: calc(100% - 14px);"
+            (contextmenu)="onContextMenuClick($event, 'Others')" class="groupBoxHeaderPnl collapseGroupBox"
+            (click)="hideShowGroupBtn('Others')">
+            <div style="width: calc(100% - 20px)" class="groupBxHeaderLbl">Others</div>
+            <div style="font-size: 25px; color: gray;" class="vision-ui-arrow_right"></div>
+          </div>
+          <div class="freeFormContentTwoColumn collapseGroupBoxChild" style="padding: 10px;">
+            <mat-form-field>
+              <input matInput placeholder="Transaction id : " [(ngModel)]="allformValues['tran_id']"
+                (focus)="setFocusFormNo('1','Detail1.1.tran_id')" (blur)="setSelectedText('Detail1.1.tran_id')" id="Detail1.1.tran_id"
+                (change)="callLocalItemChange('tran_id', allformValues['tran_id'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('tran_id')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('tran_id',allformValues['tran_id'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Site : " [(ngModel)]="allformValues['site_code']"
+                (focus)="setFocusFormNo('1','Detail1.1.site_code')" (blur)="setSelectedText('Detail1.1.site_code')" id="Detail1.1.site_code"
+                (change)="callLocalItemChange('site_code', allformValues['site_code'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('site_code')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('site_code',allformValues['site_code'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="User Remarks : " [(ngModel)]="allformValues['user_remarks']"
+                (focus)="setFocusFormNo('1','Detail1.1.user_remarks')" (blur)="setSelectedText('Detail1.1.user_remarks')"
+                id="Detail1.1.user_remarks"
+                (change)="callLocalItemChange('user_remarks', allformValues['user_remarks'], 1)" format="general"
+                [disabled]="editFlag == 'V'">
+              <div *ngIf="popHelpFieldList.includes('user_remarks')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('user_remarks',allformValues['user_remarks'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Credit Limit : " [(ngModel)]="allformValues['st_cr_limit']"
+                (focus)="setFocusFormNo('1','Detail1.1.st_cr_limit')" (blur)="setSelectedText('Detail1.1.st_cr_limit')"
+                id="Detail1.1.st_cr_limit"
+                (change)="callLocalItemChange('st_cr_limit', allformValues['st_cr_limit'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'" type="number"
+                style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('st_cr_limit')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('st_cr_limit',allformValues['st_cr_limit'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Customer Outstanding : " [(ngModel)]="allformValues['st_cust_outs']"
+                (focus)="setFocusFormNo('1','Detail1.1.st_cust_outs')" (blur)="setSelectedText('Detail1.1.st_cust_outs')"
+                id="Detail1.1.st_cust_outs"
+                (change)="callLocalItemChange('st_cust_outs', allformValues['st_cust_outs'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'" type="number"
+                style="text-align: right;">
+              <div *ngIf="popHelpFieldList.includes('st_cust_outs')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('st_cust_outs',allformValues['st_cust_outs'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Status : " [(ngModel)]="allformValues['status']"
+                (focus)="setFocusFormNo('1','Detail1.1.status')" (blur)="setSelectedText('Detail1.1.status')" id="Detail1.1.status"
+                (change)="callLocalItemChange('status', allformValues['status'], 1)" format="general"
+                [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <div *ngIf="popHelpFieldList.includes('status')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('status',allformValues['status'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Project : " [(ngModel)]="allformValues['proj_code']"
+                (focus)="setFocusFormNo('1','Detail1.1.proj_code')" (blur)="setSelectedText('Detail1.1.proj_code')" id="Detail1.1.proj_code"
+                (change)="callLocalItemChange('proj_code', allformValues['proj_code'], 1)" format="general"
+                [disabled]="editFlag == 'V'">
+              <div *ngIf="popHelpFieldList.includes('proj_code')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                (click)="openPopHelp('proj_code',allformValues['proj_code'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Sales Person 1 : " [(ngModel)]="allformValues['sales_pers']"
+                (focus)="setFocusFormNo('1','Detail1.1.sales_pers')" (blur)="setSelectedText('Detail1.1.sales_pers')" id="Detail1.1.sales_pers"
+                (change)="callLocalItemChange('sales_pers', allformValues['sales_pers'], 1)"
+                [disabled]="editFlag == 'V'" format="general">
+              <div *ngIf="popHelpFieldList.includes('sales_pers')"
+                (click)="openPopHelp('sales_pers',allformValues['sales_pers'], 1)"
+                [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Sales Person 2 : " [(ngModel)]="allformValues['sales_pers__1']"
+                (focus)="setFocusFormNo('1','Detail1.1.sales_pers__1')" (blur)="setSelectedText('Detail1.1.sales_pers__1')"
+                id="Detail1.1.sales_pers__1"
+                (change)="callLocalItemChange('sales_pers__1', allformValues['sales_pers__1'], 1)" format="general"
+                [disabled]="editFlag == 'V'">
+              <div *ngIf="popHelpFieldList.includes('sales_pers__1')"
+                (click)="openPopHelp('sales_pers__1',allformValues['sales_pers__1'], 1)"
+                [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Change On : " [matDatepicker]="chg_date" (focus)="setFocusFormNo('1','Detail1.1.chg_date')"
+                (blur)="setSelectedText('Detail1.1.chg_date')" [(ngModel)]="allformValues['chg_date']"
+                id="Detail1.1.chg_date" (dateChange)="callLocalItemChange('chg_date', allformValues['chg_date'], 1)"
+                format="dateBox" [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              <mat-datepicker-toggle matSuffix [for]="chg_date"></mat-datepicker-toggle>
+              <mat-datepicker #chg_date [disabled]="editFlag == 'V' || editFlag == 'E' || editFlag == 'A'">
+              </mat-datepicker>
+              <div *ngIf="popHelpFieldList.includes('chg_date')"
+                [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                (click)="openPopHelp('chg_date',allformValues['chg_date'], 1)"
+                class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <!-- </form> -->
+      <!-- <hr class="formBorderForTransaction"> -->
+      <!-- <div *ngIf="allformValues.Detail2" class="tableGroup"> -->
+      <!-- <button class="multLayoutBtn moreBtnForExtract" style="background: url('/ibase/images/ExpandV.svg') no-repeat fixed center;" (click)="onContextMenuClick($event, '', true)"></button> -->
+      
+      <!-- Added By Pravin K on 27-JAN-20[To change position on show more button]  START -->
+      <!-- <div class="moreBtnForExtractDiv" id="moreBtnForExtractId"
+        (click)="onContextMenuClick($event, 'moreBtnForExtractId', true)">
+        <p>Show More</p>
+        <img class="moreBtnForExtract" src="/ibase/images/ExpandV.svg">
+      </div> -->
+      <div class="moreBtnForExtractDiv" >
+        <div id="moreBtnForExtractId" (click)="onContextMenuClick($event, 'moreBtnForExtractId', true)" style="display: flex; float: right; cursor: pointer;" >
+            <p>Show More</p>
+            <img class="moreBtnForExtract" src="/ibase/images/ExpandV.svg">
+        </div>
+      </div>
+      <!-- Added By Pravin K on 27-JAN-20[To change position on show more button]  END -->
+      <!-- <hr class="formBorderForTransaction" style="padding: 5px;"> -->
+        <!-- pravin change start -->
+      <!-- <div>
+        <span class="showmore-section" >
+      <button mat-icon-button class="showmore-button" [matMenuTriggerFor]="menu">
+        <span class="visioniconmore-v icon-more-v"></span>
+      </button>
+      </span>
+      </div> -->
+      
+     <!-- <mat-menu #menu="matMenu" xPosition="before">
+      <button  mat-menu-item class="content-menu-item" (click)="setDialogFor('tableStart')" >
+      <span>Select Table Start</span>
+      </button>
+      <button  mat-menu-item class="content-menu-item" (click)="setDialogFor('tableEnd')" >
+      <span>Select Table End</span>
+      </button>
+      <button  mat-menu-item class="content-menu-item" (click)="setDialogFor('tableHeading')" >
+      <span>Select Heading</span>
+      </button>
+      <button  mat-menu-item class="content-menu-item" (click)="setDialogFor('tableValue')" >
+      <span>Select Heading Value</span>
+      </button>
+      <button  mat-menu-item class="content-menu-item" (click)="SaveOrUpdateYML()">
+      <span>Update YML</span>
+      </button>
+     
+    </mat-menu> -->
+    
+      <!-- pravin change end -->
+      <div class="detailHeadingExtract detailHeadingTabExtract" style=" display: flex; margin-top: -20px;">
+        <div style="float: left; width: 50%;">
+          <label class="datailHeaderLabelExtract" style="transition: none;">Item Details</label>
+        </div>
+        <!-- Added By Pravin K on 14-OCT-20[overlay for selection]  START -->
+        <div style="width: 100%;">
+            <div style="float: right;">
+                                
+                <span class="showmore-section" style="" >
+                    <button style="" mat-icon-button class="showmore-button" [matMenuTriggerFor]="menu">
+                        <span class="visioniconmore-v icon-more-v"></span>
+                    </button>
+                </span>
+            </div>  
+
+        </div>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <button  mat-menu-item class="content-menu-item" (click)="openTableOverlay()" >
+                <span> Edit Table Marking </span>
+            </button>     
+        </mat-menu>
+        
+      </div>
+      
+      <!-- <div style="border: 1px solid #ddd; height: 40%; position: relative;"> -->
+      <div style="border: 1px solid #ddd; position: relative;" id="tableDetails_2">
+        <!--Added By pravin k on 4-NOV-20 [icon for data extraction]  START -->
+        <div  *ngIf=" showTableMarking == true " class="table_template_selection" id ="tableTemplateSelection" >
+
+            <div class="table_icon_background_deactive tableStartIcon"  [ngStyle]="{'background': tableLineData.action=='tableStart' ? '#f7e989 ' : tableLineData.tableStart ? 'green' :  'white ', 'fill': tableLineData.tableStart ? 'white' : 'gray'}">
+               
+                <svg id="Layer_1"   data-name="Layer 1"  class="table_start_end_icon" [ngStyle]="{'fill: ': tableLineData.tableStart ? 'white' : 'gray'}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" (click)="setDialogFor('tableStart')">
+                    <path class="cls-1" d="M0,29V6A6,6,0,0,1,6,0H29a1,1,0,0,1,0,2H6A4,4,0,0,0,2,6V29a1,1,0,0,1-1,1A1,1,0,0,1,0,29Z"/>
+                    <path class="cls-1" d="M8,23V9A1,1,0,0,1,9,8h14a1,1,0,0,1,0,2H11.38L29.6,28.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.41,0l-13-13-1-1L10,11.42V23a1,1,0,1,1-2,0Z"/>
+                </svg>
+            
+                <span style="padding-left: 10px;" class="table_template_labels"> {{selecTableStartTxt}}</span>
+            
+                <span *ngIf=" templateUIMode=='Edit' " class="vision-ui-cross table_icon_background_deactive table_done_cancel_icon"
+                    style="right: 35px; " (click)="closeTableOverlay('clear')"></span>
+
+                <span *ngIf="tableLineData.tableStart && tableLineData.tableEnd"  (click)="closeTableOverlay('')"
+                    class="vision-ui-check table_icon_background_deactive table_done_cancel_icon"
+                    style=" right: 5px; "></span>
+    
+            </div>
+            <div *ngIf=" templateUIMode=='Add' " style="  width: 100%;   padding-left: 355px; ">
+                <span class="vision-ui-cross table_icon_background_deactive " (click)="closeTableOverlay('clear')"
+                    style="position: absolute; color: gray;  line-height: 1.7; font-size: 15px;" ></span>
+
+                <span   style="padding-left: 10px; width: 100px !important; margin-left: 20px;" class="table_template_labels" >Data extraction is not required for this table</span>
+            </div>
+
+            <div class="tableEndSlelection"> 
+                <span style="right: 25px; bottom: 5px; " class="table_template_labels" > {{selecTableEndTxt}}</span>
+                <div class="table_icon_background_deactive tableEndIcon"  (click)="setDialogFor('tableEnd')"
+                    [ngStyle]="{'background': (tableLineData.action=='tableEnd') ? '#f7e989 ' : tableLineData.tableEnd ? 'green' : 'white ','fill': tableLineData.tableEnd ? 'white' : 'gray'}" >
+                    <svg id="Layer_1"  data-name="Layer 1"  class="table_start_end_icon" [ngStyle]="{'fill: ': tableLineData.tableEnd ? 'white' : 'gray'}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                        <path class="cls-1" d="M30,1V24a6,6,0,0,1-6,6H1a1,1,0,0,1,0-2H24a4,4,0,0,0,4-4V1a1,1,0,1,1,2,0Z"/>
+                        <path class="cls-1" d="M22,7V21a1,1,0,0,1-1,1H7.08a1,1,0,0,1,0-2H18.62L.4,1.71A1,1,0,0,1,.4.29a1,1,0,0,1,1.41,0l13,13,1,1L20,18.58V7a1,1,0,1,1,2,0Z"/>
+                    </svg>
+                </div>
+            </div>    
+        </div>
+        <!-- Added By Pravin K on 14-OCT-20[overlay for selection] END-->
+
+        <button *ngIf="editFlag == 'E' || editFlag == 'A'" (click)="addDetail('Detail2', 2)" mat-fab
+          class="plusBtnDetail">
+          <mat-icon class="icon" style=" margin-top: -13px; width: 28px;"><i class="icon-display material-icons"
+              style="line-height: 0.4; font-size: 28px; color: #fff;">add</i></mat-icon>
+        </button>
+        <div style="position: relative; height: 100%; overflow-x: auto; overflow-y: hidden;">
+          <!-- <div style="width: 350%;"> -->
+          <div>
+            <table class="extractTable">
+              <thead>
+                <tr class="stickyHeader bckGrndColorForRow">
+                  <th class="tableHorizontalRow" style="width: 115px; padding-left: 15px">Item Code</th>
+                  <th class="tableHorizontalRow" style="width: 155px;">Item Description</th>
+                  <th class="tableHorizontalRow" style="width: 110px;">Total Quantity</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Unit</th>
+                  <th class="tableHorizontalRow" style="width: 110px;">Estimated Value</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Division</th>
+                  <th class="tableHorizontalRow" style="width: 120px;">Promo Information</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Promo Type</th>
+                  <th class="tableHorizontalRow" style="width: 130px;">Packing Information</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Current Stock</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Shipping Site</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Storage Type</th>
+                  <th class="tableHorizontalRow" style="width: 130px;">Item Ser Promotional</th>
+                  <th class="tableHorizontalRow" style="width: 110px;">Cust Item Code</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Tax Type</th>
+                  <th class="tableHorizontalRow" style="width: 92px;">Serial No</th>
+                  <!-- <th class="tableHorizontalRow" style="width: 92px;">pdf_line_no</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detail of allformValues['Detail2']; let i = index;"
+                  [ngClass]="{disableRowSelectionOnView : editFlag == 'V'}" id="selected_Detail2_RowNo_{{i + 1}}"
+                  (click)="rowSelected('Detail2', i, false)" class="bckGrndColorForRow">
+                 
+                  <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow" style="width: 115px;  padding-left: 15px" id="Detail2.{{i + 1}}.item_code"  (focus)="setSelectedText('Detail2.'+(i+1)+'.item_code')"
+                      (blur)="setSelectedText('Detail.2.'+(i+1)+'.item_code')"
+                      (change)="callLocalItemChange('item_code', detail.item_code, 2, i)" [(ngModel)]="detail.item_code"
+                      [ngClass]="{disableCellData : editFlag == 'V'}">
+                    <div *ngIf="popHelpFieldList.includes('item_code')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                      (click)="openPopHelp('item_code',detail.item_code, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow" style="width: 155px;" id="Detail2.{{i + 1}}.descr"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.descr')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.descr')"
+                      (change)="callLocalItemChange('descr', detail.descr, 2, i)" [(ngModel)]="detail.descr">
+                      <!-- [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}" caanged by pravin k on 4-NOV-20 -->
+                    <div *ngIf="popHelpFieldList.includes('descr')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E' || editFlag == 'A'}"
+                      (click)="openPopHelp('descr',detail.descr, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="cellData tabelDetailRow" style="width: 110px;" id="Detail2.{{i + 1}}.totqty"
+                           (focus)="setSelectedText('Detail2.'+(i+1)+'.totqty')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.totqty')"
+                      (change)="callLocalItemChange('totqty', detail.totqty, 2, i)" [(ngModel)]="detail.totqty"
+                      [ngClass]="{disableCellData : editFlag == 'V'}">
+                    <div *ngIf="popHelpFieldList.includes('totqty')" [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                      (click)="openPopHelp('totqty',detail.totqty, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow" style="width: 92px;" id="Detail2.{{i + 1}}.unit"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.unit')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.unit')"
+                      (change)="callLocalItemChange('unit', detail.unit, i)" [(ngModel)]="detail.unit"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                    <div *ngIf="popHelpFieldList.includes('unit')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('unit',detail.unit, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="cellData tabelDetailRow" style="width: 110px;" id="Detail2.{{i + 1}}.ord_value"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.ord_value')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.ord_value')"
+                      (change)="callLocalItemChange('ord_value', detail.ord_value, 2, i)" [(ngModel)]="detail.ord_value"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                    <div *ngIf="popHelpFieldList.includes('ord_value')"
+                      (click)="openPopHelp('ord_value',detail.ord_value, 2, i)"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow" style="width: 92px;" id="Detail2.{{i + 1}}.item_ser"
+                (focus)="setSelectedText('Detail2.'+(i+1)+'.item_ser')"    (blur)="setSelectedText('Detail.2.'+(i+1)+'.item_ser')"
+                      (change)="callLocalItemChange('item_ser', detail.item_ser, 2, i)" [(ngModel)]="detail.item_ser"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                    <div *ngIf="popHelpFieldList.includes('item_ser')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('item_ser',detail.item_ser, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow" style="width: 120px;" id="Detail2.{{i + 1}}.st_scheme"
+                       (focus)="setSelectedText('Detail2.'+(i+1)+'.st_scheme')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.st_scheme')"
+                      (change)="callLocalItemChange('st_scheme', detail.st_scheme, 2, i)" [(ngModel)]="detail.st_scheme"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                    <div *ngIf="popHelpFieldList.includes('st_scheme')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('st_scheme',detail.st_scheme, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <select class="tabelDetailRow" id="Detail2.{{i + 1}}.nature"
+                       (focus)="setSelectedText('Detail2.'+(i+1)+'.nature')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.nature')"
+                      (change)="callLocalItemChange('nature', detail.nature, 2, i)" [(ngModel)]="detail.nature"
+                      style="width: 92px;" [ngClass]="{disableCellData : editFlag == 'V'}">
+                      <option value="C">Chargeable</option>
+                      <option value="I">Item Balance</option>
+                      <option value="V">Value Balance</option>
+                    </select>
+                    <div *ngIf="popHelpFieldList.includes('nature')" (click)="openPopHelp('nature',detail.nature, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract"
+                      [ngClass]="{disablePopHelp : editFlag == 'V'}"></div>
+                    <!-- <input class="tabelDetailRow" style="width: 92px;"> -->
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('st_shipper', detail.st_shipper, 2, i)"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.st_shipper')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.st_shipper')" id="Detail2.{{i + 1}}.st_shipper"
+                      [(ngModel)]="detail.st_shipper" class="tabelDetailRow" style="width: 130px;"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" />
+                    <div *ngIf="popHelpFieldList.includes('st_shipper')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('st_shipper',detail.st_shipper, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('curr_stk', detail.curr_stk, 2, i)"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.curr_stk')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.curr_stk')"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" id="Detail2.{{i + 1}}.curr_stk"
+                      [(ngModel)]="detail.curr_stk" class="cellData tabelDetailRow" style="width: 92px;" />
+                    <div *ngIf="popHelpFieldList.includes('curr_stk')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('curr_stk',detail.curr_stk, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('site_code__ship', detail.site_code__ship, 2, i)"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.site_code__ship')"  (blur)="setSelectedText('Detail.2.'+(i+1)+'.site_code__ship')"
+                      id="Detail2.{{i + 1}}.site_code__ship" [(ngModel)]="detail.site_code__ship" class="tabelDetailRow"
+                      style="width: 92px;" [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" />
+                    <div *ngIf="popHelpFieldList.includes('site_code__ship')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('site_code__ship',detail.site_code__ship, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('loc_type', detail.loc_type, 2, i)"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.loc_type')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.loc_type')" id="Detail2.{{i + 1}}.loc_type"
+                      [(ngModel)]="detail.loc_type" class="tabelDetailRow" style="width: 92px;"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" />
+                    <div *ngIf="popHelpFieldList.includes('loc_type')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('loc_type',detail.loc_type, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('item_ser__prom', detail.item_ser__prom, 2, i)"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.item_ser__prom')" (blur)="setSelectedText('Detail.2.'+(i+1)+'.item_ser__prom')"
+                      id="Detail2.{{i + 1}}.item_ser__prom" [(ngModel)]="detail.item_ser__prom" class="tabelDetailRow"
+                      style="width: 130px;" [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" />
+                    <div *ngIf="popHelpFieldList.includes('item_ser__prom')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('item_ser__prom',detail.item_ser__prom, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('cust_item__ref', detail.cust_item__ref, 2, i)"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.cust_item__ref')" ((blur)="setSelectedText('Detail.2.'+(i+1)+'.cust_item__ref')"
+                      id="Detail2.{{i + 1}}.cust_item__ref" [(ngModel)]="detail.cust_item__ref" class="tabelDetailRow"
+                      style="width: 110px;" [ngClass]="{disableCellData : editFlag == 'V'}" />
+                    <div *ngIf="popHelpFieldList.includes('cust_item__ref')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V'}"
+                      (click)="openPopHelp('cust_item__ref',detail.cust_item__ref, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <td class="addBorderToFeeds">
+                    <input type="text" (change)="callLocalItemChange('tax_type', detail.tax_type, 2, i)"
+                      (focus)="setSelectedText('Detail2.'+(i+1)+'.tax_type')"  (blur)="setSelectedText('Detail.2.'+(i+1)+'.tax_type')" id="Detail2.{{i + 1}}.tax_type"
+                      [(ngModel)]="detail.tax_type" class="cellData tabelDetailRow" style="width: 92px;"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}" />
+                    <div *ngIf="popHelpFieldList.includes('tax_type')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('tax_type',detail.tax_type, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                   <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow cellData" style="width: 92px;" id="Detail2.{{i + 1}}.line_no"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.line_no')"  (blur)="setSelectedText('Detail.2.'+(i+1)+'.line_no')"
+                      (change)="callLocalItemChange('line_no', detail.line_no, 2, i)" [(ngModel)]="detail.line_no"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                    <div *ngIf="popHelpFieldList.includes('line_no')"
+                      [ngClass]="{disablePopHelp : editFlag == 'V' || editFlag == 'E'}"
+                      (click)="openPopHelp('line_no',detail.line_no, 2, i)"
+                      class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpForExtract">
+                    </div>
+                  </td>
+                  <!-- to be removed by pravin k on 21-JAN-21   START -->
+                  <!-- <td class="addBorderToFeeds">
+                    <input class="tabelDetailRow cellData" style="width: 92px;" id="Detail2.{{i + 1}}.line_indx"
+                     (focus)="setSelectedText('Detail2.'+(i+1)+'.line_indx')"  (blur)="setSelectedText('Detail.2.'+(i+1)+'.line_indx')"
+                      (change)="callLocalItemChange('line_indx', detail.line_indx, 2, i)" [(ngModel)]="detail.line_indx"
+                      [ngClass]="{disableCellData : editFlag == 'V' || editFlag == 'E'}">
+                  </td> -->
+                  <!-- to be removed by pravin k on 21-JAN-21   END -->
+
+                  <div class="actionsDiv enableRow">
+
+                   <div *ngIf="taxFormInfo.includes('2')" class="deleteDetailBtnExtract enableRow " style="background-color:var(--primary) !important;" id="taxBtn_{{i + 1}}"
+                    (click)="openTaxScreen('Detail2', 2, i)">
+                    <p class="removeExtractDet">
+                      <img src="/ibase/webitm/images/taxForExtract.svg" style="height: 14px; width: 14px;">
+                    </p>
+                     </div>
+                     
+                    <div class="deleteDetailBtnExtract enableRow" id="deleteBtn_{{i + 1}}"
+                      (click)="deleteSelectedDetail('Detail2', 2, i)">
+                      <p class="removeExtractDet">
+                        <img src="/ibase/webitm/images/deleteExtractDetail.svg" style="height: 14px; width: 14px;">
+                      </p>
+                    </div>
+                    
+                  </div>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div *ngIf="pdfSrc" class="filecontentdiv">
+    <pdf-viewer-editor [pdfSrcNew]="pdfSrc" (onAllPagesLoad)="onPageLoad()" id="pdf-viewer-editor"
+      [isHoriScrollReq]="true"></pdf-viewer-editor>
+  </div>
+
+  <div>
+    <open-pophelp #popHelp (itemChangeValues)="onItemChangeFromPophelp($event)"
+      (valueSelected)="selectedValueFromPopHelp($event)" [compData]="compData" [paramData]="currentCompData"
+      [positionObj]="positionPopHelp"></open-pophelp>
+  </div>
+
+</div>
+
+<div *ngIf="showAdd == false" class="buttons-div">
+  <!-- <span class="cancel-button" (click)="cancel()">Cancel</span> -->
+  <!-- <span class="download-button" (click)="editFlag == 'V' ? false : downloadExcelFile()"
+    [ngClass]="{disableBtn : editFlag == 'V'}"><span class="vision-ui-excel_download" style="margin: 0 4px;"
+      [ngClass]="editFlag == 'V' ? 'disableBtn' : 'enableBtn'"></span><span>Download
+      Excel File</span></span> -->
+  <span class="save-button" (click)="editFlag == 'V' ? false : save()"
+    [ngClass]="{disableBtn : editFlag == 'V'}">Save</span>
+</div>
+
+<div *ngIf="showAdd" class="add-button">
+  <button matTooltip="Add Attachment" matTooltipClass="toolTipForExtract" (click)="addContent();" mat-fab
+    class="add_Attachmennt-Button">
+    <!-- <mat-icon class="icon" style=" margin-top: -10px;"><i class="icon-display material-icons"
+        style="line-height: 1.4;">attach_file</i></mat-icon> -->
+    <mat-icon class="icon" style=" margin-top: -10px; line-height: 0.5;"><i class="icon-display material-icons"
+        style="font-size: 25px; color: #fff;">attach_file</i></mat-icon>
+  </button>
+</div>
+<ng-template #expandAndCollapseTemp>
+  <div class="slidePopupPanel" id="expColpseOptForExtractTemp"
+    style="background-color: #fff; width: 160px; cursor: pointer;">
+    <span id="collapseET" style="display: -webkit-box;" (click)="expAndCollOnOptionsClick('C')">
+      <img class="actionIcons" style="float: none;" src="/ibase/images/Collapse.svg"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Collapse</div>
+    </span>
+    <span id="expandET" style="display: -webkit-box;" (click)="expAndCollOnOptionsClick('E')">
+      <img class="actionIcons" style="float: none;" src="/ibase/images/Expand.svg"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Expand</div>
+    </span>
+    <span id="collapseAllET" style="display: -webkit-box;" (click)="expAndCollOnOptionsClick('CO')">
+      <img class="actionIcons" style="float: none;" src="/ibase/images/CollapseV.svg"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Collapse all</div>
+    </span>
+    <span id="expandAllET" style="display: -webkit-box;" (click)="expAndCollOnOptionsClick('EX')">
+      <img class="actionIcons" style="float: none;" src="/ibase/images/ExpandV.svg"
+        onerror=" this.src= 'images/errMenu.png' ">
+      <div style="padding: 4px; margin-top: 7px; margin-bottom: 7px;">Expand all</div>
+    </span>
+  </div>
+</ng-template>
+<ng-template #taxDetails>
+   <button class="popupcloseForTax" (click)="closeTaxOverlay()">X</button>
+  <div  class="taxDetailOverlay">
+    <tax-details [popHelpFieldList]="popHelpFieldList" [editFlag]="editFlag" [cuurentValidationRow]="cuurentValidationRow"
+    [allformValues]="allformValues" [taxResponseData]="taxResponseData" [compData]="compData" (closeTax)="closeTaxOverlay()" 
+     (openPophelpFromTaxSceen)="openPophelpFromTaxSceen($event)" (applyTaxScreen)="applyTaxScreen()"  (callItemchangeFormTax)="callItemchangeFormTax($event)" 
+     (setSelectedTextfromTax)="setSelectedText($event)" >
+    </tax-details>
+  </div> 
+</ng-template>

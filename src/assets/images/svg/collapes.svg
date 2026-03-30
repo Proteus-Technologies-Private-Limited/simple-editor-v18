@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="16" viewBox="0 0 28 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="Collapes" class="cls-1" d="M1,19.973L4.267,23,15,13.054,25.735,23,29,19.973,15,7Z" transform="translate(-1 -7)"/>
+</svg>

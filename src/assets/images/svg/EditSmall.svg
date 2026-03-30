@@ -1,0 +1,10 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
+<defs>
+    <style>
+      .cls-1 {
+        fill: #334669;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M8.71,6.71l-5,5A1,1,0,0,1,3,12H1a1,1,0,0,1-1-1V9a1,1,0,0,1,.29-.71l5-5a1,1,0,0,1,1.42,0l2,2A1,1,0,0,1,8.71,6.71Z"/><path d="M11.71,3.71a1,1,0,0,1-1.42,0l-2-2A1,1,0,0,1,9.71.29l2,2A1,1,0,0,1,11.71,3.71Z"/></svg>

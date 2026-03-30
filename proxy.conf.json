@@ -1,0 +1,8 @@
+{
+    "/ibase": {
+        "target": "https://dev1.proteusvision.com:8443",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}

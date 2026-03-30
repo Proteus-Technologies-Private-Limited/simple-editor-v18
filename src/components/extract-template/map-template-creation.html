@@ -1,0 +1,40 @@
+<div style="display: flex;">
+	<span class="template-title"> Map template </span>
+	<span class="vision-ui-cross right-icons" (click) = "closeDilog()"> </span> 
+
+</div>
+<div >
+
+	<div class="templateLabelsGroup" > 
+		<bb-textbox  class="batteryStatus" 
+					[placeholder]="'Selected label'" 
+					[uxDesign]="'UX3'"
+					style="width: 95%;" >
+		</bb-textbox>
+        <!-- [(ngModel)]="data.tableStart" -->
+
+		<span   class="vision-ui-edit label-edit-icon" ></span>
+		<!-- <span *ngIf="! data.tableStart" class="vision-ui-add  right-add-icons" 	(click)="" > </span>  -->
+	
+	</div>
+
+	<div  class="templateLabelsGroup" > 
+		<bb-textbox class="batteryStatus" 
+					[placeholder]="'Selected value '" 
+					[uxDesign]="'UX3'" 
+					style="width: 95%;" >
+		</bb-textbox>
+		<!-- 
+            [(ngModel)]="data.tableEnd" -->
+
+		<span   class="vision-ui-edit label-edit-icon" ></span> 
+		<!-- <span *ngIf="! data.tableEnd" class="vision-ui-add  right-add-icons"  > </span>  -->
+	</div>
+	
+</div>
+
+<div class="doneDiv" >
+	<span class="vision-ui-check doneIcon " style="padding-left: 180px !important;" > </span>  
+
+<span    class="done-Button" > Done </span>
+</div>

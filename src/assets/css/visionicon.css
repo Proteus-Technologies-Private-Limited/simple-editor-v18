@@ -1,0 +1,225 @@
+@font-face {
+  font-family: 'visionicon';
+  src:  url('fonts/visionicon.eot?wg52av');
+  src:  url('fonts/visionicon.eot?wg52av#iefix') format('embedded-opentype'),
+    url('fonts/visionicon.ttf?wg52av') format('truetype'),
+    url('fonts/visionicon.woff?wg52av') format('woff'),
+    url('fonts/visionicon.svg?wg52av#visionicon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="visionicon"], [class*=" visionicon"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'visionicon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  
+  /* Enable Ligatures ================ */
+  letter-spacing: 0;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
+  font-feature-settings: "liga";
+  -webkit-font-variant-ligatures: discretionary-ligatures;
+  font-variant-ligatures: discretionary-ligatures;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.visioniconarrow-down:before {
+  content: "\e900";
+}
+.visioniconarrow-left:before {
+  content: "\e901";
+}
+.visioniconarrow-right:before {
+  content: "\e902";
+}
+.visioniconarrow-up:before {
+  content: "\e903";
+}
+.visioniconattach-h:before {
+  content: "\e904";
+}
+.visioniconattach-v:before {
+  content: "\e905";
+}
+.visioniconcall:before {
+  content: "\e906";
+}
+.visioniconcall-in:before {
+  content: "\e907";
+}
+.visioniconcall-out:before {
+  content: "\e908";
+}
+.visioniconcancel:before {
+  content: "\e909";
+}
+.visioniconcancel-circle:before {
+  content: "\e90a";
+}
+.visioniconcancel-cricle-f:before {
+  content: "\e90b";
+}
+.visioniconcancel-square:before {
+  content: "\e90c";
+}
+.visioniconcancel-square-f:before {
+  content: "\e90d";
+}
+.visioniconcollapse:before {
+  content: "\e90e";
+}
+.visioniconcopy:before {
+  content: "\e90f";
+}
+.visionicondelete:before {
+  content: "\e910";
+}
+.visionicondesign:before {
+  content: "\e911";
+}
+.visioniconedit:before {
+  content: "\e912";
+}
+.visioniconedit-square:before {
+  content: "\e913";
+}
+.visioniconexcel:before {
+  content: "\e914";
+}
+.visioniconexpand:before {
+  content: "\e915";
+}
+.visioniconfilter:before {
+  content: "\e916";
+}
+.visioniconlocate:before {
+  content: "\e917";
+}
+.visioniconmail:before {
+  content: "\e918";
+}
+.visioniconmaximize:before {
+  content: "\e919";
+}
+.visioniconmenu:before {
+  content: "\e91a";
+}
+.visioniconminimize:before {
+  content: "\e91b";
+}
+.visioniconminus:before {
+  content: "\e91c";
+}
+.visioniconminus-circle:before {
+  content: "\e91d";
+}
+.visioniconminus-circle-f:before {
+  content: "\e91e";
+}
+.visioniconminus-square:before {
+  content: "\e91f";
+}
+.visioniconminus-square-f:before {
+  content: "\e920";
+}
+.visioniconmobile:before {
+  content: "\e921";
+}
+.visioniconmore-h:before {
+  content: "\e922";
+}
+.visioniconmore-v:before {
+  content: "\e923";
+}
+.visioniconnav-down:before {
+  content: "\e924";
+}
+.visioniconnav-left:before {
+  content: "\e925";
+}
+.visioniconnav-right:before {
+  content: "\e926";
+}
+.visioniconnav-up:before {
+  content: "\e927";
+}
+.visioniconolap-view:before {
+  content: "\e928";
+}
+.visioniconpaste:before {
+  content: "\e929";
+}
+.visioniconpin-active:before {
+  content: "\e92a";
+}
+.visioniconpin-inactive:before {
+  content: "\e92b";
+}
+.visioniconplus:before {
+  content: "\e92c";
+}
+.visioniconplus-circle:before {
+  content: "\e92d";
+}
+.visioniconplus-circle-f:before {
+  content: "\e92e";
+}
+.visioniconplus-square:before {
+  content: "\e92f";
+}
+.visioniconplus-square-f:before {
+  content: "\e930";
+}
+.visioniconrefresh:before {
+  content: "\e931";
+}
+.visioniconrefresh-small:before {
+  content: "\e932";
+}
+.visioniconreset:before {
+  content: "\e933";
+}
+.visioniconsearch:before {
+  content: "\e934";
+}
+.visioniconsetting:before {
+  content: "\e935";
+}
+.visioniconsort:before {
+  content: "\e936";
+}
+.visionicontick:before {
+  content: "\e937";
+}
+.visionicontick-circle:before {
+  content: "\e938";
+}
+.visionicontick-circle-f:before {
+  content: "\e939";
+}
+.visionicontick-square:before {
+  content: "\e93a";
+}
+.visionicontick-square-f:before {
+  content: "\e93b";
+}
+.visionicontree-view:before {
+  content: "\e93c";
+}
+.visioniconuser:before {
+  content: "\e93d";
+}
+.visioniconview:before {
+  content: "\e93e";
+}

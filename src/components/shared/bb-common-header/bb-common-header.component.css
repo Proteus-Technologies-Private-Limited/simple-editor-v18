@@ -1,0 +1,61 @@
+
+.bb-common-header-container {
+	text-align: center;
+    padding: 4px;
+    border-bottom: 1px solid lightgray;
+}
+
+.bb-header-close-button {
+	display: inline-flex;
+    width: 60px;
+    vertical-align:top;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bb-header-confirm-button {
+    display: inline-flex;
+    width: 60px;
+    vertical-align: top;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: right;
+}
+
+.bb-common-header-title-cont {
+    display: inline-block;
+    width: calc(100% - 120px);
+}
+
+.bb-common-header-title {
+	display: block;
+    font-size: 16px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.bb-common-header-subtitle {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	margin: auto;
+	vertical-align: top;
+	text-overflow: ellipsis;
+	font-size: 12px;
+	width: calc(100% - 40px);
+}
+
+/* .pres-main-container {
+    height: calc(100% - 45px);
+} */
+
+.bb-common-header-title-block {
+   align-items:  center;
+   display:  inline-flex;
+   width:  100%;
+}
+
