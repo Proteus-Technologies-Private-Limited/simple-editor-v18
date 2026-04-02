@@ -762,10 +762,9 @@ export class SimpleEditorService
         }
     }
     
-    invokeLink(link: any, feedData: any, objName: any, formNum: any, firstFormData: any) 
+    invokeLink(link: any, feedData: any, objName: any, formNum: any, firstFormData: any, domId?: any)
     {
         let pkFieldValue = '';
-        let jsonStr:string='';
         if (link && link['formNo']) 
         { 
             let newLink = link;
@@ -782,35 +781,93 @@ export class SimpleEditorService
         }
         if(feedData)
         {
-            jsonStr = JSON.stringify(feedData);         
-
-            let linkArgArray = link.LinkArg.split(',');
-            if(linkArgArray)
+            let linkArgStr = (link.LinkArg || link.link_arg || '').trim();
+            if(linkArgStr && linkArgStr.length > 0)
             {
+                let linkArgArray = linkArgStr.split(',');
                 linkArgArray.forEach(
                     (arg: any) => {
-                        let colName = arg.substring(0, arg.indexOf('.'));
-                        pkFieldValue = pkFieldValue + feedData[colName] + ':';
+                        let trimmedArg = arg.trim();
+                        if(trimmedArg && trimmedArg.indexOf('.') > 0)
+                        {
+                            let colName = trimmedArg.substring(0, trimmedArg.indexOf('.'));
+                            let colValue = feedData[colName];
+                            pkFieldValue = pkFieldValue + (colValue != null ? colValue : '') + ':';
+                        }
                     }
                 );
-            }           
+            }
         }
 
-        
+
+        // Convert all values to strings for GWT getRowFeedData (HashMap<String, String>) compatibility
+        let feedDataStr: any = {};
+        if (feedData) {
+            for (const key in feedData) {
+                feedDataStr[key] = (feedData[key] != null && feedData[key] !== undefined) ? String(feedData[key]) : '';
+            }
+        }
+        let firstFormDataStr: any = {};
+        if (firstFormData) {
+            for (const key in firstFormData) {
+                firstFormDataStr[key] = (firstFormData[key] != null && firstFormData[key] !== undefined) ? String(firstFormData[key]) : '';
+            }
+        }
+
         let response = {
                 "linkInfo" : link,
                 "pkFieldValue" : pkFieldValue,
                 "objName" : objName,
                 "isAnyRowSelected": true,
-                "feedData" : jsonStr,
-                "formNo":formNum,
-                "firstFormData" : firstFormData,
+                "feedData" : JSON.stringify(feedDataStr),
+                "domId" : domId,
+                "formNo":formNum.toString(),
+                "firstFormData" : firstFormDataStr,
                 "isFocusOrBlur":false
         }
-        // console.log("invokeLink response SimpleEditor service File 755: [",response);
+        console.log("invokeLink response:", JSON.stringify(response));
+        let linkInvoked = false;
         if (typeof invokeSimpleLayoutLink !== 'undefined')
         {
+            console.log("invokeLink: calling invokeSimpleLayoutLink from current window");
             invokeSimpleLayoutLink(response);
+            linkInvoked = true;
+        }
+        if (!linkInvoked)
+        {
+            try
+            {
+                if (window.parent && window.parent !== window && typeof (<any>window.parent).invokeSimpleLayoutLink === 'function')
+                {
+                    console.log("invokeLink: calling invokeSimpleLayoutLink from window.parent");
+                    (<any>window.parent).invokeSimpleLayoutLink(response);
+                    linkInvoked = true;
+                }
+            }
+            catch(e)
+            {
+                console.warn("invokeLink: error accessing window.parent.invokeSimpleLayoutLink:", e);
+            }
+        }
+        if (!linkInvoked)
+        {
+            try
+            {
+                if (window.top && window.top !== window && typeof (<any>window.top).invokeSimpleLayoutLink === 'function')
+                {
+                    console.log("invokeLink: calling invokeSimpleLayoutLink from window.top");
+                    (<any>window.top).invokeSimpleLayoutLink(response);
+                    linkInvoked = true;
+                }
+            }
+            catch(e)
+            {
+                console.warn("invokeLink: error accessing window.top.invokeSimpleLayoutLink:", e);
+            }
+        }
+        if (!linkInvoked)
+        {
+            console.warn("invokeSimpleLayoutLink is NOT available on window, window.parent, or window.top");
         }
     }
    
@@ -886,10 +943,14 @@ export class SimpleEditorService
 			"fldValue":fldValue,
         }
 		// console.log("invokeSimpleLink response SimpleEditor service File 836: [",response);
-        if (typeof invokeSimpleLayoutLink !== 'undefined') 
+        if (typeof invokeSimpleLayoutLink !== 'undefined')
         {
-            invokeSimpleLayoutLink(response)
-        } 
+            invokeSimpleLayoutLink(response);
+        }
+        else if (window.parent && window.parent !== window && typeof (<any>window.parent).invokeSimpleLayoutLink === 'function')
+        {
+            (<any>window.parent).invokeSimpleLayoutLink(response);
+        }
     }
 
     getServiceHandlerRequest(paramString:any, callBack:any) : any {

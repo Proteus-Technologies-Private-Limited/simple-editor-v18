@@ -2006,16 +2006,16 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						if(this.allformValues[currentDetail])
 						{
 							let matchingRecord = this.allformValues[currentDetail].find((record: any) => {
-								return record.domID === tempDomId;
+								return record.domID == tempDomId;
 							});
-							
-							if (matchingRecord) 
+
+							if (matchingRecord)
 							{
 								this.currentDomID = matchingRecord.domID;
 								feedData = JSON.parse(JSON.stringify(matchingRecord));
 								this._extractTempletService.invokeSimpleLink(feedData, this.currentDomID, this.currentFormNumber, fldName, this.objName, isFocusOrBlur,fldValue);
 							}
-							else 
+							else
 							{
 								console.log("No matching record found 1127 on callLocalItem.");
 							}
@@ -5476,21 +5476,21 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			let feedData: any = {};
 			let tempDomId = this.currentDomID;
 			let matchingRecord = this.allformValues[currentDetail].find((record: any) => {
-				return record.domID === tempDomId;
+				return record.domID == tempDomId;
 			});
-			
-			if (matchingRecord) 
+
+			if (matchingRecord)
 			{
 				this.currentDomID = matchingRecord.domID;
 				feedData = JSON.parse(JSON.stringify(matchingRecord));
 				this.previousFieldValue = feedData[fieldName];
 				fldValue = feedData[fieldName];
-				if (feedData[fieldName] && feedData[fieldName] !== "") 
+				if (feedData[fieldName] && feedData[fieldName] !== "")
 				{
 					this._extractTempletService.invokeSimpleLink(feedData, this.currentDomID, this.currentFormNumber, fieldName, this.objName, isFocusOrBlur,fldValue);
-				} 
-			} 
-			else 
+				}
+			}
+			else
 			{
 				console.log("No matching record found.");
 			}
@@ -7752,56 +7752,79 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	}
 
 
-	performLinksActions(formNo: any, data:any,detailData:any,index:any, isHeaderActionButton: boolean) 
+	performLinksActions(formNo: any, data:any,detailData:any,index:any, isHeaderActionButton: boolean)
 	{
-		let currentObjdetails = {} = JSON.parse(this.objectDetails); 
-		let detailsLink = currentObjdetails.ROOT.Transaction.Form;
-		let linksForDetail = [];
 		this.isHeaderActionButton = isHeaderActionButton;
-		for (let i = 0; i < detailsLink.length; i++) 
-		{ 
-			if (detailsLink[i]['no'] == formNo) 
-			{ 
-				if (detailsLink[i]['Links']) 
-				{ 
-					linksForDetail = detailsLink[i]['Links']['Link']; 
-					linksForDetail.forEach((link: any) => {
-						if (link && link.LinkTitle == data.LinkTitle && link.LineNo == data.LineNo) 
-						{
-							this.feedData = data;
-							// console.log("PRINT allformValues LINE NO 5670:::::::",this.allformValues);
-							const firstFormData: any = {};
-							for (const key in this.allformValues) 
-							{
-								if (!key.startsWith("Detail")) 
-								{
-									firstFormData[key] = JSON.parse(JSON.stringify(this.allformValues[key]));
-								}
-								else
-								{
-									let tempDomId = this.currentDomID;
-									let matchingRecord = detailData.find((record: any) => {
-										return record.domID === tempDomId;
-									});
-						
-									if (matchingRecord) 
-									{
-										this.currentDomID = matchingRecord.domID.toString();
-										// feedData = JSON.parse(JSON.stringify(matchingRecord));
-										this.currentFormNumber = link.formNo.toString();
-									} 
-									else 
-									{
-										console.log("No matching record found 1127 on callLocalItem.");
-									}
-								}
-							}
-						}
-					});
-				}
+		this.currentFormNumber = formNo;
+
+		// Build firstFormData (header fields) and find the current row's feedData
+		const firstFormData: any = {};
+		let rowFeedData: any = null;
+		for (const key in this.allformValues)
+		{
+			if (!key.startsWith("Detail"))
+			{
+				firstFormData[key] = JSON.parse(JSON.stringify(this.allformValues[key]));
 			}
 		}
-		if(data && data.action_id != undefined && data.service_handler != undefined && data.service_handler == '3')
+
+		// For detail forms, find the matching row record by currentDomID
+		let currentDetail = 'Detail' + formNo;
+		if (detailData && Array.isArray(detailData))
+		{
+			let tempDomId = this.currentDomID;
+			let matchingRecord = detailData.find((record: any) => {
+				return record.domID == tempDomId;
+			});
+			if (matchingRecord)
+			{
+				rowFeedData = JSON.parse(JSON.stringify(matchingRecord));
+			}
+		}
+		// For header form (form 1) or if no detail match, use header fields as feedData
+		if (!rowFeedData)
+		{
+			rowFeedData = firstFormData;
+		}
+		this.feedData = rowFeedData;
+
+		if(data && data.link_type != undefined)
+		{
+			// Handle link-type items - invoke GWT side panel via invokeLink
+			let linkData: any = JSON.parse(JSON.stringify(data));
+			// Map snake_case properties to PascalCase expected by invokeLink/GWT
+			if (linkData.link_arg != undefined) { linkData.LinkArg = linkData.link_arg; }
+			if (linkData.link_title != undefined) { linkData.LinkTitle = linkData.link_title; }
+			if (linkData.link_type != undefined) { linkData.LinkType = linkData.link_type; }
+			if (linkData.link_form != undefined) { linkData.LinkForm = linkData.link_form; }
+			if (linkData.link_uri != undefined) { linkData.LinkUri = linkData.link_uri; }
+			if (linkData.link_id != undefined) { linkData.linkId = linkData.link_id; }
+			if (linkData.target_object != undefined) { linkData.TargetObject = linkData.target_object; }
+			if (linkData.update_flag != undefined) { linkData.UpdateFlag = linkData.update_flag; }
+			if (linkData.display_mode != undefined) { linkData.DisplayMode = linkData.display_mode; }
+			if (linkData.show_confirm != undefined) { linkData.ShowConfirm = linkData.show_confirm; }
+			if (linkData.rights_char != undefined) { linkData.RightsChar = linkData.rights_char; }
+			if (linkData.record_specific != undefined) { linkData.RecordSpecific = linkData.record_specific; }
+			if (linkData.auto_invoke != undefined) { linkData.AutoInvoke = linkData.auto_invoke; }
+			if (linkData.show_in_panel != undefined) { linkData.ShowInPanel = linkData.show_in_panel; }
+			if (linkData.shortcut_char != undefined) { linkData.ShortcutChar = linkData.shortcut_char; }
+			if (linkData.form_no != undefined) { linkData.FormNo = linkData.form_no.toString(); }
+			if (linkData.field_name != undefined) { linkData.FieldName = linkData.field_name; }
+			if (linkData.line_no != undefined) { linkData.LineNo = linkData.line_no; }
+			if (linkData.image != undefined) { linkData.Image = linkData.image; }
+			if (linkData.page_context != undefined) { linkData.pageContext = linkData.page_context; }
+
+			// Sanitize "null" string values to empty string for GWT compatibility
+			for (let key in linkData) {
+				if (linkData[key] === 'null' || linkData[key] === null) {
+					linkData[key] = '';
+				}
+			}
+
+			console.log('performLinksActions invokeLink linkData:', linkData, 'feedData:', rowFeedData);
+			this._extractTempletService.invokeLink(linkData, rowFeedData, this.objName, formNo, firstFormData, this.currentDomID);
+		}
+		else if(data && data.action_id != undefined && data.service_handler != undefined && data.service_handler == '3')
 		{
 			let event_code = "";
 			if(data && data.service_code && data.service_code.service_code)
@@ -7810,7 +7833,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 				this.currentFormNumber = formNo;
 				this.executeDefault(formNo, 'Detail'+formNo, event_code, data.action_id);
 			}
-			else if (data && data.service_code && data.service_code.content && isHeaderActionButton) 
+			else if (data && data.service_code && data.service_code.content && isHeaderActionButton)
 			{
 				event_code = data.service_code.content;
 				this.currentFormNumber = formNo;
@@ -7837,7 +7860,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					eventCode = data.service_code.service_code;
 					this.gridData['EVENT_CODE'] = eventCode;
 				}
-				else if (isHeaderActionButton && data.service_code.content) 
+				else if (isHeaderActionButton && data.service_code.content)
 				{
 					eventCode = data.service_code.content;
 					this.gridData['EVENT_CODE'] = eventCode;
@@ -8240,7 +8263,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		newtempData["ACTION_ID"] = action_id;
         newtempData["CORE_MDL_ID"] = this.compData["EDITOR_ID"];
         newtempData["INTERFACE"] = "BROWSER";
-        newtempData['RTEURN_TYPE'] = "json";
+        newtempData['RETURN_TYPE'] = "json";
 		newtempData["dummyInt"] = this.compData["dummyInt"];
 		// console.log('print newtempData 6334::::::',newtempData);
        	let paramString = this._extractTempletService.getEncodedParamString(newtempData);
@@ -9365,21 +9388,27 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
         newtempData["CHG_STR"] = chgStr;
         newtempData["INTERFACE"] = "MOBILE";
         newtempData["dummyInt"] = this.compData['dummyInt'];
-        newtempData['RTEURN_TYPE'] = "json";
+        newtempData['RETURN_TYPE'] = "json";
        	let paramString = this._extractTempletService.getEncodedParamString(newtempData);
         let url = this._extractTempletService.getHostURL() + '/ibase/WebITMRequestHandlerServlet';
         this._extractTempletService.setLoading(true);
 		this._extractTempletService.sendRequest(url, paramString, (data:any) => {
             this._extractTempletService.setLoading(false);
-            try 
+            console.log('executeServiceHandler4 raw response:', data);
+            try
             {
 				if(data && data.includes('%%SEP%%'))
 				{
 					let callbackRespNew = data.split('%%SEP%%');
-					data = callbackRespNew[0];
+					data = callbackRespNew[0].trim();
 					let isError = callbackRespNew[1].trim();
-					if (!(isError == 'true')) 
+					if (!(isError == 'true'))
 					{
+						if (!data || data.length === 0) {
+							console.warn('executeServiceHandler4: empty response data before %%SEP%%');
+							this.confirmBox.alert('Error', 'No Data Found');
+							return "";
+						}
 						let detailDataRes = JSON.parse(data);
 						if(detailDataRes && !detailDataRes?.Root)
 						{
