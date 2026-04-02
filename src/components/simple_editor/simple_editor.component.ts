@@ -9406,13 +9406,13 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					{
 						if (!data || data.length === 0) {
 							console.warn('executeServiceHandler4: empty response data before %%SEP%%');
-							this.confirmBox.alert('Error', 'No Data Found');
+							this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
 							return "";
 						}
 						let detailDataRes = JSON.parse(data);
 						if(detailDataRes && !detailDataRes?.Root)
 						{
-							this.confirmBox.alert('Error','No Data Found')
+							this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
 							return "";
 						}
 						if( data.includes("No Records Found"))
