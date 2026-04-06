@@ -776,9 +776,9 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			} */
 		}
 
-//		this._extractTempletService.getUserInfo().subscribe(/* happy path */ (UserInfo: any) => { 
-//          this.userInfo = UserInfo;
-//        });
+		this._extractTempletService.getUserInfo().subscribe((UserInfo: any) => {
+          this.userInfo = UserInfo;
+        });
         
         	this._extractTempletService.data$.subscribe(res => {
 			// console.log("_extractTempletService.data$.subscribe 002 ::: ",res)
@@ -8265,45 +8265,47 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
         newtempData["INTERFACE"] = "BROWSER";
         newtempData['RETURN_TYPE'] = "json";
 		newtempData["dummyInt"] = this.compData["dummyInt"];
-		// console.log('print newtempData 6334::::::',newtempData);
-       	let paramString = this._extractTempletService.getEncodedParamString(newtempData);
-        let url = this._extractTempletService.getHostURL() + '/ibase/WebITMServiceHandlerServlet3';
-        this._extractTempletService.setLoading(true);		
-		
-		this._extractTempletService.sendRequest(url, paramString, (data:any) => 
+		this._extractTempletService.setLoading(true);
+
+		this._extractTempletService.getDefaultData(JSON.stringify(newtempData), (data:any) =>
         {
-			// console.log('print data 6341::::::',data);
             this._extractTempletService.setLoading(false);
-            try 
+            try
             {
-				if(data && data.includes('%%SEP%%'))
+				if(data)
 				{
-					let callbackRespNew = data.split('%%SEP%%');
-					// console.log('print callbackRespNew 6348::::::',callbackRespNew);
-					data = callbackRespNew[0];
-					let isError = callbackRespNew[1].trim();
-					if (!(isError == 'true')) 
+					let trimmedData = (typeof data === 'string') ? data.trim() : data;
+					// Check if response is XML (error case from server) or JSON
+					if(typeof trimmedData === 'string' && trimmedData.startsWith('<'))
 					{
-						if( data.includes("No Records Found"))
-						{
-							return "";
-						}
-						else
-						{
-							this._extractTempletService.checkErrorException(data, (res: any) => {
-								if (!res) 
+						this._extractTempletService.checkErrorException(trimmedData, (res: any) => {
+							if (!res)
+							{
+								if(trimmedData.includes("No Records Found"))
 								{
-									let allDetailData: any = {} ;
-									allDetailData['formDetail'] = formDetail;
-									allDetailData['Action'] = 'Default';
-									let actionResponseNew = {} = JSON.parse(data);
-									allDetailData['CurrentFormData'] = actionResponseNew;
-									allDetailData['isError'] = false;
-									// console.log('print allDetailData 6366::::::',allDetailData);
-									this.applyPerformActionData(JSON.stringify(allDetailData));
+									return "";
 								}
-							});
-						}
+							}
+						});
+					}
+					else
+					{
+						this._extractTempletService.checkErrorExceptionJson(trimmedData, (res: any) => {
+							if (!res)
+							{
+								let parsedData = (typeof trimmedData === 'string') ? JSON.parse(trimmedData) : trimmedData;
+								if(parsedData && JSON.stringify(parsedData).includes("No Records Found"))
+								{
+									return "";
+								}
+								let allDetailData: any = {} ;
+								allDetailData['formDetail'] = formDetail;
+								allDetailData['Action'] = 'Default';
+								allDetailData['CurrentFormData'] = parsedData;
+								allDetailData['isError'] = false;
+								this.applyPerformActionData(JSON.stringify(allDetailData));
+							}
+						});
 					}
 				}
             }
@@ -9351,7 +9353,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		}
 	}
 
-	executeServiceHandler4(formNo: any, formDetail: any, eventCode: any,  compType: any, methodName: any, actionId: any, isHeaderActionButton: boolean)
+	executeServiceHandler4(formNo: any, formDetail: any, eventCode: any,  compType: any, methodName: any, _actionId: any, isHeaderActionButton: boolean)
 	{
 		let action = "";
 		let pageContext;
@@ -9389,50 +9391,46 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
         newtempData["INTERFACE"] = "MOBILE";
         newtempData["dummyInt"] = this.compData['dummyInt'];
         newtempData['RETURN_TYPE'] = "json";
-       	let paramString = this._extractTempletService.getEncodedParamString(newtempData);
-        let url = this._extractTempletService.getHostURL() + '/ibase/WebITMRequestHandlerServlet';
-        this._extractTempletService.setLoading(true);
-		this._extractTempletService.sendRequest(url, paramString, (data:any) => {
+       	this._extractTempletService.setLoading(true);
+		this._extractTempletService.getUserAction(JSON.stringify(newtempData), (data:any) => {
             this._extractTempletService.setLoading(false);
-            console.log('executeServiceHandler4 raw response:', data);
             try
             {
-				if(data && data.includes('%%SEP%%'))
+				if(data)
 				{
-					let callbackRespNew = data.split('%%SEP%%');
-					data = callbackRespNew[0].trim();
-					let isError = callbackRespNew[1].trim();
-					if (!(isError == 'true'))
+					let trimmedData = (typeof data === 'string') ? data.trim() : data;
+					// Check if response is XML (error case from server) or JSON
+					if(typeof trimmedData === 'string' && trimmedData.startsWith('<'))
 					{
-						if (!data || data.length === 0) {
-							console.warn('executeServiceHandler4: empty response data before %%SEP%%');
-							this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
-							return "";
-						}
-						let detailDataRes = JSON.parse(data);
-						if(detailDataRes && !detailDataRes?.Root)
-						{
-							this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
-							return "";
-						}
-						if( data.includes("No Records Found"))
-						{
-							return "";
-						}
-						else
-						{
-							this._extractTempletService.checkErrorException(data, (res: any) => {
-								if (!res) 
-								{
-									this.gridData['formDetail'] = formDetail;
-									this.gridData['Action'] = 'Default';
-									let actionResponseNew = {} = JSON.parse(data);
-									this.gridData['CurrentFormData'] = actionResponseNew;
-									this.gridData['isError'] = false;
-									this.openOverlayForAgGrid();
+						this._extractTempletService.checkErrorException(trimmedData, (res: any) => {});
+					}
+					else
+					{
+						this._extractTempletService.checkErrorExceptionJson(trimmedData, (res: any) => {
+							if (!res)
+							{
+								let parsedData = (typeof trimmedData === 'string') ? JSON.parse(trimmedData) : trimmedData;
+								if (!parsedData || (typeof parsedData === 'object' && Object.keys(parsedData).length === 0)) {
+									console.warn('executeServiceHandler4: empty response data');
+									this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
+									return "";
 								}
-							});
-						}
+								if(parsedData && !parsedData?.Root)
+								{
+									this.bbconfirmBox.alert('Error', 'No Data Found', '').subscribe((resp: any) => {});
+									return "";
+								}
+								if(JSON.stringify(parsedData).includes("No Records Found"))
+								{
+									return "";
+								}
+								this.gridData['formDetail'] = formDetail;
+								this.gridData['Action'] = 'Default';
+								this.gridData['CurrentFormData'] = parsedData;
+								this.gridData['isError'] = false;
+								this.openOverlayForAgGrid();
+							}
+						});
 					}
 				}
             }
@@ -9474,7 +9472,6 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	onAgGridDone(event: any)
 	{
 		let agGridData = event;
-		// console.log('print agGridData 7304:::::',agGridData);
 		if(agGridData && agGridData['SELECTED_ROWS'])
 		{
 			let formDetail = 'Detail'+ agGridData['FORM_NO'];
@@ -9551,10 +9548,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			newTempData['CHG_STR'] = chgStr;
 			newTempData['INTERFACE'] = "MOBILE";
 			newTempData['dummyInt'] = this.compData['dummyInt'];
-			newTempData['RTEURN_TYPE'] = "json";
-			let paramString = this._extractTempletService.getEncodedParamString(newTempData);
-			let url = this._extractTempletService.getHostURL() + '/ibase/WebITMRequestHandlerServlet';
-			if (this.overLayForAgGridView) 
+			newTempData['RETURN_TYPE'] = "json";
+			if (this.overLayForAgGridView)
 			{
 				this.overLayForAgGridView.dispose();
 			}
@@ -9563,28 +9558,33 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 				this.viewContainerRef.clear();
 			}
 			this._extractTempletService.setLoading(true);
-			this._extractTempletService.sendRequest(url, paramString, (data:any) => {
+			this._extractTempletService.getUserActionSetData(JSON.stringify(newTempData), (data:any) => {
 				this._extractTempletService.setLoading(false);
-				try 
+				try
 				{
-					if(data && data.includes('%%SEP%%'))
+					if(data)
 					{
-						let callbackRespNew = data.split('%%SEP%%');
-						data = callbackRespNew[0];
-						let isError = callbackRespNew[1].trim();
-						if (!(isError == 'true')) 
+						let trimmedData = (typeof data === 'string') ? data.trim() : data;
+						// Check if response is XML (error case from server) or JSON
+						if(typeof trimmedData === 'string' && trimmedData.startsWith('<'))
 						{
-							let tempJsonData = JSON.parse(data);
-							if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length > 0)
+							this._extractTempletService.checkErrorException(trimmedData, (res: any) => {});
+							return;
+						}
+						this._extractTempletService.checkErrorExceptionJson(trimmedData, (res: any) => {
+							if (!res)
 							{
-								this.allformValues[formDetail] = [];
-								for(let i = 0 ; i < tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length; i++)
+								let tempJsonData = (typeof trimmedData === 'string') ? JSON.parse(trimmedData) : trimmedData;
+								if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length > 0)
 								{
-									let jsonData = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail][i];
-									let tempAllFormJsonData: any = {};
-									for(let key of Object.keys(jsonData))
+									this.allformValues[formDetail] = [];
+									for(let i = 0 ; i < tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length; i++)
 									{
-										if(jsonData[key] && jsonData[key]['protect'])
+										let jsonData = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail][i];
+										let tempAllFormJsonData: any = {};
+										for(let key of Object.keys(jsonData))
+										{
+											if(jsonData[key] && jsonData[key]['protect'])
 											{
 												tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'];
 											}
@@ -9621,56 +9621,55 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											}
 										}
 										this.allformValues[formDetail].push(tempAllFormJsonData);
+									}
 								}
-								// console.log('print this.allformValues 7478:::::::',JSON.stringify(this.allformValues));
-							}
-							else if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && typeof tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] == 'object')
-							{
-								this.allformValues[formDetail] = [];
-								let jsonData = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail];
-								let tempAllFormJsonData: any = {};
-								for(let key of Object.keys(jsonData))
+								else if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && typeof tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] == 'object')
 								{
-									if(jsonData[key] && jsonData[key]['protect'])
+									this.allformValues[formDetail] = [];
+									let jsonData = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail];
+									let tempAllFormJsonData: any = {};
+									for(let key of Object.keys(jsonData))
 									{
-										tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'];
-									}
-									else
-									{
-										tempAllFormJsonData[key+"_protect"] = "0";
-									}
-									if(jsonData[key] && jsonData[key]['visible'])
-									{
-										tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'];
-									}
-									else
-									{
-										tempAllFormJsonData[key+"_visible"] = "";
-									}
-									if(jsonData[key] && jsonData[key]['content'] != undefined && jsonData[key]['content'] != null)
-									{
-										tempAllFormJsonData[key] = jsonData[key]['content'];
-									}
-									else
-									{
-										if(jsonData[key] && jsonData[key]['id'] != undefined && (jsonData[key]['content'] == undefined || jsonData[key]['content'] == null))
+										if(jsonData[key] && jsonData[key]['protect'])
 										{
-											tempAllFormJsonData[key] = "";
-										}
-										else if(jsonData[key] && typeof jsonData[key] == 'object' && (jsonData[key]['content'] == undefined || jsonData[key]['content'] == null))
-										{
-											tempAllFormJsonData[key] = "";
+											tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'];
 										}
 										else
 										{
-											tempAllFormJsonData[key] = jsonData[key];
+											tempAllFormJsonData[key+"_protect"] = "0";
+										}
+										if(jsonData[key] && jsonData[key]['visible'])
+										{
+											tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'];
+										}
+										else
+										{
+											tempAllFormJsonData[key+"_visible"] = "";
+										}
+										if(jsonData[key] && jsonData[key]['content'] != undefined && jsonData[key]['content'] != null)
+										{
+											tempAllFormJsonData[key] = jsonData[key]['content'];
+										}
+										else
+										{
+											if(jsonData[key] && jsonData[key]['id'] != undefined && (jsonData[key]['content'] == undefined || jsonData[key]['content'] == null))
+											{
+												tempAllFormJsonData[key] = "";
+											}
+											else if(jsonData[key] && typeof jsonData[key] == 'object' && (jsonData[key]['content'] == undefined || jsonData[key]['content'] == null))
+											{
+												tempAllFormJsonData[key] = "";
+											}
+											else
+											{
+												tempAllFormJsonData[key] = jsonData[key];
+											}
 										}
 									}
+									this.allformValues[formDetail].push(tempAllFormJsonData);
 								}
-								this.allformValues[formDetail].push(tempAllFormJsonData);
-								// console.log('print this.allformValues 7706:::::::',JSON.stringify(this.allformValues));
 							}
-						}
+						});
 					}
 				}
 				catch(e)
@@ -9681,7 +9680,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		}
 	}
 
-	setSimpleLayoutDetailData(title: any, data1: any, procResp: any)
+	setSimpleLayoutDetailData(_title: any, data1: any, _procResp: any)
 	{
 		let formNo = this.currentFormNo
 		let paramMap: any = {};
@@ -9692,73 +9691,74 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		paramMap["CORE_MDL_ID"] = this.editorId
 		paramMap["FORCED_SAVE"] = false;
 		paramMap["PK_VALUES"] = "";
-		paramMap['RTEURN_TYPE'] = "json";
-		let paramString = this._extractTempletService.getEncodedParamString(paramMap);
-		let url = this._extractTempletService.getHostURL() + '/ibase/WebITMRequestHandlerServlet';
+		paramMap['RETURN_TYPE'] = "json";
 		this._extractTempletService.setLoading(true);
-		this._extractTempletService.sendRequest(url, paramString, (res: any) => {
+		this._extractTempletService.setDetailData(JSON.stringify(paramMap), (res: any) => {
 			this._extractTempletService.setLoading(false);
-			try 
+			try
 			{
-				if(res && res.includes('%%SEP%%'))
+				if(res)
 				{
-					let callbackRespNew = res.split('%%SEP%%');
-					res = callbackRespNew[0];
-					// console.log("res ::: ",res)
-					let isError = callbackRespNew[1].trim();
-					let formDetail = "Detail" + formNo;
-					if(!(isError == 'true'))
+					let trimmedRes = (typeof res === 'string') ? res.trim() : res;
+					// Check if response is XML (error case from server) or JSON
+					if(typeof trimmedRes === 'string' && trimmedRes.startsWith('<'))
 					{
-						let tempJsonData = JSON.parse(res);
-						if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length > 0)
+						this._extractTempletService.checkErrorException(trimmedRes, (errorRes: any) => {});
+						return;
+					}
+					this._extractTempletService.checkErrorExceptionJson(trimmedRes, (errorRes: any) => {
+						if (!errorRes)
 						{
-							if (this.allformValues && this.allformValues[formDetail]) 
+							let tempJsonData = (typeof trimmedRes === 'string') ? JSON.parse(trimmedRes) : trimmedRes;
+							let formDetail = "Detail" + formNo;
+							if(tempJsonData && tempJsonData['DocumentRoot'] && tempJsonData['DocumentRoot']['group0'] && tempJsonData['DocumentRoot']['group0']['Header0'] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail] && tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length > 0)
 							{
-								this.allformValues[formDetail] = [];
-							}
-							for(let i = 0 ; i < tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length; i++)
-							{
-								let tempJson = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail][i];
-								let jsonData: any = {};
-								for(let key in tempJson)
+								if (this.allformValues && this.allformValues[formDetail])
 								{
-									if(tempJson.hasOwnProperty(key))
-									{	
-										if (tempJson[key] && typeof tempJson[key] === 'object') 
+									this.allformValues[formDetail] = [];
+								}
+								for(let i = 0 ; i < tempJsonData['DocumentRoot']['group0']['Header0'][formDetail].length; i++)
+								{
+									let tempJson = tempJsonData['DocumentRoot']['group0']['Header0'][formDetail][i];
+									let jsonData: any = {};
+									for(let key in tempJson)
+									{
+										if(tempJson.hasOwnProperty(key))
 										{
-											if(tempJson[key].hasOwnProperty('content'))
+											if (tempJson[key] && typeof tempJson[key] === 'object')
 											{
-												jsonData[key] = tempJson[key].content;
+												if(tempJson[key].hasOwnProperty('content'))
+												{
+													jsonData[key] = tempJson[key].content;
+												}
+												else
+												{
+													jsonData[key] = "";
+												}
 											}
-											else 
+											else
 											{
-												jsonData[key] = "";
+												if(tempJson[key] != null && tempJson[key] != 'null' && tempJson[key] != undefined)
+												{
+													jsonData[key] = tempJson[key];
+												}
+												else
+												{
+													jsonData[key] = ""
+												}
 											}
-										} 
-										else 
-										{
-											if(tempJson[key] != null && tempJson[key] != 'null' && tempJson[key] != undefined)
-											{
-												jsonData[key] = tempJson[key];
-											}
-											else 
-											{
-												jsonData[key] = ""
-											}
-					
 										}
 									}
+									this.allformValues[formDetail].push(jsonData);
 								}
-								this.allformValues[formDetail].push(jsonData);
 							}
-							// console.log('print this.allformValues 7599:::::::',JSON.stringify(this.allformValues));
 						}
-					}
+					});
 				}
 			}
 			catch(e)
 			{
-				console.log('Exception inside setSimoleLayoutDetailData::::',e);
+				console.log('Exception inside setSimpleLayoutDetailData::::',e);
 			}
 		})
 		

@@ -10,7 +10,7 @@ declare let getBBHostURL: any;
 declare let invokeDashboardLink: any;
 declare let invokeSimpleLayoutLink:any;
 declare let involeSimpleLayoutAction:any;
-const serviceUrl = '/ibase/rest/GenProcessPreviewService';
+const serviceUrl = '/ibase/rest/VisionOBJService';
 
 @Injectable({
     providedIn: 'root'
@@ -898,7 +898,7 @@ export class SimpleEditorService
     getUserInfo():any
     {
         let data$ = this.http
-        .post(`${this.getHostURL()+this.baseUrl}/getUserInfo`, '', { headers: this.getHeaders(), withCredentials: true })
+        .get(`${this.getHostURL()+this.baseUrl}/getUserInfo`, { headers: this.getHeaders(), withCredentials: true })
         .pipe(map(res => res))
         .pipe(catchError(handleError));
         return data$;
@@ -1307,7 +1307,7 @@ export class SimpleEditorService
             }
 
             // Handle exception response without nested Errors
-            if(resp['status'] && resp['status'] == 'exception' && !(resp['data'] && resp['data']['Root'] && resp['data']['Root']['Errors']))
+            if(resp['status'] && resp['status'] == 'exception' && !(resp['data'] && resp['data']['Root'] && resp['data']['Root']['Errors']) && !(resp['Root'] && resp['Root']['Errors']))
             {
                 this.setLoading(false);
                 const errorMsg = 'System Exception';
@@ -1318,9 +1318,18 @@ export class SimpleEditorService
                 return;
             }
 
+            // Check for Errors in both data.Root.Errors (wrapped) and Root.Errors (direct REST API response) paths
+            let errorsObj = null;
             if(resp['data'] && resp['data']['Root'] && resp['data']['Root']['Errors'])
             {
-                let errorsObj = resp['data']['Root']['Errors'];
+                errorsObj = resp['data']['Root']['Errors'];
+            }
+            else if(resp['Root'] && resp['Root']['Errors'])
+            {
+                errorsObj = resp['Root']['Errors'];
+            }
+            if(errorsObj)
+            {
                 let firstErrorShown = false;
                 let errorDataList: any[] = [];
 
@@ -1516,9 +1525,117 @@ export class SimpleEditorService
             callback(false);
         }
     }
-    
+
+    // REST API method for Default action (WebITMServiceHandlerServlet3)
+    getDefaultData(payLoad: any, callBack: any)
+    {
+        let headerObj: any = {
+            'Content-Type': 'application/json',
+            'TOKEN_ID': this.tokenID || ''
+        };
+        if(this.jSessionId) {
+            headerObj['JSESSIONID'] = this.jSessionId;
+        }
+        let httpHeaders = new HttpHeaders(headerObj);
+        let URL = this.getHostURL() + '/ibase/rest/VisionOBJService/getDefaultData';
+        this.http.post(URL, payLoad, {
+            headers: httpHeaders,
+            responseType: 'text',
+            withCredentials: true
+        }).subscribe({
+            next: (response: any) => {
+                callBack(response);
+            },
+            error: (error: any) => {
+                console.error('getDefaultData error:', error);
+                callBack(null);
+            }
+        });
+    }
+
+    // REST API method for USER_ACTION (WebITMRequestHandlerServlet)
+    getUserAction(payLoad: any, callBack: any)
+    {
+        let headerObj: any = {
+            'Content-Type': 'application/json',
+            'TOKEN_ID': this.tokenID || ''
+        };
+        if(this.jSessionId) {
+            headerObj['JSESSIONID'] = this.jSessionId;
+        }
+        let httpHeaders = new HttpHeaders(headerObj);
+        let URL = this.getHostURL() + '/ibase/rest/VisionOBJService/getUserAction';
+        this.http.post(URL, payLoad, {
+            headers: httpHeaders,
+            responseType: 'text',
+            withCredentials: true
+        }).subscribe({
+            next: (response: any) => {
+                callBack(response);
+            },
+            error: (error: any) => {
+                console.error('getUserAction error:', error);
+                callBack(null);
+            }
+        });
+    }
+
+    // REST API method for USER_ACTION_SET_DATA (WebITMRequestHandlerServlet)
+    getUserActionSetData(payLoad: any, callBack: any)
+    {
+        let headerObj: any = {
+            'Content-Type': 'application/json',
+            'TOKEN_ID': this.tokenID || ''
+        };
+        if(this.jSessionId) {
+            headerObj['JSESSIONID'] = this.jSessionId;
+        }
+        let httpHeaders = new HttpHeaders(headerObj);
+        let URL = this.getHostURL() + '/ibase/rest/VisionOBJService/getUserActionSetData';
+        this.http.post(URL, payLoad, {
+            headers: httpHeaders,
+            responseType: 'text',
+            withCredentials: true
+        }).subscribe({
+            next: (response: any) => {
+                callBack(response);
+            },
+            error: (error: any) => {
+                console.error('getUserActionSetData error:', error);
+                callBack(null);
+            }
+        });
+    }
+
+    // REST API method for SET_DETAIL_DATA (WebITMRequestHandlerServlet)
+    setDetailData(payLoad: any, callBack: any)
+    {
+        let headerObj: any = {
+            'Content-Type': 'application/json',
+            'TOKEN_ID': this.tokenID || ''
+        };
+        if(this.jSessionId) {
+            headerObj['JSESSIONID'] = this.jSessionId;
+        }
+        let httpHeaders = new HttpHeaders(headerObj);
+        let URL = this.getHostURL() + '/ibase/rest/VisionOBJService/setDetailData';
+        this.http.post(URL, payLoad, {
+            headers: httpHeaders,
+            responseType: 'text',
+            withCredentials: true
+        }).subscribe({
+            next: (response: any) => {
+                callBack(response);
+            },
+            error: (error: any) => {
+                console.error('setDetailData error:', error);
+                callBack(null);
+            }
+        });
+    }
+
 }
-function handleError (error: any) 
+function handleError (error: any)
 {
 	let errorMsg = error.message || "There is a problem while connecting with server.";
 	console.error(errorMsg);
