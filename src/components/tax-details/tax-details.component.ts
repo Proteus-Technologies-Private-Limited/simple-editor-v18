@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter,AfterViewInit } from '@angular/core';
 import { ExtractTemplateService } from '../extract-template/extract-template.service';
 import { TaxDetailsService } from './tax-details.service';
+import { SimpleEditorService } from '../simple_editor/simple_editor.service';
 import { BBProgressSpinnerComponent } from 'base-blocks';
 
 
@@ -41,8 +42,8 @@ export class TaxDetailsComponent implements OnInit {
   currentTaxDetails: any = {};
   @Output() taxItemChange: EventEmitter<any> = new EventEmitter();
 
-  constructor( public _extractTempletService: ExtractTemplateService, public taxDetailService: TaxDetailsService ) 
-  { 
+  constructor( public _extractTempletService: ExtractTemplateService, public taxDetailService: TaxDetailsService, public _simpleEditorService: SimpleEditorService )
+  {
 
   }
 
@@ -320,132 +321,145 @@ export class TaxDetailsComponent implements OnInit {
   }
   calculateTax()
   {
-    var dbId = ""
-    var finalXml = "<Root>";
-    finalXml = finalXml + "<header>";
-    finalXml = finalXml + "<objName><![CDATA["+this.compData["OBJ_NAME"]+"]]></objName>";
-    finalXml = finalXml + "<pageContext><![CDATA[2]]></pageContext>";
-    finalXml = finalXml + "<objContext><![CDATA["+this.formNo+"]]></objContext>";
-    finalXml = finalXml + "<editFlag><![CDATA["+this.editFlag+"]]></editFlag>";
-    finalXml = finalXml + "<focusedColumn><![CDATA[tax_perc]]></focusedColumn>";
-    finalXml = finalXml + "<elementName><![CDATA[]]></elementName>";
-    finalXml = finalXml + "<keyValue><![CDATA["+this.currentRecordDomId+"]]></keyValue>";
-    finalXml = finalXml + "<taxKeyValue><![CDATA["+this.lineNumTax+"]]></taxKeyValue>";
-    finalXml = finalXml + "<saveLevel><![CDATA[0]]></saveLevel>";
-    finalXml = finalXml + "<forcedSave><![CDATA[false]]></forcedSave>";
-    finalXml = finalXml + "<taxInFocus><![CDATA[true]]></taxInFocus>";
-    finalXml = finalXml + "<forcedconfirm><![CDATA[false]]></forcedconfirm>";
-    finalXml = finalXml + "<isSaveNConitinue><![CDATA[false]]></isSaveNConitinue>";
-    finalXml = finalXml + "</header>";
+    var chgStrJson: any = {};
+
+    var headerData: any = {
+      'objName': this.compData['OBJ_NAME'],
+      'pageContext': '2',
+      'objContext': this.formNo,
+      'editFlag': this.editFlag,
+      'focusedColumn': 'tax_perc',
+      'elementName': '',
+      'keyValue': this.currentRecordDomId,
+      'taxKeyValue': this.lineNumTax,
+      'saveLevel': '0',
+      'forcedSave': 'false',
+      'taxInFocus': 'true',
+      'forcedconfirm': 'false',
+      'isSaveNConitinue': 'false'
+    };
+    chgStrJson['header'] = headerData;
 
     var length = this.alltaxFormValues['Taxes_'+this.domId].length;
     console.log('PRINT LINE NO 369 this.alltaxFormValues::::',this.alltaxFormValues['Taxes_'+this.domId]);
+    var taxRowDomId = (this.domId);
     for(var i=0; i<length; i++ )
     {
-      // if(this.lineNumTaxList == this.alltaxFormValues['Taxes_'+this.domId][i]['line_no__tax'])
-      // {
-      if(this.lineNumTaxList.includes(this.alltaxFormValues['Taxes_' + this.domId][i]['line_no__tax'])) 
+      if(this.lineNumTaxList.includes(this.alltaxFormValues['Taxes_' + this.domId][i]['line_no__tax']))
       {
-        var deatilXml = `<`+this.currentDetail+ ` domID="` + (i+1) + `" dbID="` + dbId + `">`
-        var currentAllData  = this.alltaxFormValues['Taxes_'+this.domId][i];
-        var jsonData:any = {};
-        jsonData = JSON.parse(JSON.stringify(currentAllData));
-        var attributeTagJson = this.alltaxFormValues['Taxes_'+this.domId][i]['attribute'];
-        var attributeTagInXml = `<attribute IS_CHANGE="Y"`;
-        if (JSON.stringify(attributeTagJson).includes('IS_CHANGE')) 
+        var detailJson: any = {};
+        var row = this.alltaxFormValues['Taxes_'+this.domId][i];
+        var attributeTagJson = row['attribute'];
+
+        var attrXml = `<attribute IS_CHANGE="Y"`;
+        if (JSON.stringify(attributeTagJson).includes('IS_CHANGE'))
         {
-            attributeTagInXml = `<attribute `;
+            attrXml = `<attribute `;
         }
-        for (var key of Object.keys(attributeTagJson)) 
+        for (var key of Object.keys(attributeTagJson))
         {
-          attributeTagInXml = attributeTagInXml + ` ` + key + `="` + attributeTagJson[key] + `"`;
+          attrXml = attrXml + ` ` + key + `="` + attributeTagJson[key] + `"`;
         }
-        attributeTagInXml = attributeTagInXml + `/>`;
-        deatilXml = deatilXml + attributeTagInXml;
-        for (var key in jsonData) 
+        attrXml = attrXml + `/>`;
+
+        detailJson['ORIG_ATTRIBUTE_NODE'] = {
+          protect: '',
+          visible: '',
+          content: attrXml
+        };
+
+        for (var key in row)
         {
-          var value = jsonData[key];
-          if (value instanceof Object) 
+          if (key == 'attribute') continue;
+          var value = row[key];
+          if (value instanceof Object)
           {
             value = "";
           }
-          if (value == "null") 
+          if (value == null || value == "null")
           {
             value = "";
           }
-          else if (key != "attribute") 
-          {
-            deatilXml = deatilXml + `<` + key + `><![CDATA[` + value + `]]></` + key + `>`
-          }
-          
+          detailJson[key] = {
+            protect: '',
+            visible: '',
+            content: String(value)
+          };
         }
-        deatilXml = deatilXml + `</`+this.currentDetail+`>`;
-        finalXml = finalXml + deatilXml;
-        console.log('PRINT LINE NO 385 finalXml::::',finalXml);
+        chgStrJson[this.currentDetail] = detailJson;
+        taxRowDomId = (i+1);
+        console.log('PRINT LINE NO 385 chgStrJson::::',chgStrJson);
       }
     }
-    var finalXml = finalXml + "</Root>";
+
+    var chgStr = JSON.stringify(chgStrJson);
     var tmpData:any = {};
-     
+
       tmpData["OBJ_NAME"] = this.compData["OBJ_NAME"];
-      tmpData["OBJ_CTX"] = this.formNo;
-      tmpData["OBJ_CTX"] = "2";
-      tmpData["ACTION"] = "ITEM_CHANGE";
-      tmpData["CHG_STR"] = finalXml;
+      tmpData["OBJ_CONTEXT"] = this.formNo;
+      tmpData["PAGE_CTX"] = "2";
+      tmpData["CHG_STR"] = chgStr;
       tmpData["FIELD_NAME"] = "tax_perc";
       tmpData["EDITOR_ID"] =  this.compData["EDITOR_ID"];
-      tmpData["dummyInt"] = this.compData["dummyInt"];
-      tmpData['RTEURN_TYPE'] = "json"
+      tmpData["DOM_ID"] = taxRowDomId;
+      tmpData["FORM_NO"] = this.formNo;
 
       var paramString = this._extractTempletService.getEncodedParamString(tmpData);
-      var url = this._extractTempletService.getHostURL() + '/ibase/WebITMRequestHandlerServlet';
 
       this.setLoading(true);
-      this._extractTempletService.sendRequest(url, paramString, (taxResponaseData:any) => {
+      this._simpleEditorService.getFieldItemChange(paramString).subscribe({ next: (response:any) => {
         this.setLoading(false);
-        var callbackRespNew = taxResponaseData.split('%%SEP%%');
-        taxResponaseData = callbackRespNew[0];
-        var isError = callbackRespNew[1].trim();
-        if (!(isError == 'true')) 
-				{
-          var taxData = {} = JSON.parse(taxResponaseData);
-          if (taxData && taxData.Root) 
-					{
-						if (taxData.Root[this.currentDetail]['Taxes'] != null) 
-						{
-              var responseLen = taxData.Root[this.currentDetail]['Taxes']['Tax'].length;
-              for(var i=0;i<responseLen;i++ )
+        this._simpleEditorService.checkErrorExceptionJson(response, (result:any) => {
+          console.log('calculateTax getFieldItemChange result::::',result);
+          if(!result)
+          {
+            var itmChgResp = JSON.parse(response);
+            if(itmChgResp && itmChgResp.data && itmChgResp.data.Root && itmChgResp.data.Root[this.currentDetail])
+            {
+              if(itmChgResp.data.Root[this.currentDetail]['Taxes'] != null)
               {
-                var currentAllData  = taxData.Root[this.currentDetail]['Taxes']['Tax'][i];
-                var jsonData:any = {};
-                jsonData = JSON.parse(JSON.stringify(currentAllData));
-                for (var key in jsonData) 
+                var taxesData = itmChgResp.data.Root[this.currentDetail]['Taxes']['Tax'];
+                var responseLen = taxesData.length;
+                for(var i=0;i<responseLen;i++ )
+                {
+                  var currentAllData = taxesData[i];
+                  var jsonData:any = {};
+                  jsonData = JSON.parse(JSON.stringify(currentAllData));
+                  for (var key in jsonData)
                   {
                     var value = jsonData[key];
-                    if (value instanceof Object) 
+                    if (value instanceof Object)
+                    {
+                      if(jsonData[key] && (jsonData[key]['content'] != undefined))
+                      {
+                        value = jsonData[key]['content'];
+                        if(value == null) { value = ''; }
+                      }
+                      else
+                      {
+                        value = "";
+                      }
+                    }
+                    if (value == "null")
                     {
                       value = "";
                     }
-                    if (value == "null") 
-                    {
-                      value = "";
-                    }
-                    
-                    else if (key != "attribute") 
+                    if (key != "attribute")
                     {
                       this.alltaxFormValues['Taxes_'+this.domId][i][key] = value;
                     }
                   }
+                }
               }
-            }
-            if(taxData.Root[this.currentDetail])
-            {
-              console.log('Print taxData.Root[this.currentDetail].....',taxData.Root[this.currentDetail]);
-              this.taxItemChange.emit(JSON.stringify(taxData.Root[this.currentDetail]));
+              console.log('Print itmChgResp.data.Root[this.currentDetail].....',itmChgResp.data.Root[this.currentDetail]);
+              this.taxItemChange.emit(JSON.stringify(itmChgResp.data.Root[this.currentDetail]));
             }
           }
-        }
-    });
+        });
+      }, error: (err: any) => {
+        this.setLoading(false);
+        console.log('calculateTax getFieldItemChange HTTP error:', err);
+      }});
   }
 
   onDone()
@@ -570,10 +584,10 @@ export class TaxDetailsComponent implements OnInit {
 
 
       // Function called on focus
-      onFeedBlurFocus(identifier: string, value: number,lineNumTax:any,lineNumber) 
+      onFeedBlurFocus(identifier: string, value: number,lineNumTax:any,lineNumber)
       {
         this.isFeedOpen = true;
-        this.originalValue = value; 
+        this.originalValue = value;
         this.lineNumTax = lineNumTax;
         this.lineNumTaxList.push(lineNumTax);
         this.lineNumber = lineNumber
