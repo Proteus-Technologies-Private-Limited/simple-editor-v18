@@ -1284,7 +1284,6 @@ export class SimpleEditorService
 
     checkErrorExceptionJson(response:any, callback:any,validationKey?:any)
     {
-        console.log('[checkErrorExceptionJson] called with response type:', typeof response);
         try
         {
             // Clear previous alert queues before processing new response
@@ -1370,7 +1369,6 @@ export class SimpleEditorService
 
                 for (let errIdx = 0; errIdx < errorDataList.length; errIdx++) {
                     let errorData = errorDataList[errIdx];
-                    console.log('print checkErrorExceptionJson errorData[' + errIdx + ']:::', errorData);
                     let msg = errorData['message'];
                     let trace = errorData['trace'];
                     let errorColName = errorData['column_name'];
@@ -1420,9 +1418,6 @@ export class SimpleEditorService
                             this.errorRowsList.push(errorRowId);
                         }
                     }
-                    console.log('print checkErrorExceptionJson isFromAttachForFirstForm:::',this.isFromAttachForFirstForm);
-                    console.log('print checkErrorExceptionJson formNo:::',formNo);
-                    console.log('print checkErrorExceptionJson errorType[' + errIdx + ']:::',errorType);
                     if(( formNo == "1" && !this.isFromAttachForFirstForm) ||( formNo !="1" && !this.isFromAttachPdf))
                     {
                         if (errorType == 'E' || errorType == 'X')
@@ -1439,14 +1434,13 @@ export class SimpleEditorService
                             {
                                 firstErrorShown = true;
                                 this.showAlert(errorMessage, 'E', errorColName, (res:any) => {
-                                    console.log('[checkErrorExceptionJson] E showAlert callback, res:', res, 'callback type:', typeof callback);
                                     try
                                     {
                                         callback(res);
                                     }
                                     catch(e:any)
                                     {
-                                        console.log('[checkErrorExceptionJson] E callback error:', e.message);
+                                        console.error('[checkErrorExceptionJson] E callback error:', e.message);
                                     }
                                     return;
                                 });
@@ -1464,7 +1458,6 @@ export class SimpleEditorService
                             else
                             {
                                 firstErrorShown = true;
-                                console.log('print checkErrorExceptionJson errorMessage:::',errorMessage);
                                 this.showAlert(errorMessage, 'W', errorColName, (res:any) => {
                                     callback(res);
                                     return;
@@ -1520,7 +1513,7 @@ export class SimpleEditorService
         }
         catch (e:any)
         {
-            console.log('Exception inisde checkErrorExceptionJson method ', e.message);
+            console.error('Exception inside checkErrorExceptionJson method ', e.message);
             this.setLoading(false);
             callback(false);
         }

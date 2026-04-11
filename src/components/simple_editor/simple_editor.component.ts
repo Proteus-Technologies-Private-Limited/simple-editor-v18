@@ -398,7 +398,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											this.allformValues[key] = (value.content == null) ? '' : value.content;
 											if(value.protect != undefined)
 											{
-												this.allformValues[key+"_protect"] = value.protect;
+												this.allformValues[key+"_protect"] = value.protect.toString();
 											}
 											else
 											{
@@ -406,7 +406,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											}
 											if(value.visible != undefined)
 											{
-												this.allformValues[key+"_visible"] = value.visible;
+												this.allformValues[key+"_visible"] = value.visible.toString();
 											}
 											else
 											{
@@ -467,14 +467,14 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											else if(value.content != undefined)
 											{
 												rowData[key] = (value.content == null) ? '' : value.content;
-												rowData[key + '_protect'] = (value.protect != undefined) ? value.protect : '0';
-												rowData[key + '_visible'] = (value.visible != undefined) ? value.visible : '';
+												rowData[key + '_protect'] = (value.protect != undefined) ? value.protect.toString() : '0';
+												rowData[key + '_visible'] = (value.visible != undefined) ? value.visible.toString() : '';
 											}
 											else
 											{
 												rowData[key] = '';
-												rowData[key + '_protect'] = (value.protect != undefined) ? value.protect : '0';
-												rowData[key + '_visible'] = (value.visible != undefined) ? value.visible : '';
+												rowData[key + '_protect'] = (value.protect != undefined) ? value.protect.toString() : '0';
+												rowData[key + '_visible'] = (value.visible != undefined) ? value.visible.toString() : '';
 											}
 										}
 										else
@@ -866,11 +866,13 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 
 		try
 		{
-			const observer = new ResizeObserver(() => {
-				this.adjustGroupBox();
+			this.ngZone.runOutsideAngular(() => {
+				const observer = new ResizeObserver(() => {
+					this.adjustGroupBox();
+				});
+				const elementToObserve = this.resizeElement.nativeElement;
+				observer.observe(elementToObserve);
 			});
-			const elementToObserve = this.resizeElement.nativeElement;
-			observer.observe(elementToObserve);
 		}
 		catch (e: any)
 		{
@@ -2386,9 +2388,9 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 									{
 										this.allformValues[key+'_protect'] = "0";
 									}
-									if (itemChnageValues[key] && itemChnageValues[key].visible) 
+									if (itemChnageValues[key] && itemChnageValues[key].visible)
 									{
-										this.allformValues[key+'_visible'] = itemChnageValues[key].visible;
+										this.allformValues[key+'_visible'] = itemChnageValues[key].visible.toString();
 									}
 									else
 									{
@@ -2460,11 +2462,11 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											this.allformValues[currentFormNoDetail][this.currentIndexForDetailForm][key+'_protect'] = "0";
 										}
 									}
-									if (itemChnageValues[key] && itemChnageValues[key].visible) 
+									if (itemChnageValues[key] && itemChnageValues[key].visible)
 									{
 										if(this.allformValues && this.allformValues[currentFormNoDetail] && this.allformValues[currentFormNoDetail][this.currentIndexForDetailForm])
 										{
-											this.allformValues[currentFormNoDetail][this.currentIndexForDetailForm][key+'_visible'] = itemChnageValues[key].visible;
+											this.allformValues[currentFormNoDetail][this.currentIndexForDetailForm][key+'_visible'] = itemChnageValues[key].visible.toString();
 										}
 									}
 									else
@@ -4358,7 +4360,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 											{
 												console.log('[validateAndDone] Warning Cancel detected in force handler, focusing on error field');
-												let errorData = errorsObj[1]?.error || errorsObj?.error;
+												let errorData = this.findErrorDataByColumnName(errorsObj);
 												if(errorData && errorData['column_name'])
 												{
 													let errorColName = errorData['column_name'];
@@ -4386,11 +4388,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										try
 										{
 											let forceRespData = JSON.parse(forceResp);
-											let forceErrorData = forceRespData?.data?.Root?.Errors?.[1]?.error;
-											if(!forceErrorData)
-											{
-												forceErrorData = forceRespData?.data?.Root?.Errors?.error;
-											}
+											let forceErrorData = this.findErrorDataByColumnName(forceRespData?.data?.Root?.Errors);
 											if(forceErrorData && forceErrorData['column_name'])
 											{
 												let errorColName = forceErrorData['column_name'];
@@ -4436,7 +4434,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 								{
 									console.log('[validateAndDone] Warning Cancel detected, focusing on error field');
-									let errorData = errorsObj[1]?.error || errorsObj?.error;
+									let errorData = this.findErrorDataByColumnName(errorsObj);
 									if(errorData && errorData['column_name'])
 									{
 										let errorColName = errorData['column_name'];
@@ -4467,11 +4465,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							try
 							{
 								let respData = JSON.parse(response);
-								let errorData = respData?.data?.Root?.Errors?.[1]?.error;
-								if(!errorData)
-								{
-									errorData = respData?.data?.Root?.Errors?.error;
-								}
+								let errorData = this.findErrorDataByColumnName(respData?.data?.Root?.Errors);
 								if(errorData && errorData['column_name'])
 								{
 									let errorColName = errorData['column_name'];
@@ -4610,7 +4604,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										}
 										if(addDetailResp[key][i][name].visible)
 										{
-											this.allformValues[key][i][name+'_visible'] = addDetailResp[key][i][name].visible;
+											this.allformValues[key][i][name+'_visible'] = addDetailResp[key][i][name].visible.toString();
 										}
 										else
 										{
@@ -4745,6 +4739,22 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		{
 			this.overLayForFeedView.dispose();
 		}
+	}
+
+	findErrorDataByColumnName(errorsObj: any): any
+	{
+		let focusColName = this._extractTempletService.columnNaame;
+		if(focusColName && errorsObj)
+		{
+			for(let i = 1; errorsObj[i]?.error; i++)
+			{
+				if(errorsObj[i].error['column_name'] === focusColName)
+				{
+					return errorsObj[i].error;
+				}
+			}
+		}
+		return errorsObj?.[1]?.error || errorsObj?.error;
 	}
 
 	setFocusOnError(currentDet: any, index: any, domID: any, columnName: any)
@@ -5054,7 +5064,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							}
 							if (detailData[key] && detailData[key].visible)
 							{
-								this.allformValues[detailNo][index][key+'_visible'] = detailData[key].visible;
+								this.allformValues[detailNo][index][key+'_visible'] = detailData[key].visible.toString();
 							}
 							else
 							{
@@ -5708,7 +5718,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 											{
 												console.log('[validateAndSave] Warning Cancel detected in force handler, focusing on error field');
-												let errorData = errorsObj[1]?.error || errorsObj?.error;
+												let errorData = this.findErrorDataByColumnName(errorsObj);
 												if(errorData && errorData['column_name'])
 												{
 													let errorColName = errorData['column_name'];
@@ -5748,11 +5758,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										try
 										{
 											let forceRespData = JSON.parse(forceResp);
-											let forceErrorData = forceRespData?.data?.Root?.Errors?.[1]?.error;
-											if(!forceErrorData)
-											{
-												forceErrorData = forceRespData?.data?.Root?.Errors?.error;
-											}
+											let forceErrorData = this.findErrorDataByColumnName(forceRespData?.data?.Root?.Errors);
 											if(forceErrorData && forceErrorData['column_name'])
 											{
 												let errorColName = forceErrorData['column_name'];
@@ -5797,11 +5803,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							if (saveData) 
 							{
 
-								let data = saveData?.data?.Root?.Errors[1]?.error;
-								if(!data)
-								{
-									data = saveData?.data?.Root?.Errors?.error;
-								}
+								let data = this.findErrorDataByColumnName(saveData?.data?.Root?.Errors);
 								if(data && data['column_name'])
 								{
 									let errorColName = data['column_name'];
@@ -5893,11 +5895,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								}
 								else
 								{
-								let errorData = respData?.data?.Root?.Errors?.[1]?.error;
-								if(!errorData)
-								{
-									errorData = respData?.data?.Root?.Errors?.error;
-								}
+								let errorData = this.findErrorDataByColumnName(respData?.data?.Root?.Errors);
 								if(errorData && errorData['column_name'])
 								{
 									let errorColName = errorData['column_name'];
@@ -6509,7 +6507,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 												}
 												if (detailJsonData[key] && detailJsonData[key].visible)
 												{
-													detailJsonData[key+'_visible'] = detailJsonData[key].visible;
+													detailJsonData[key+'_visible'] = detailJsonData[key].visible.toString();
 												}
 												else
 												{
@@ -9586,7 +9584,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										{
 											if(jsonData[key] && jsonData[key]['protect'])
 											{
-												tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'];
+												tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'].toString();
 											}
 											else
 											{
@@ -9594,7 +9592,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											}
 											if(jsonData[key] && jsonData[key]['visible'])
 											{
-												tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'];
+												tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'].toString();
 											}
 											else
 											{
@@ -9632,7 +9630,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 									{
 										if(jsonData[key] && jsonData[key]['protect'])
 										{
-											tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'];
+											tempAllFormJsonData[key+"_protect"] = jsonData[key]['protect'].toString();
 										}
 										else
 										{
@@ -9640,7 +9638,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										}
 										if(jsonData[key] && jsonData[key]['visible'])
 										{
-											tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'];
+											tempAllFormJsonData[key+"_visible"] = jsonData[key]['visible'].toString();
 										}
 										else
 										{
@@ -10476,6 +10474,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					}
 					if(itemChgCols && itemChgCols.length > 0)
 					{
+						itemChgCols.push('itm_default');
+						itemChgCols.push('itm_defaultedit');
 						itemChangeColArr[i] = itemChgCols.join(',');
 						// console.log('print buildItemChangeColArr itemChangeColArr[i] 8572:::',itemChangeColArr[i]);
 					}
@@ -10555,22 +10555,19 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					this._extractTempletService.getFieldItemChange( paramString).subscribe({ next: (response:any)=> {
 					this._extractTempletService.setLoading(false);
 					this._extractTempletService.checkErrorExceptionJson(response, (result:any) =>{
-						console.log('getFieldItemChange result::::',result);
 							if(result == true && this._extractTempletService.isForceSave())
 							{
-								console.log('[getFieldItemChange] forceSave is true, resending with FORCESAVE=true');
 								let forceParamString = paramString + "&FORCESAVE=true";
 								const handleItemChangeForce = (forceResp:any) => {
 									this._extractTempletService.setLoading(false);
 									this._extractTempletService.checkErrorExceptionJson(forceResp, (forceResult:any) =>{
 										if(forceResult == true && this._extractTempletService.isForceSave())
 										{
-											console.log('[getFieldItemChange] another warning, resending with FORCESAVE=true again');
 											this._extractTempletService.setLoading(true);
 											this._extractTempletService.getFieldItemChange(forceParamString).subscribe({ next: handleItemChangeForce, error: (err: any) => {
 												this._extractTempletService.setLoading(false);
 												this.completeFieldChange();
-												console.log('getFieldItemChange FORCESAVE retry HTTP error:', err);
+												console.error('getFieldItemChange FORCESAVE retry HTTP error:', err);
 											}});
 										}
 										else if(!forceResult)
@@ -10583,8 +10580,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 												let errorsObj = respCheck?.data?.Root?.Errors;
 												if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 												{
-													console.log('[getFieldItemChange] Warning Cancel detected in force handler, focusing on error field');
-													let errorData = errorsObj[1]?.error || errorsObj?.error;
+													let errorData = this.findErrorDataByColumnName(errorsObj);
 													if(errorData && errorData['column_name'])
 													{
 														let errorColName = errorData['column_name'];
@@ -10602,41 +10598,56 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 												}
 											} catch(e) {}
 
-											let detailNo: any = 'Detail'+formNo;
 											let itmChgResp = JSON.parse(forceResp);
-											console.log('getFieldItemChange forceSave itmChgResp::::',itmChgResp);
-											if(itmChgResp && itmChgResp.data && itmChgResp.data.Root && itmChgResp.data.Root[detailNo])
+											if(itmChgResp && itmChgResp.data && itmChgResp.data.Root)
 											{
-												let curFormData = itmChgResp.data.Root[detailNo];
-												if(curFormData && typeof curFormData == 'object')
+												let rootData = itmChgResp.data.Root;
+												for(let detailKey of Object.keys(rootData))
 												{
+													if(!detailKey.startsWith('Detail')) continue;
+													let curFormData = rootData[detailKey];
+													if(!curFormData || typeof curFormData != 'object') continue;
+													let respDomID = curFormData['domID'];
+													let curFormNo = detailKey.replace('Detail', '');
 													for(let key of Object.keys(curFormData))
 													{
-														if(this.allformValues[detailNo])
+														if(key == 'domID') continue;
+														if(!curFormData[key] || typeof curFormData[key] != 'object') continue;
+														if(this.allformValues[detailKey])
 														{
+															let targetIndex = -1;
+															for(let ri = 0; ri < this.allformValues[detailKey].length; ri++)
+															{
+																if(this.allformValues[detailKey][ri]['domID'] == respDomID)
+																{
+																	targetIndex = ri;
+																	break;
+																}
+															}
+															if(targetIndex == -1) continue;
 															if(curFormData[key]['content'] != undefined) {
 																let contentVal = curFormData[key]['content'];
 																if(contentVal == null) { contentVal = ''; }
-																if(key.includes('_date') && contentVal && this.checkIsDateFormat(key, formNo)) {
+																if(this.checkIsDateFormat(key, curFormNo)) {
 																	contentVal = this.convertStringToDate(contentVal);
 																}
-																this.allformValues[detailNo][index][key] = contentVal;
+																this.allformValues[detailKey][targetIndex][key] = contentVal;
 															}
-															if(curFormData[key]['protect'] != undefined) { this.allformValues[detailNo][index][key+"_protect"] = curFormData[key]['protect']; }
-															if(curFormData[key]['visible'] != undefined) { this.allformValues[detailNo][index][key+"_visible"] = curFormData[key]['visible']; }
+															if(curFormData[key]['protect'] != undefined) { this.allformValues[detailKey][targetIndex][key+"_protect"] = curFormData[key]['protect'].toString(); }
+															if(curFormData[key]['visible'] != undefined) { this.allformValues[detailKey][targetIndex][key+"_visible"] = curFormData[key]['visible'].toString(); }
 														}
 														else
 														{
 															if(curFormData[key]['content'] != undefined) {
 																let contentVal3 = curFormData[key]['content'];
 																if(contentVal3 == null) { contentVal3 = ''; }
-																if(key.includes('_date') && contentVal3 && this.checkIsDateFormat(key, formNo)) {
+																if(this.checkIsDateFormat(key, curFormNo)) {
 																	contentVal3 = this.convertStringToDate(contentVal3);
 																}
 																this.allformValues[key] = contentVal3;
 															}
-															if(curFormData[key]['protect'] != undefined) { this.allformValues[key+"_protect"] = curFormData[key]['protect']; }
-															if(curFormData[key]['visible'] != undefined) { this.allformValues[key+"_visible"] = curFormData[key]['visible']; }
+															if(curFormData[key]['protect'] != undefined) { this.allformValues[key+"_protect"] = curFormData[key]['protect'].toString(); }
+															if(curFormData[key]['visible'] != undefined) { this.allformValues[key+"_visible"] = curFormData[key]['visible'].toString(); }
 														}
 													}
 												}
@@ -10656,11 +10667,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											try
 											{
 												let forceRespData = JSON.parse(forceResp);
-												let forceErrorData = forceRespData?.data?.Root?.Errors?.[1]?.error;
-												if(!forceErrorData)
-												{
-													forceErrorData = forceRespData?.data?.Root?.Errors?.error;
-												}
+												let forceErrorData = this.findErrorDataByColumnName(forceRespData?.data?.Root?.Errors);
 												if(forceErrorData && forceErrorData['column_name'])
 												{
 													let errorColName = forceErrorData['column_name'];
@@ -10689,7 +10696,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								this._extractTempletService.getFieldItemChange(forceParamString).subscribe({ next: handleItemChangeForce, error: (err: any) => {
 									this._extractTempletService.setLoading(false);
 									this.completeFieldChange();
-									console.log('getFieldItemChange FORCESAVE HTTP error:', err);
+									console.error('getFieldItemChange FORCESAVE HTTP error:', err);
 								}});
 								return;
 							}
@@ -10702,8 +10709,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 									let errorsObj = respCheck?.data?.Root?.Errors;
 									if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 									{
-										console.log('[getFieldItemChange] Warning Cancel detected, focusing on error field');
-										let errorData = errorsObj[1]?.error || errorsObj?.error;
+										let errorData = this.findErrorDataByColumnName(errorsObj);
 										if(errorData && errorData['column_name'])
 										{
 											let errorColName = errorData['column_name'];
@@ -10721,34 +10727,49 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 									}
 								} catch(e) {}
 
-								let detailNo: any = 'Detail'+formNo;
 								let itmChgResp = JSON.parse(response);
-								console.log('getFieldItemChange itmChgResp::::',itmChgResp);
-								if(itmChgResp && itmChgResp.data && itmChgResp.data.Root && itmChgResp.data.Root[detailNo])
+								if(itmChgResp && itmChgResp.data && itmChgResp.data.Root)
 								{
-									let curFormData = itmChgResp.data.Root[detailNo];
-									if(curFormData && typeof curFormData == 'object')
+									let rootData = itmChgResp.data.Root;
+									for(let detailKey of Object.keys(rootData))
 									{
+										if(!detailKey.startsWith('Detail')) continue;
+										let curFormData = rootData[detailKey];
+										if(!curFormData || typeof curFormData != 'object') continue;
+										let respDomID = curFormData['domID'];
+										let curFormNo = detailKey.replace('Detail', '');
 										for(let key of Object.keys(curFormData))
 										{
-											if(this.allformValues[detailNo])
+											if(key == 'domID') continue;
+											if(!curFormData[key] || typeof curFormData[key] != 'object') continue;
+											if(this.allformValues[detailKey])
 											{
+												let targetIndex = -1;
+												for(let ri = 0; ri < this.allformValues[detailKey].length; ri++)
+												{
+													if(this.allformValues[detailKey][ri]['domID'] == respDomID)
+													{
+														targetIndex = ri;
+														break;
+													}
+												}
+												if(targetIndex == -1) continue;
 												if(curFormData[key]['content'] != undefined)
 												{
 													let contentVal = curFormData[key]['content'];
 													if(contentVal == null) { contentVal = ''; }
-													if(key.includes('_date') && contentVal && this.checkIsDateFormat(key, formNo)) {
+													if(this.checkIsDateFormat(key, curFormNo)) {
 														contentVal = this.convertStringToDate(contentVal);
 													}
-													this.allformValues[detailNo][index][key] = contentVal;
+													this.allformValues[detailKey][targetIndex][key] = contentVal;
 												}
 												if(curFormData[key]['protect'] != undefined)
 												{
-													this.allformValues[detailNo][index][key+"_protect"] = curFormData[key]['protect'];
+													this.allformValues[detailKey][targetIndex][key+"_protect"] = curFormData[key]['protect'].toString();
 												}
 												if(curFormData[key]['visible'] != undefined)
 												{
-													this.allformValues[detailNo][index][key+"_visible"] = curFormData[key]['visible'];
+													this.allformValues[detailKey][targetIndex][key+"_visible"] = curFormData[key]['visible'].toString();
 												}
 											}
 											else
@@ -10757,24 +10778,24 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 												{
 													let contentVal2 = curFormData[key]['content'];
 													if(contentVal2 == null) { contentVal2 = ''; }
-													if(key.includes('_date') && contentVal2 && this.checkIsDateFormat(key, formNo)) {
+													if(this.checkIsDateFormat(key, curFormNo)) {
 														contentVal2 = this.convertStringToDate(contentVal2);
 													}
 													this.allformValues[key] = contentVal2;
 												}
 												if(curFormData[key]['protect'] != undefined)
 												{
-													this.allformValues[key+"_protect"] = curFormData[key]['protect'];
+													this.allformValues[key+"_protect"] = curFormData[key]['protect'].toString();
 												}
 												if(curFormData[key]['visible'] != undefined)
 												{
-													this.allformValues[key+"_visible"] = curFormData[key]['visible'];
+													this.allformValues[key+"_visible"] = curFormData[key]['visible'].toString();
 												}
 											}
 										}
 									}
-									console.log('getFieldItemChange this.allformValues 8657::::',this.allformValues);
 									// Refresh feed-view data if open
+									let detailNo = 'Detail'+formNo;
 									if(this.overLayForFeedView && this.allformValues[detailNo] && this.allformValues[detailNo][index])
 									{
 										this.currentFeedData = this.allformValues[detailNo][index];
@@ -10796,11 +10817,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								try
 								{
 									let respData = JSON.parse(response);
-									let errorData = respData?.data?.Root?.Errors?.[1]?.error;
-									if(!errorData)
-									{
-										errorData = respData?.data?.Root?.Errors?.error;
-									}
+									let errorData = this.findErrorDataByColumnName(respData?.data?.Root?.Errors);
 									if(errorData && errorData['column_name'])
 									{
 										let errorColName = errorData['column_name'];
@@ -10812,7 +10829,6 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										{
 											focusDomID = this.allformValues['domID'];
 										}
-										console.log('[getFieldItemChange ErrorOK] setFocusOnError params - currentDet:', currentDet, 'focusDomID:', focusDomID, 'errorColName:', errorColName);
 										setTimeout(() => {
 											this.setFocusOnError(currentDet, index, focusDomID, errorColName);
 										}, 500);
@@ -10820,7 +10836,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								}
 								catch(e:any)
 								{
-									console.log('Exception setting focus on getFieldItemChange error field:', e.message);
+									console.error('Exception setting focus on getFieldItemChange error field:', e.message);
 								}
 								this.completeFieldChange();
 							}
@@ -10830,14 +10846,14 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						this._extractTempletService.setLoading(false);
 						this.focusNextAfterItemChange = false;
 						this.completeFieldChange();
-						console.log('getFieldItemChange HTTP error:', err);
+						console.error('getFieldItemChange HTTP error:', err);
 					}});
 				}
 			}
 		}
 		catch(e)
 		{
-			console.log('Print inside getFieldItemChange Exception::::',e);
+			console.error('Exception inside getFieldItemChange:', e);
 		}
 	}
 
@@ -10880,7 +10896,6 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		if(this.allformValues && this.allformValues[detailNo] && this.allformValues[detailNo].length > 0)
 		{
 			let detailArr: any = this.allformValues[detailNo]
-			console.log('print detailArr 8617:::',detailArr);
 			if (detailArr && (!Array.isArray(detailArr) || detailArr.length === 0)) return;
 			if(detailArr && detailArr.length > 0)
 			{
@@ -10919,8 +10934,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						else if(key.includes('_date'))
 						{
 							let value = row[key];
-							console.log('print value 8716::::',value);
-							let formattedDate = '';
+								let formattedDate = '';
 							if(value && value != 'Invalid Date')
 							{
 								formattedDate = this.formatDateToDDMMYY(value);
@@ -10940,7 +10954,6 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							content: (row[key] == null || row[key] == undefined) ? '' : String(row[key])
 						};
 					});	
-					console.log('print chgStrJson 8705:::',chgStrJson);
 				}
 			}
 		}
@@ -11001,7 +11014,6 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					};
 				}
 			});	
-			console.log('print chgStrJson 8748:::',chgStrJson);
 		}
 		return JSON.stringify(chgStrJson);
 	}

@@ -152,7 +152,7 @@
 													[disabled]="editFlag === 'V' || (allformValues[yCordColMap.value.name + '_protect'] && allformValues[yCordColMap.value.name + '_protect'] === '1') || (allformValues[yCordColMap.value.name + '_protect'] == undefined ? (editFlag === 'V' || yCordColMap.value.disabled === true) : false) || yCordColMap?.value?.tab === '32766'"
 													(focus)="setFocusFormNo(objForm.key, 'Detail' + objForm.key + '.' + objForm.key + '.' + yCordColMap.value.name)"
 													(change)="getFieldItemChange(yCordColMap.value.name, allformValues[yCordColMap.value.name], '1', objForm.key, 0)" [isSimpleLayout]="true">
-													<div *ngIf="yCordColMap.value.popHelp === 'true'"
+													<div *ngIf="yCordColMap.value.popHelp === 'true' && editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1'"
 														[ngClass]="{disablePopHelp: editFlag == 'V' || false}"
 														(click)="openPopHelp(yCordColMap.value.name,allformValues[yCordColMap.value.name])"
 														class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
@@ -475,12 +475,12 @@
 																		[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
 																		[allformValues]="allformValues" [index]="i">
 																</bb-autosuggest-transaction>
-																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766'))"
+																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766' || detail[colNodeVal.name + '_protect'] === '1'))"
 																	[ngClass]="{disablePopHelp : editFlag == 'V' || colNodeVal.isPrimaryKey || (editFlag == 'E' && colNodeVal.disabled) || yCordColMap?.value?.tab === '32766' || colNodeVal.disabled}"
 																	primaryKey="false"
 																	(click)="openPopHelp(colNodeVal.name, detail[colNodeVal.name], objForm.key,i,colNodeVal.displayLabel)"
 																	class="detailWizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
-																</div> 
+																</div>
 															</td>
 														</ng-container>
 													</ng-template>
@@ -507,7 +507,7 @@
 																	[callApiForSimpleLayout] = "true" [tokenID] = "tokenID" [jSessionId] = "jSessionID"
 																	[allformValues]="allformValues" [index]="i">
 																</bb-autosuggest-transaction>
-																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766'))"
+																<div *ngIf="(true && (colNodeVal.popHelp === 'true') && !(editFlag == 'V' || (editFlag == 'E' && colNodeVal.disabled) || colNodeVal.disabled || yCordColMap?.value?.tab === '32766' || detail[colNodeVal.name + '_protect'] === '1'))"
 																	[ngClass]="{disablePopHelp : editFlag == 'V' || colNodeVal.isPrimaryKey || (editFlag == 'E' && false) || yCordColMap?.value?.tab === '32766' || false}"
 																	primaryKey="false"
 																	(click)="openPopHelp(colNodeVal.name, detail[colNodeVal.name], objForm.key, i, colNodeVal.displayLabel)"

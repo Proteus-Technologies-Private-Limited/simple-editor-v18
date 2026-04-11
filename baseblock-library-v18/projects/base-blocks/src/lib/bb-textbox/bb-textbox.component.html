@@ -58,7 +58,7 @@
 						[id]="fieldName" [transMode] ="transMode" [formWiseFormatJson]="formWiseFormatJson" (autoSuggestData)="autoSuggestData($event)"
 						[callApiForSimpleLayout] = "callApiForSimpleLayout" [tokenID]="tokenID" [jSessionId]="jSessionId">
 					</bb-autosuggest-transaction>
-					<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
+					<div *ngIf="drawPophelp == true && !bbTextDisabled" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
 					(click)="openPopHelp(fieldName, value)" class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract"
 					(mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
 					</div>
@@ -83,7 +83,7 @@
 			(itemChangeValues)="onItemChangeFromSuggestBox($event)"
 			(onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="currentCompData"
 			[id]="'cust_code'"></bb-autosuggest-transaction>
-			<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbDisabled || false}"
+			<div *ngIf="drawPophelp == true && !bbTextDisabled" [ngClass]="{disablePopHelp: bbDisabled || false}"
 				(click)="openPopHelp()" class="wizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract">
 		  	</div>
 			<mat-hint> 

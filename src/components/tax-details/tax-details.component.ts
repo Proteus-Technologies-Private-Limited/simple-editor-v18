@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { ExtractTemplateService } from '../extract-template/extract-template.service';
 import { TaxDetailsService } from './tax-details.service';
 import { SimpleEditorService } from '../simple_editor/simple_editor.service';
@@ -8,16 +10,17 @@ import { BBProgressSpinnerComponent } from 'base-blocks';
 @Component({
   selector: 'tax-details',
   templateUrl: './tax-details.component.html',
-  styleUrls: ['./tax-details.component.css']
+  styleUrls: ['./tax-details.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaxDetailsComponent implements OnInit {
+export class TaxDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() popHelpFieldList: any = [];
   originalValue: number;
   lineNumTaxList: any = [];
   lineNumber: any;
   lineNumTax: any;
-  
+
   alltaxFormValues:any = {};
   @Input() allformValues: any[] = [];
   @Input() cuurentValidationRow:any = [];
@@ -41,46 +44,62 @@ export class TaxDetailsComponent implements OnInit {
   expandedRowIndex: number = 0;
   currentTaxDetails: any = {};
   @Output() taxItemChange: EventEmitter<any> = new EventEmitter();
+  private taxPercBlur$ = new Subject<{identifier: string, value: number, rateType: any, maxRate: any, minRate: any}>();
+  private destroy$ = new Subject<void>();
+  cachedImageUrls: { [key: string]: string } = {};
+  private taxPercListeners: (() => void)[] = [];
 
-  constructor( public _extractTempletService: ExtractTemplateService, public taxDetailService: TaxDetailsService, public _simpleEditorService: SimpleEditorService )
+  constructor( public _extractTempletService: ExtractTemplateService, public taxDetailService: TaxDetailsService, public _simpleEditorService: SimpleEditorService, private cdr: ChangeDetectorRef, private ngZone: NgZone, private elRef: ElementRef )
   {
+    this.taxPercBlur$.pipe(debounceTime(300)).subscribe(({identifier, value, rateType, maxRate, minRate}) => {
+      this.ngZone.run(() => {
+        this.processBlur(identifier, value, rateType, maxRate, minRate);
+      });
+    });
+  }
 
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+  getImageUrl(key: string, fldValue: string, objName: string): string {
+    let cacheKey = key + '_' + fldValue;
+    if(!this.cachedImageUrls[cacheKey]) {
+      this.cachedImageUrls[cacheKey] = '/ibase/CustomMenuImageServlet?fldValue=' + fldValue + '&object=tax_form&objName=' + objName + '&ALT_FLD_VALUE=' + fldValue + '&isOval=true';
+    }
+    return this.cachedImageUrls[cacheKey];
+  }
+
+  getFeedImageUrl(taxDescr: string): string {
+    let cacheKey = 'feed_' + taxDescr;
+    if(!this.cachedImageUrls[cacheKey]) {
+      this.cachedImageUrls[cacheKey] = '/ibase/CustomMenuImageServlet?fldValue=' + taxDescr + '&object=tax_form&objName=sorder&ALT_FLD_VALUE=' + taxDescr + '&isOval=true';
+    }
+    return this.cachedImageUrls[cacheKey];
   }
 
   ngOnInit() {
     this.lineNumTaxList = [];
     let tempDomId = Number(this.currentRecordDomId)
     this.currentRecordDomId = tempDomId;
-    console.log('PRINT LINE NO 42 currentRecordDomId]]]]]]:::',this.currentRecordDomId);
-    console.log('inside oninit.......18',this.popHelpFieldList);
-    console.log('inside oninit.......19',this.editFlag);
     this.currentDetail ='Detail'+this.formNo;
-    console.log('currentDetail before assignment:', this.currentDetail);
-    console.log("line no 42 allformValues", this.allformValues);
 
 
     if(this.cuurentValidationRow && this.cuurentValidationRow.length > 0 )
     {
       var str = this.cuurentValidationRow[0].split('_');
-      console.log('inside oninit.......26',str[0]);
-      console.log('inside oninit.......27',str[1]);
       this.formNo = str[0];
       this.domId = Number( str[1]);
       this.currentDetail ='Detail'+this.formNo;
     }
     let jsonResultData:any = {} = this.taxResponseData;
-    console.log('inside oninit.......28',jsonResultData);
     if(jsonResultData)
     {
       jsonResultData = {} = JSON.parse(jsonResultData);
-      console.log("line no 53 jsonResultData", jsonResultData);
       if (jsonResultData && jsonResultData[this.currentDetail]) 
       {
-        console.log("line no 56 jsonResultData", jsonResultData instanceof Array);
-        console.log("line no 57 currentDetail",jsonResultData[this.currentDetail]);
         if(jsonResultData instanceof Array) 
         {
-          console.log("line no 63 currentDetail",jsonResultData);
           for( var i=0; i<jsonResultData[this.currentDetail].length; i++ )
           {
             if(this.currentRecordDomId == jsonResultData[this.currentDetail][i]['domID'])
@@ -90,7 +109,6 @@ export class TaxDetailsComponent implements OnInit {
                 continue;
               }
               var detailLen = jsonResultData[this.currentDetail][i]['Taxes']['Tax'].length;
-              console.log("line no 68 currentDetail",detailLen);
               var detailJsonData:any = {};
               for (var j = 0; j < detailLen; j++)
               {
@@ -114,13 +132,11 @@ export class TaxDetailsComponent implements OnInit {
                 detailArray.push(detailJsonData);
               }
               this.alltaxFormValues['Taxes_'+(i+1)] = detailArray;
-              console.log("line no 94 currentDetail",this.alltaxFormValues);
             }
           }
         }
         else if(jsonResultData[this.currentDetail] instanceof Array)
         {
-          console.log('PRINT LINE NO 90 ]]]]]]:::',jsonResultData);
           for(let i=0;i<jsonResultData[this.currentDetail].length;i++)
           {
             if(this.currentRecordDomId == jsonResultData[this.currentDetail][i]['domID'])
@@ -153,13 +169,11 @@ export class TaxDetailsComponent implements OnInit {
                 detailArray.push(detailJsonData);
               }
               this.alltaxFormValues['Taxes_'+this.domId] = detailArray;
-              console.log('inside tax details.........52',this.alltaxFormValues);
             }
           }
         }
         else
         {
-          console.log('PRINT LINE NO 155:::',jsonResultData[this.currentDetail]);
           if(this.currentRecordDomId == jsonResultData[this.currentDetail]['domID'])
           {
             var detailArray:any = [];
@@ -190,7 +204,6 @@ export class TaxDetailsComponent implements OnInit {
               detailArray.push(detailJsonData);
             }
             this.alltaxFormValues['Taxes_'+this.domId] = detailArray;
-            console.log('inside tax details.........52',this.alltaxFormValues);
           }
         }
       }
@@ -203,77 +216,62 @@ export class TaxDetailsComponent implements OnInit {
   {
       try
       {
-        console.log('inside toggleFeed..........86',index);
-        var isFeedOpen: boolean = false;
         this.taxDomId = index;
-        var feedDiv = document.getElementById("taxFeedDiv"+index);
-        var dataDiv = document.getElementById("taxDataDiv"+index);
-        var resetDiv = document.getElementById("refreshImg"+index);
         var totalCnt = this.alltaxFormValues['Taxes_'+this.domId].length;
-        for(var i=1;i<=totalCnt; i++ )
+
+        // Batch DOM reads: query all elements once
+        var feedDivs: (HTMLElement | null)[] = [];
+        var dataDivs: (HTMLElement | null)[] = [];
+        var resetDivs: (HTMLElement | null)[] = [];
+        for(var i = 1; i <= totalCnt; i++)
         {
-            var tempDataDiv = document.getElementById("taxDataDiv"+i);
-            if (tempDataDiv != null && tempDataDiv.classList.contains('displayBlock'))
-            {
-                isFeedOpen = true;
-            }
+          feedDivs[i] = document.getElementById("taxFeedDiv"+i);
+          dataDivs[i] = document.getElementById("taxDataDiv"+i);
+          resetDivs[i] = document.getElementById("refreshImg"+i);
         }
+
+        var feedDiv = feedDivs[index];
+        var dataDiv = dataDivs[index];
+        var resetDiv = resetDivs[index];
+
+        // Batch DOM writes: toggle clicked row
         if (feedDiv != null && feedDiv.classList.contains('displayBlock'))
         {
-          feedDiv.classList.remove('displayBlock');
-          feedDiv.classList.add('displayNone');
-          dataDiv?.classList.remove('displayNone');
-          dataDiv?.classList.add('displayBlock');
-
-          resetDiv?.classList.remove('displayNone');
-          resetDiv?.classList.add('displayBlock');
+          feedDiv.classList.replace('displayBlock', 'displayNone');
+          dataDiv?.classList.replace('displayNone', 'displayBlock');
+          resetDiv?.classList.replace('displayNone', 'displayBlock');
         }
-        else
+        else if (dataDiv != null && dataDiv.classList.contains('displayBlock'))
         {
-          if (dataDiv != null && dataDiv.classList.contains('displayBlock'))
-          {
-            dataDiv.classList.remove('displayBlock');
-            dataDiv.classList.add('displayNone');
-            feedDiv?.classList.remove('displayNone');
-            feedDiv?.classList.add('displayBlock');
-
-            resetDiv?.classList.remove('displayBlock');
-            resetDiv?.classList.add('displayNone');
-          }
+          dataDiv.classList.replace('displayBlock', 'displayNone');
+          feedDiv?.classList.replace('displayNone', 'displayBlock');
+          resetDiv?.classList.replace('displayBlock', 'displayNone');
         }
-        for(var i=1;i<=totalCnt; i++ )
+
+        // Collapse all other rows
+        for(var i = 1; i <= totalCnt; i++ )
         {
           if( i != index )
           {
-            var dataDiv = document.getElementById("taxDataDiv"+i);
-            var feedDiv = document.getElementById("taxFeedDiv"+i);
-            var resetDiv = document.getElementById("refreshImg"+i);
-            if (dataDiv != null && dataDiv.classList.contains('displayBlock'))
+            if (dataDivs[i] != null && dataDivs[i]!.classList.contains('displayBlock'))
             {
-              dataDiv.classList.remove('displayBlock');
-              dataDiv.classList.add('displayNone');
-              feedDiv?.classList.remove('displayNone');
-              feedDiv?.classList.add('displayBlock');
+              dataDivs[i]!.classList.replace('displayBlock', 'displayNone');
+              feedDivs[i]?.classList.replace('displayNone', 'displayBlock');
             }
-            if( resetDiv != null && resetDiv.classList.contains('displayBlock') )
+            if( resetDivs[i] != null && resetDivs[i]!.classList.contains('displayBlock') )
             {
-              resetDiv.classList.remove('displayBlock');
-              resetDiv.classList.add('displayNone');
+              resetDivs[i]!.classList.replace('displayBlock', 'displayNone');
             }
           }
         }
     }
     catch
     {
-      console.log('Error while save trasaction......');
     }
   }
 
   openPopHelp(fldName:any, fldValue:any, formNo:any, detailRowNo?:any) 
   {
-    console.log('inside tax detail openPophelp',fldName);
-    console.log('inside tax detail fldValue',fldValue);
-    console.log('inside tax detail formNo',formNo);
     let pophelpData:any = {} ;
     pophelpData['fldName'] = fldName;
     pophelpData['fldValue'] = fldValue;
@@ -286,23 +284,19 @@ export class TaxDetailsComponent implements OnInit {
   }
   callLocalItemChange(fldName:any, fldValue:any, formNo:any, detailRowNo?:any) 
   {
-      console.log('inside tax detail.........216');
        let formData:any = {} ;
        formData['fldName'] = fldName;
        formData['fldValue'] = fldValue;
        formData['formNo'] = formNo;
        formData['detailRowNo'] = (this.domId - 1);
        this.callItemchangeFormTax.emit(JSON.stringify(formData));
-       console.log('inside tax detail.........222');
   }
   setSelectedText(id:any) 
   {      
-      console.log('inside tax detail.........227');
       this.setSelectedTextfromTax.emit(id);
   }
   setFocusFormNo(cuurrentFormNo:any) 
   {
-      console.log('inside tax detail.........235');
   }
 
   onRecalculate(event:any) 
@@ -341,7 +335,6 @@ export class TaxDetailsComponent implements OnInit {
     chgStrJson['header'] = headerData;
 
     var length = this.alltaxFormValues['Taxes_'+this.domId].length;
-    console.log('PRINT LINE NO 369 this.alltaxFormValues::::',this.alltaxFormValues['Taxes_'+this.domId]);
     var taxRowDomId = (this.domId);
     for(var i=0; i<length; i++ )
     {
@@ -388,7 +381,6 @@ export class TaxDetailsComponent implements OnInit {
         }
         chgStrJson[this.currentDetail] = detailJson;
         taxRowDomId = (i+1);
-        console.log('PRINT LINE NO 385 chgStrJson::::',chgStrJson);
       }
     }
 
@@ -410,7 +402,6 @@ export class TaxDetailsComponent implements OnInit {
       this._simpleEditorService.getFieldItemChange(paramString).subscribe({ next: (response:any) => {
         this.setLoading(false);
         this._simpleEditorService.checkErrorExceptionJson(response, (result:any) => {
-          console.log('calculateTax getFieldItemChange result::::',result);
           if(!result)
           {
             var itmChgResp = JSON.parse(response);
@@ -451,14 +442,14 @@ export class TaxDetailsComponent implements OnInit {
                   }
                 }
               }
-              console.log('Print itmChgResp.data.Root[this.currentDetail].....',itmChgResp.data.Root[this.currentDetail]);
               this.taxItemChange.emit(JSON.stringify(itmChgResp.data.Root[this.currentDetail]));
             }
           }
+          this.cdr.markForCheck();
         });
       }, error: (err: any) => {
         this.setLoading(false);
-        console.log('calculateTax getFieldItemChange HTTP error:', err);
+        this.cdr.markForCheck();
       }});
   }
 
@@ -466,7 +457,6 @@ export class TaxDetailsComponent implements OnInit {
   {
     try
     {
-      console.log('inside on Done 457 ].....');
       if(this.editFlag !== 'V' && !this.recalculateOnTax && this.isFeedOpen)
       {
         this.calculateTax();
@@ -475,23 +465,18 @@ export class TaxDetailsComponent implements OnInit {
     }
     catch
     {
-      console.log('Exception inside onDone.....');
     }
     this.lineNumTaxList = [];
   }
 
   applyTax()
   {
-      console.log('inside applyTaxScreen.....377');
        //this.closeTax.emit();
-      console.log('inside applyTaxScreen.....378');
       this.applyTaxScreen.emit();
   }
 
     setUserPref(value:any, prefName:any)
     {
-        console.log('inside setUserPref....5750',value);
-        console.log('nside setUserPref....5751', prefName);
         let paramMap:any = {};
         paramMap['ACTION']='SET_USER_PREF';
         paramMap['PREF_VAL']=value;
@@ -505,18 +490,17 @@ export class TaxDetailsComponent implements OnInit {
             var callbackResp = data.split('%%SEP%%');
             data = callbackResp[0];
             var isError = callbackResp[1].trim();
-            if (!(isError == 'true')) 
+            if (!(isError == 'true'))
             {
-                console.log('inside callItemDeafult.......3727[' + data);
-                
+
             }
+            this.cdr.markForCheck();
         });
     }
 
 
     getUserPref(prefName:any)
     {
-        console.log('nside getUserPref....5751', prefName);
         let paramMap:any = {};
         paramMap['ACTION']='GET_USER_PREF';
         paramMap['OBJ_NAME']=this.compData["OBJ_NAME"];;
@@ -531,7 +515,6 @@ export class TaxDetailsComponent implements OnInit {
             if (!(isError == 'true')) 
             {
                 var calcualteTaxId = "RECALCULATE_TAX_"+this.formNo;
-                console.log('inside getUserPref.......436[' + data);
                 if( prefName == calcualteTaxId)
                 {
                    if( data == 'true')
@@ -544,6 +527,7 @@ export class TaxDetailsComponent implements OnInit {
                    }
                 }
             }
+            this.cdr.markForCheck();
         });
     }
 
@@ -555,7 +539,6 @@ export class TaxDetailsComponent implements OnInit {
         }
         catch
         {
-            console.log('this.bbSpinner.setLoading is not a function!!');
         }
     }
 
@@ -570,7 +553,6 @@ export class TaxDetailsComponent implements OnInit {
       this.setLoading(true);
       this._extractTempletService.sendRequest(url, paramString, (taxResponaseData:any) => {
         this.setLoading(false);
-        console.log("PRINT LINE NO 618 taxResponaseData:::::::",taxResponaseData)
        // this.taxEnvDescr = taxResponaseData
         var response = taxResponaseData.split('%%SEP%%');
         this.taxEnvDescr = response[0];
@@ -579,6 +561,8 @@ export class TaxDetailsComponent implements OnInit {
         {
           this.taxEnvDescr = response[0];
         }
+        this.cachedImageUrls = {};
+        this.cdr.markForCheck();
       });
     }
 
@@ -591,13 +575,17 @@ export class TaxDetailsComponent implements OnInit {
         this.lineNumTax = lineNumTax;
         this.lineNumTaxList.push(lineNumTax);
         this.lineNumber = lineNumber
-        console.log('LINE NO TAX LINE NO 623:', this.lineNumTaxList);
       }
 
-      // Function called on Blur
-      onFeedBlur(identifier: string, value: number,rateType,maxRate,minRate) 
+      // Function called on Blur — delegates to debounced subject to avoid rapid recalculations
+      onFeedBlur(identifier: string, value: number,rateType,maxRate,minRate)
       {
         this.isFeedOpen = true;
+        this.taxPercBlur$.next({identifier, value, rateType, maxRate, minRate});
+      }
+
+      private processBlur(identifier: string, value: number, rateType: any, maxRate: any, minRate: any)
+      {
         if(rateType == "P")
         {
           if( ( maxRate != 0.0 && minRate != 0.0 ) || ( maxRate == 0.0 && minRate != 0.0 ) || ( maxRate != 0.0 && minRate == 0.0 ) )
@@ -610,7 +598,7 @@ export class TaxDetailsComponent implements OnInit {
             else if( maxRate == 0.0 && minRate == 0.0 )
             {
               if( !(value >= 0 && value <= 100))
-              { 
+              {
                 window.alert("Please enter the value between 0 to 100");
                 return
               }
@@ -645,9 +633,65 @@ export class TaxDetailsComponent implements OnInit {
         this.toggleFeed(index)
       }
 
+      ngOnDestroy()
+      {
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.taxPercBlur$.complete();
+        this.cleanupTaxPercListeners();
+      }
+
       ngAfterViewInit()
       {
-        console.log("print line no 663 allformValues",this.allformValues[this.currentDetail][0]['tax_env'])
         this.updateTaxEnvDescription(this.allformValues[this.currentDetail][0]['tax_env']);
+        this.registerTaxPercOutsideZone();
+      }
+
+      private cleanupTaxPercListeners()
+      {
+        for(let cleanup of this.taxPercListeners)
+        {
+          cleanup();
+        }
+        this.taxPercListeners = [];
+      }
+
+      private registerTaxPercOutsideZone()
+      {
+        this.cleanupTaxPercListeners();
+        this.ngZone.runOutsideAngular(() => {
+          let hostEl = this.elRef.nativeElement as HTMLElement;
+          let taxPercInputs = hostEl.querySelectorAll<HTMLInputElement>('input[id*=".tax_perc"]');
+          taxPercInputs.forEach((input: HTMLInputElement) => {
+            let idParts = input.id.split('.');
+            let rowIndex = idParts.length >= 2 ? parseInt(idParts[1], 10) - 1 : 0;
+
+            let focusHandler = () => {
+              let taxes = this.alltaxFormValues['Taxes_' + this.domId];
+              if(taxes && taxes[rowIndex])
+              {
+                let detail = taxes[rowIndex];
+                this.onFeedBlurFocus(input.id, detail.tax_perc, detail.line_no__tax, detail.line_no);
+              }
+            };
+
+            let blurHandler = () => {
+              let taxes = this.alltaxFormValues['Taxes_' + this.domId];
+              if(taxes && taxes[rowIndex])
+              {
+                let detail = taxes[rowIndex];
+                detail.tax_perc = +input.value;
+                this.onFeedBlur(input.id, detail.tax_perc, detail.rate_type, detail.max_rate, detail.min_rate);
+              }
+            };
+
+            input.addEventListener('focus', focusHandler);
+            input.addEventListener('blur', blurHandler);
+            this.taxPercListeners.push(() => {
+              input.removeEventListener('focus', focusHandler);
+              input.removeEventListener('blur', blurHandler);
+            });
+          });
+        });
       }
 }

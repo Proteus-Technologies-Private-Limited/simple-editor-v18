@@ -54,7 +54,7 @@
 								(onChangeValue)="setEmitValue($event)" [compData]="compData" [paramData]="currentCompData"
 								[id]="fieldName" (preventItemChange)="onPreventItemChange($event)">
 							</bb-autosuggest-transaction>
-							<div *ngIf="drawPophelp == true" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
+							<div *ngIf="drawPophelp == true && !bbTextDisabled" [ngClass]="{disablePopHelp: bbTextDisabled || false}"
 								(click)="openPopHelp()" class="textAreaWizTransPophelpImg icon-pophelp pophelpTransactionEffect gwtPopUpTxtLabel popHelpIconForExtract"
 								(mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
 							</div>

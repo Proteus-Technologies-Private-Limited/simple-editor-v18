@@ -5,7 +5,7 @@
 
 		  <div class="taxFormFieldRow">
 			<div class="taxFieldIconWrap">
-				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_env'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_env'] + '&isOval=true'">
+				<img class="taxFieldImg" [src]="getImageUrl('tax_env', allformValues[currentDetail][0]['tax_env'], compData['OBJ_NAME'])">
 			</div>
 			<mat-form-field class="taxFormField">
 				<mat-label>Tax Environment</mat-label>
@@ -23,7 +23,7 @@
 
 		  <div class="taxFormFieldRow">
 			<div class="taxFieldIconWrap">
-				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_class'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_class'] + '&isOval=true'">
+				<img class="taxFieldImg" [src]="getImageUrl('tax_class', allformValues[currentDetail][0]['tax_class'], compData['OBJ_NAME'])">
 			</div>
 			<mat-form-field class="taxFormField">
 				<mat-label>Tax Class</mat-label>
@@ -41,7 +41,7 @@
 
 		  <div class="taxFormFieldRow">
 			<div class="taxFieldIconWrap">
-				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + taxEnvDescr + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + taxEnvDescr + '&isOval=true'">
+				<img class="taxFieldImg" [src]="getImageUrl('descr', taxEnvDescr, compData['OBJ_NAME'])">
 			</div>
 			<mat-form-field class="taxFormField" floatLabel="never">
 				<input matInput placeholder="Description" [(ngModel)]="taxEnvDescr"
@@ -53,7 +53,7 @@
 
 		  <div class="taxFormFieldRow">
 			<div class="taxFieldIconWrap">
-				<img class="taxFieldImg" [src]="'/ibase/CustomMenuImageServlet?fldValue=' + allformValues[currentDetail][0]['tax_chap'] + '&object=tax_form&objName=' + compData['OBJ_NAME'] + '&ALT_FLD_VALUE=' + allformValues[currentDetail][0]['tax_chap'] + '&isOval=true'">
+				<img class="taxFieldImg" [src]="getImageUrl('tax_chap', allformValues[currentDetail][0]['tax_chap'], compData['OBJ_NAME'])">
 			</div>
 			<mat-form-field class="taxFormField">
 				<mat-label>Tax Chapter</mat-label>
@@ -87,7 +87,7 @@
 
 <table cellspacing="0" cellpadding="0" style="width: 100%;">
 	<tbody>
-<tr *ngFor="let detail of alltaxFormValues['Taxes_'+domId]; let i = index;">
+<tr *ngFor="let detail of alltaxFormValues['Taxes_'+domId]; let i = index; trackBy: trackByIndex">
 	<td align="left" style="vertical-align: top; width: 100%;">
 		<div class="PanelLabel hasCommand subFormDetailFeed"
 			style="width: 100%;" (click)="toggleFeed(i+1)">
@@ -123,7 +123,7 @@
 								class="feedImgPnl feedImgCss flowPanelAlign feedImgIconPnl-select"
 								imgvisible="true">
 								<img class="feedIcon imgFeedIcon"
-									[src]="'/ibase/CustomMenuImageServlet?fldValue=' + detail.tax_descr + '&object=tax_form&objName=sorder&ALT_FLD_VALUE=' + detail.tax_descr + '&isOval=true'">
+									[src]="getFeedImageUrl(detail.tax_descr)">
 							</div>
 								<table cellspacing="0" cellpadding="0" style="width: calc(100% - 40px);">
 									<tbody>
@@ -212,8 +212,6 @@
 												id="Detail-1.{{i + 1}}.tax_perc"  [value]="detail.tax_perc"
 												isdisablefield="true"
 												[disabled]="editFlag == 'V'"
-												(focus) = "onFeedBlurFocus('Detail-1.'+(i + 1)+'.tax_perc',detail.tax_perc,detail.line_no__tax,detail.line_no)"
-												(blur) = "detail.tax_perc = +$event.target.value; onFeedBlur('Detail-1.'+(i + 1)+'.tax_perc',detail.tax_perc,detail.rate_type,detail.max_rate,detail.min_rate)"
 												style="text-align: right; width: 40px;">
 												<div
 													class="gwt-Label advFeedTitle display-none standardBrowserLabelEditor flowPanelAlign lblPadding"

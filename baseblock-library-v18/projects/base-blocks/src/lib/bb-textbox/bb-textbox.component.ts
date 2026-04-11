@@ -162,7 +162,6 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
     
     ngAfterViewChecked(){
         //your code to update the model
-        this.cdr.detectChanges();
      }
 
     openPopHelp(fieldName?: any, value?: any) 
@@ -352,11 +351,10 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
         return new Promise((resolve, reject) => {
             try
             {
-                // console.log('print inside onFocus::::');
                 id = id + "_Icon";
                 let iconElem = document.getElementById(id);
-                
-                if (iconElem && iconElem.classList.contains('optionIcon')) 
+
+                if (iconElem && iconElem.classList.contains('optionIcon'))
                 {
                     iconElem.classList.remove('optionIcon');
                     iconElem.classList.add('focusOptionIcon');
@@ -366,22 +364,9 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
                         imgElem[0].setAttribute('src','/ibase/Insight/angplugin/assets/images/svg/'+this.bbType+'_simple_W.svg')
                     }
                 }
-                function debounce(fn: any, delay: any) 
-                {
-                    let timeout: any;
-                    return (...args: any) => {
-                        clearTimeout(timeout);
-                        timeout = setTimeout(() => fn(...args), delay);
-                    };
-                }
-                
-                document.addEventListener('keydown', debounce(() => {
-                }, 200));
-                document.addEventListener('click', debounce(() => {
-                }, 200));
                 this.focus.emit(event);
                 setTimeout(() => {
-                    resolve(); // Resolve the promise when done
+                    resolve();
                 }, 0);
             }
             catch(error)
@@ -395,8 +380,8 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
     onBlur(event: any, id?: any) {
         id = id + "_Icon";
         let iconElem = document.getElementById(id);
-        
-        if (iconElem && iconElem.classList.contains('focusOptionIcon')) 
+
+        if (iconElem && iconElem.classList.contains('focusOptionIcon'))
         {
             iconElem.classList.remove('focusOptionIcon');
             iconElem.classList.add('optionIcon');
@@ -410,19 +395,6 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
         preventItemChangeJSON['preventItemChange'] = false;
         preventItemChangeJSON['preventPopHelpItemChange'] = false;
         preventItemChangeJSON['input'] = event.target as HTMLInputElement;
-        function debounce(fn: any, delay: any) 
-		{
-			let timeout: any;
-			return (...args: any) => {
-				clearTimeout(timeout);
-				timeout = setTimeout(() => fn(...args), delay);
-			};
-		}
-		
-		document.addEventListener('keydown', debounce(() => {
-		}, 200));
-		document.addEventListener('click', debounce(() => {
-		}, 200));
         this.blur.emit(preventItemChangeJSON);
     }
 
@@ -517,10 +489,9 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
         }
     }
 
-    @HostListener('window:keydown', ['$event'])
+    @HostListener('keydown', ['$event'])
     onKeyDown(event: KeyboardEvent)
     {
-        event.stopPropagation();
         // For Enter/Tab with autosuggest open and item selected, select the item
         // and force change detection so the input value and popup state update
         if ((event.key === 'Enter' || event.key === 'Tab') &&
@@ -534,14 +505,11 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
         this.onKeyEvent(event);
     }
 
-    onKeyUp(event: KeyboardEvent) 
+    onKeyUp(event: KeyboardEvent)
     {
-        event.stopPropagation();
     }
 
     ngOnDestroy() {
-        window.removeEventListener('keydown', this.onKeyDown);
-        // window.removeEventListener('click', this.onClick);
     }
 
     checkMaxLengthForNum(event: any, fldType: string)
