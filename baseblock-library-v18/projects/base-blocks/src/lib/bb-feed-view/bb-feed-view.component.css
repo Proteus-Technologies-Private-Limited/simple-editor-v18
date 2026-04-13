@@ -848,6 +848,26 @@
     padding: 0px !important;
 }
 
+.freeFormContentOneColumn {
+    column-gap: 20px !important;
+    padding: 10px;
+    grid-column-gap: 20px !important;
+    column-rule: 1px dashed gray;
+    -moz-column-count: 1;
+    column-count: 1 !important;
+    height: auto !important;
+}
+
+.freeFormContentTwoColumn {
+    column-gap: 20px !important;
+    padding: 10px;
+    grid-column-gap: 20px !important;
+    column-rule: 1px dashed gray;
+    -moz-column-count: 2;
+    column-count: 2 !important;
+    height: auto !important;
+}
+
 .freeFormContentThreeColumn {
     column-gap: 20px !important;
     padding: 10px;

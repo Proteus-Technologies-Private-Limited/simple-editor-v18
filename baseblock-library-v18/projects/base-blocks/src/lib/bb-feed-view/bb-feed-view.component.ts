@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewContainerRef, ViewChild, NgZone, Renderer2, SimpleChanges, ChangeDetectorRef, ViewEncapsulation } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, AfterViewInit, Output, TemplateRef, ViewContainerRef, ViewChild, NgZone, Renderer2, SimpleChanges, ChangeDetectorRef, ViewEncapsulation, ElementRef } from "@angular/core";
 import { BBFeedViewService } from "./bb-feed-view.service";
 import { map } from "rxjs/operators";
 import { MetaDataNodeObj } from "./MetaDataNodeObj"
@@ -29,7 +29,7 @@ import { BBTextAreaComponent } from '../bb-text-area/bb-text-area.component';
   ],
 
 })
-export class BBFeedViewComponent implements OnInit {
+export class BBFeedViewComponent implements OnInit, AfterViewInit {
   @Input() feedFormData: any;
   // @Input() feedFormNo: any;
   @Input('feedFormNo') feedFormNo: any;
@@ -95,9 +95,48 @@ export class BBFeedViewComponent implements OnInit {
   //   return a.key.localeCompare(b.key);
   // };
   bbTextArHeight: any = '40px !important';
+  private resizeObserver: ResizeObserver | null = null;
 
   constructor(public feedViewService: BBFeedViewService, private overlay: Overlay, private viewContainerRef: ViewContainerRef,
-    private datePipe: DatePipe, public renderer: Renderer2, private cdr: ChangeDetectorRef) { }
+    private datePipe: DatePipe, public renderer: Renderer2, private cdr: ChangeDetectorRef, private elRef: ElementRef) { }
+
+  ngAfterViewInit(): void {
+    try {
+      const formContentDiv = this.elRef.nativeElement.querySelector('.formContentDiv');
+      if (formContentDiv) {
+        this.resizeObserver = new ResizeObserver(() => {
+          this.adjustFeedGroupBox();
+        });
+        this.resizeObserver.observe(formContentDiv);
+      }
+    } catch (e: any) {
+      console.log('Exception inside feed view ResizeObserver ', e.message);
+    }
+  }
+
+  adjustFeedGroupBox() {
+    const groupBoxes = this.elRef.nativeElement.querySelectorAll('.e12GroupBox');
+    for (let i = 0; i < groupBoxes.length; i++) {
+      const groupBox = groupBoxes[i] as HTMLElement;
+      const groupBoxPnl = groupBox.children[1] as HTMLElement;
+      if (!groupBoxPnl) continue;
+      const width = groupBoxPnl.offsetWidth;
+
+      if (width < 450) {
+        groupBoxPnl.classList.add('freeFormContentOneColumn');
+        groupBoxPnl.classList.remove('freeFormContentThreeColumn');
+        groupBoxPnl.classList.remove('freeFormContentTwoColumn');
+      } else if (width >= 450 && width < 1024) {
+        groupBoxPnl.classList.add('freeFormContentTwoColumn');
+        groupBoxPnl.classList.remove('freeFormContentOneColumn');
+        groupBoxPnl.classList.remove('freeFormContentThreeColumn');
+      } else {
+        groupBoxPnl.classList.add('freeFormContentThreeColumn');
+        groupBoxPnl.classList.remove('freeFormContentOneColumn');
+        groupBoxPnl.classList.remove('freeFormContentTwoColumn');
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.compData = this.pluginMetadata["compData"];
@@ -555,8 +594,8 @@ export class BBFeedViewComponent implements OnInit {
       nextSiblingElem.classList.add('expandGroupBoxChild');
     }
 
-    if (nextSiblingElem?.classList.contains('expandGroupBoxChild') && nextSiblingElem?.classList.contains('freeFormContentOneColumn')) {
-      nextSiblingElem.classList.replace('freeFormContentOneColumn', 'freeFormContentThreeColumn');
+    if (nextSiblingElem?.classList.contains('expandGroupBoxChild')) {
+      this.adjustFeedGroupBox();
     }
 
     if (this.groupBoxOverlay != null && this.groupBoxOverlay.hasAttached()) {
@@ -1228,6 +1267,11 @@ export class BBFeedViewComponent implements OnInit {
   ngOnDestroy() {
     // document.removeEventListener('click', this.onClick);
     // document.removeEventListener('keydown', this.onKeyDown);
+
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
 
     if (this.viewContainerRef) {
       this.viewContainerRef.clear();
