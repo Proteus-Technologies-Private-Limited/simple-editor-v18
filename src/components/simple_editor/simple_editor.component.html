@@ -139,12 +139,12 @@
 													</div>
 													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="disabledOptionIcon"></div>
 												</div>
-												<div *ngIf="editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1' && yCordColMap.value.disabled !== true && yCordColMap?.value?.tab !== '32766'" class="numberFilterIcon" id="filterIconContainer">
+												<div *ngIf="editFlag !== 'V' && allformValues[yCordColMap.value.name + '_protect'] !== '1' && yCordColMap.value.disabled !== true && yCordColMap?.value?.tab !== '32766' && yCordColMap.value.popHelp !== 'true'" class="numberFilterIcon" id="filterIconContainer">
 													<div *ngIf="(allformValues[yCordColMap.value.name] !== undefined && allformValues[yCordColMap.value.name] !== null && allformValues[yCordColMap.value.name] !== '') || allformValues[yCordColMap.value.name] === 0" class="optionIcon">
 														{{ allformValues[yCordColMap.value.name].toString().substring(0,1).toUpperCase() }}
-													</div> 
+													</div>
 													<div *ngIf="allformValues[yCordColMap.value.name] == undefined || allformValues[yCordColMap.value.name] == null || allformValues[yCordColMap.value.name] === ''" class="optionIcon">
-													</div> 
+													</div>
 												</div>
 												<bb-number class="setNumFormLayout" [placeholder]="labelMapData.get(yCordColMap.value.name + '_t')"
 													[required]="yCordColMap.value.required === 'true' || yCordColMap.value.required === 'yes'"

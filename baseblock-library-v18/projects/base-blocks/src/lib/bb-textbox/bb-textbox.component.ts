@@ -162,6 +162,7 @@ export class BBTextboxComponent extends BaseBlockComponent implements Validator,
     
     ngAfterViewChecked(){
         //your code to update the model
+        this.cdr.detectChanges();
      }
 
     openPopHelp(fieldName?: any, value?: any) 

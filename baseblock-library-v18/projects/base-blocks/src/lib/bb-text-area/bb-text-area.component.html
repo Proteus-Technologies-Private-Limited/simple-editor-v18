@@ -7,7 +7,7 @@
 					<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
 					</div>
 				</div>
-				<div *ngIf="bbTextDisabled === false && editFlag != 'V' && noPlaceholderIsDisable === false" class="noPlaceHolderFilterIcon" >
+				<div *ngIf="bbTextDisabled === false && editFlag != 'V' && noPlaceholderIsDisable === false && drawPophelp != true" class="noPlaceHolderFilterIcon" >
 					<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
 					<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
 						<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
@@ -26,7 +26,7 @@
 					<div *ngIf="!value" id="{{inputID}}_Icon" class="disabledOptionIcon">
 					</div>
 				</div>
-				<div *ngIf="bbTextDisabled === false && noPlaceholderIsDisable === false && editFlag != 'V'" class="textAreaFilterIcon" >
+				<div *ngIf="bbTextDisabled === false && noPlaceholderIsDisable === false && editFlag != 'V' && drawPophelp != true" class="textAreaFilterIcon" >
 					<div *ngIf="value" id="{{inputID}}_Icon" class="optionIcon">{{ value.toString().substring(0, 2).toUpperCase() }}</div>
 					<div *ngIf="!value" id="{{inputID}}_Icon" class="optionIcon">
 						<img *ngIf="bbType == 'text'" src="/ibase/Insight/angplugin/assets/images/svg/text_simple.svg" class="stringIcon">
