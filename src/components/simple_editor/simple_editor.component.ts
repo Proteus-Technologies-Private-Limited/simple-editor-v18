@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, NgZone, ViewChild, TemplateRef, ViewContainerRef, Renderer2,Inject, ElementRef, QueryList, ViewChildren, ChangeDetectionStrategy, ChangeDetectorRef, HostListener, OnDestroy, DoCheck, forwardRef, signal, ViewEncapsulation } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BBOpenPophelpComponent } from 'base-blocks';
 import { SimpleEditorService } from './simple_editor.service';
@@ -78,6 +78,14 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	@ViewChild('popHelp') popHelp: BBOpenPophelpComponent | any;
 	pkValues:any;
 	showHeaderForm: boolean = true;
+	showSummaryPage: boolean = false;
+	summaryHtmlSafe: SafeHtml = '';
+	summaryFooterActions: any[] = [];
+	summaryFooterFormNo: number = 0;
+	lastSavedTranId: string = '';
+	private hiddenParentChromeElements: { el: HTMLElement; prevDisplay: string }[] = [];
+	private summaryChromeObserver: MutationObserver | null = null;
+	private summaryChromeReapplyTimer: any = null;
 	arrayOfDateFields: any = [];
 	
 	confirmBox:any = null;
@@ -5713,7 +5721,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										this._extractTempletService.setLoading(false);
 										// Check if this is Warning Cancel (response still has error data) vs genuine success
 										try {
-											let respCheck = JSON.parse(forceResp);
+											let respCheck = this.extractSaveData(forceResp).saveJson;
 											let errorsObj = respCheck?.data?.Root?.Errors;
 											if(errorsObj && (errorsObj[1]?.error || errorsObj?.error))
 											{
@@ -5736,12 +5744,18 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 											}
 										} catch(e) {}
 										// Force save success — process the response
-										let saveData = JSON.parse(forceResp);
+										let packed = this.extractSaveData(forceResp);
+										let saveData = packed.saveJson;
 										console.log('validateAndSave forceSave saveData::::',saveData);
 										let rootData = saveData?.data?.Root;
 										if(rootData && rootData['Detail'] == 'Success' && rootData['MsgOnSave'])
 										{
 											this._extractTempletService.setLoading(false);
+											this.lastSavedTranId = rootData['TranID'] || '';
+											if(this.tryShowSummaryPage(packed.transactionXml, packed.summaryXsl))
+											{
+												return;
+											}
 											let successMsg = rootData['TranID'] + ' - ' + rootData['MsgOnSave'];
 											this.bbconfirmBox.alert('Success', successMsg, '').subscribe((resp: any) => {
 												if(resp)
@@ -5797,10 +5811,10 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						else if(result == true)
 						{
 							console.log('validateAndSave response::::',response);
-							let saveData = JSON.parse(response);
+							let saveData = this.extractSaveData(response).saveJson;
 
-							console.log('validateAndSave saveData 4410::::',saveData);		
-							if (saveData) 
+							console.log('validateAndSave saveData 4410::::',saveData);
+							if (saveData)
 							{
 
 								let data = this.findErrorDataByColumnName(saveData?.data?.Root?.Errors);
@@ -5880,11 +5894,17 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							this._extractTempletService.setLoading(false);
 							try
 							{
-								let respData = JSON.parse(response);
+								let packed = this.extractSaveData(response);
+								let respData = packed.saveJson;
 								let rootData = respData?.data?.Root;
 								if(rootData && rootData['Detail'] == 'Success' && rootData['MsgOnSave'])
 								{
 									this._extractTempletService.setLoading(false);
+									this.lastSavedTranId = rootData['TranID'] || '';
+									if(this.tryShowSummaryPage(packed.transactionXml, packed.summaryXsl))
+									{
+										return;
+									}
 									let successMsg = rootData['TranID'] + ' - ' + rootData['MsgOnSave'];
 									this.bbconfirmBox.alert('Success', successMsg, '').subscribe((resp: any) => {
 										if(resp)
@@ -5937,6 +5957,578 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			this._extractTempletService.setLoading(false);
 		}
 		});
+	}
+
+	extractSaveData(raw: any): { saveJson: any; transactionXml: string; summaryXsl: string }
+	{
+		const empty = { saveJson: null, transactionXml: '', summaryXsl: '' };
+		if(!raw || typeof raw !== 'string') return empty;
+		if(raw.indexOf('~#~') !== -1)
+		{
+			// Matches E12EditorHandlerServlet VAL_DATA order: saveResponse~#~xsl~#~xml
+			const parts = raw.split('~#~');
+			let saveJson: any = null;
+			try { saveJson = parts[0] ? JSON.parse(parts[0]) : null; } catch { saveJson = null; }
+			return {
+				saveJson,
+				summaryXsl: parts[1] ?? '',
+				transactionXml: parts[2] ?? '',
+			};
+		}
+		try { return { saveJson: JSON.parse(raw), transactionXml: '', summaryXsl: '' }; }
+		catch { return empty; }
+	}
+
+	tryShowSummaryPage(xmlStr: string, xslStr: string): boolean
+	{
+		console.log('[Summary] tryShowSummaryPage xmlLen=', xmlStr?.length, 'xslLen=', xslStr?.length);
+		if(!xmlStr || !xslStr || xmlStr === 'null' || xslStr === 'null')
+		{
+			console.log('[Summary] aborted: xml or xsl missing');
+			return false;
+		}
+		const ltIdx = xmlStr.indexOf('<');
+		if(ltIdx === -1)
+		{
+			console.log('[Summary] aborted: no < in xml');
+			return false;
+		}
+		const xmlOnly = xmlStr.substring(ltIdx);
+		try
+		{
+			const html = this.buildSummaryHtml(xmlOnly, xslStr);
+			console.log('[Summary] buildSummaryHtml outputLen=', html?.length);
+			if(!html)
+			{
+				console.log('[Summary] aborted: empty html after XSLT');
+				return false;
+			}
+			// Build footer action list first so direct-render has it.
+			this.buildSummaryFooterActions();
+			this.showSummaryPage = true;
+			this.isLoading = false;
+			this._extractTempletService.setLoading(false);
+			// Render summary via direct DOM manipulation (matches bb-confirm-dialog pattern — library-level
+			// template bindings are unreliable here, so we bypass Angular's change detection for this view).
+			this.renderSummaryDirect(html);
+			try { this.cdr.detectChanges(); } catch { this.cdr.markForCheck(); }
+			console.log('[Summary] page shown, footerActions=', this.summaryFooterActions.length, 'isLoading=', this.isLoading);
+			return true;
+		}
+		catch(e:any)
+		{
+			console.log('[Summary] XSLT transform threw:', e?.message);
+			return false;
+		}
+	}
+
+	private summaryChromeSelectors = [
+		'.angPopupclose', '.angPopupclose-explore', '.angPopupClose-assistant', '.angMobPopupclose',
+		'.angPopupMaximize-assistant', '.popupMaximize-assistant',
+		'#e12popUpPnl-close', '.headerCloseBtn', '.gwt-Label.close',
+		'#E12TransEditorContainer-layoutBtn', '.multLayoutButtonNew',
+		'.show-more-ctr', '.show-more-btn',
+		// Hide the whole transaction popup container/content so the summary overlay appears
+		// as its own clean popup. The iframe inside stays alive (JS/event handlers intact) —
+		// only its outer wrapper is visually hidden.
+		'.angPopupContainer', '.angPopupContent',
+		'.angPopupContainer-explore', '.angPopupContent-explore',
+		'.angPopupContainer-import', '.angPopupContent-import',
+		'.angMobPopupContainer', '.angMobPopupContent',
+		// Parent-window loading overlays that can remain visible over the summary page in the outer E12 shell.
+		'.loadingPanel', '#loadingPanel', '.loading-panel', '.LoadingPanel',
+		'.loadingBg', '.loadingOverlay', '#loadingOverlay', '.loading-overlay',
+		'.gwt-PopupPanelGlass', '.waitDlg', '#waiting', '.e12-loading', '.e12loading'
+	];
+
+	private applyChromeHide(): number
+	{
+		const bodies: HTMLElement[] = [];
+		const add = (b: HTMLElement | null | undefined) => { if(b && !bodies.includes(b)) bodies.push(b); };
+		add(document?.body);
+		try { add(window.parent?.document?.body); } catch {}
+		try { add(window.top?.document?.body); } catch {}
+		let totalHit = 0;
+		for(const b of bodies)
+		{
+			b.classList.add('se-summary-active');
+			const doc = b.ownerDocument;
+			if(!doc) continue;
+			for(const sel of this.summaryChromeSelectors)
+			{
+				doc.querySelectorAll(sel).forEach((n: any) => {
+					if(!(n instanceof HTMLElement)) return;
+					if(n.style.getPropertyValue('display') !== 'none')
+					{
+						this.hiddenParentChromeElements.push({ el: n, prevDisplay: n.style.getPropertyValue('display') });
+					}
+					n.style.setProperty('display', 'none', 'important');
+					n.style.setProperty('visibility', 'hidden', 'important');
+					n.style.setProperty('pointer-events', 'none', 'important');
+					totalHit++;
+				});
+			}
+		}
+		return totalHit;
+	}
+
+	private forceDismissParentLoading(): void
+	{
+		const tryHide = () => {
+			try { this._extractTempletService.setLoading(false); } catch {}
+			const windows: (Window | null)[] = [window];
+			try { if(window.parent && window.parent !== window) windows.push(window.parent); } catch {}
+			try { if(window.top && window.top !== window) windows.push(window.top); } catch {}
+			for(const w of windows)
+			{
+				if(!w) continue;
+				try { if(typeof (w as any).setLoading === 'function') (w as any).setLoading(false); } catch {}
+			}
+			this.hideFullScreenOverlays();
+		};
+		tryHide();
+		setTimeout(tryHide, 50);
+		setTimeout(tryHide, 250);
+		setTimeout(tryHide, 750);
+		setTimeout(tryHide, 1500);
+		try { (window as any).__diagnoseOverlays = this.diagnoseOverlays.bind(this); } catch {}
+	}
+
+	private hideFullScreenOverlays(): void
+	{
+		// Direct targets: CDK/Material backdrops that sometimes leak after a dialog closes.
+		const directSelectors = [
+			'.cdk-overlay-backdrop', '.cdk-overlay-backdrop-showing', '.cdk-overlay-dark-backdrop',
+			'.mat-dialog-container', '.mat-mdc-dialog-container',
+			'.mat-overlay-transparent-backdrop'
+		];
+		const docs: Document[] = [];
+		try { if(document) docs.push(document); } catch {}
+		try { if(window.parent && window.parent.document && window.parent.document !== document) docs.push(window.parent.document); } catch {}
+		try { if(window.top && window.top.document && window.top.document !== document && (!window.parent || window.top.document !== window.parent.document)) docs.push(window.top.document); } catch {}
+		let scanned = 0, hit = 0;
+		for(const doc of docs)
+		{
+			if(!doc || !doc.body) continue;
+			const view = doc.defaultView || window;
+			for(const sel of directSelectors)
+			{
+				try {
+					doc.querySelectorAll(sel).forEach((n: any) => {
+						if(!(n instanceof HTMLElement)) return;
+						if(n.closest('.se-summary-page')) return;
+						n.style.setProperty('display', 'none', 'important');
+						n.style.setProperty('visibility', 'hidden', 'important');
+						n.style.setProperty('pointer-events', 'none', 'important');
+						hit++;
+						console.log('[Summary] hid direct overlay:', { sel, tag: n.tagName, id: n.id, class: n.className });
+					});
+				} catch {}
+			}
+			const vw = (view as any).innerWidth || doc.documentElement.clientWidth;
+			const vh = (view as any).innerHeight || doc.documentElement.clientHeight;
+			const all = doc.body.querySelectorAll('*');
+			all.forEach((el: Element) => {
+				scanned++;
+				if(!(el instanceof HTMLElement)) return;
+				if(el.closest('.se-summary-page')) return;
+				let style: CSSStyleDeclaration;
+				try { style = view.getComputedStyle(el); } catch { return; }
+				const pos = style.position;
+				if(pos !== 'fixed' && pos !== 'absolute') return;
+				if(style.display === 'none' || style.visibility === 'hidden') return;
+				const opacity = parseFloat(style.opacity || '1');
+				if(isNaN(opacity) || opacity === 0) return;
+				const rect = el.getBoundingClientRect();
+				// Cover ≥ 50% of viewport OR cdk-overlay container
+				const coversMost = rect.width >= vw * 0.5 && rect.height >= vh * 0.5;
+				const isCdk = (el.className || '').toString().indexOf('cdk-overlay') !== -1;
+				if(!coversMost && !isCdk) return;
+				const zIndexNum = parseInt(style.zIndex, 10);
+				if(!isCdk && (isNaN(zIndexNum) || zIndexNum < 1)) return;
+				const text = (el.textContent || '').trim();
+				if(text.length > 500) return;
+				el.style.setProperty('display', 'none', 'important');
+				el.style.setProperty('visibility', 'hidden', 'important');
+				el.style.setProperty('pointer-events', 'none', 'important');
+				hit++;
+				console.log('[Summary] hid covering overlay:', { tag: el.tagName, id: el.id, class: el.className, zIndex: style.zIndex, size: rect.width + 'x' + rect.height, pos });
+			});
+		}
+		console.log('[Summary] hideFullScreenOverlays scanned=', scanned, 'hit=', hit);
+	}
+
+	private renderSummaryDirect(innerHtml: string): void
+	{
+		try
+		{
+			// Find the best document to host the overlay: parent window's body covers the whole
+			// viewport and sits above the transaction popup's chrome (close icon, side panel,
+			// more icon). Fall back to top, then the iframe's own body.
+			const host = document.createElement('div');
+			host.id = 'se-summary-direct-host';
+			host.className = 'se-summary-page';
+			// Use left/right/top/bottom:0 (not 100vw/100vh) so the overlay matches the real
+			// viewport even when the parent has scrollbars or non-zero body margins.
+			host.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:#fff;z-index:2147483000;overflow:hidden;box-sizing:border-box;pointer-events:auto;';
+			const body = document.createElement('div');
+			body.className = 'se-summary-body sum_Container';
+			body.style.cssText = 'flex:1 1 auto;width:100%;overflow:auto;padding:16px;box-sizing:border-box;pointer-events:auto;';
+			body.innerHTML = innerHtml;
+			const footer = document.createElement('div');
+			footer.className = 'se-summary-footer trnsbtnPanel';
+			// width:100% + box-sizing:border-box ensures the footer fits inside the host's width
+			// including its padding — so the Done button on the right doesn't spill past the viewport.
+			footer.style.cssText = 'flex:0 0 auto;width:100%;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-top:1px solid #e0e0e0;box-sizing:border-box;pointer-events:auto;';
+			const actionsWrap = document.createElement('div');
+			actionsWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;flex:1 1 auto;pointer-events:auto;';
+			for(const action of this.summaryFooterActions)
+			{
+				const btn = this.buildDirectActionButton(action, false);
+				actionsWrap.appendChild(btn);
+			}
+			footer.appendChild(actionsWrap);
+			const doneBtn = this.buildDoneButton();
+			footer.appendChild(doneBtn);
+			host.appendChild(body);
+			host.appendChild(footer);
+
+			// Pick the outermost accessible document so the overlay covers the transaction popup.
+			let targetDoc: Document = document;
+			try { if(window.parent && window.parent !== window && window.parent.document) targetDoc = window.parent.document; } catch {}
+			try { if(window.top && window.top !== window && window.top.document && window.top.document !== targetDoc) targetDoc = window.top.document; } catch {}
+			const existing = targetDoc.getElementById('se-summary-direct-host');
+			if(existing) existing.remove();
+			// Also clean any stale host inside the iframe itself.
+			try { const own = document.getElementById('se-summary-direct-host'); if(own && own !== existing) own.remove(); } catch {}
+			targetDoc.body.appendChild(host);
+			console.log('[Summary] rendered to', targetDoc === document ? 'iframe' : 'parent/top', 'body, host id=se-summary-direct-host');
+		}
+		catch(e: any)
+		{
+			console.log('[Summary] renderSummaryDirect failed:', e?.message);
+		}
+	}
+
+	private buildDirectActionButton(action: any, isDone: boolean): HTMLElement
+	{
+		const btn = document.createElement('div');
+		btn.className = 'se-summary-action' + (isDone ? ' se-summary-action-done' : '');
+		// Fixed narrow width so every action takes the same horizontal slot — keeps icon-to-icon
+		// distance constant regardless of label length. Long titles are truncated with an ellipsis
+		// on a single line (see label styles below).
+		btn.style.cssText = 'width:70px;flex:0 0 70px;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;pointer-events:auto;padding:2px 4px;box-sizing:border-box;' + (isDone ? 'margin-left:auto;' : '');
+		const circle = document.createElement('div');
+		circle.className = 'circle_BG';
+		circle.style.cssText = 'width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.15);pointer-events:auto;background:#e0e0e0;flex:0 0 auto;';
+		const img = document.createElement('img');
+		img.className = 'gwt-Image circle_Icon';
+		img.style.cssText = 'width:20px;height:20px;object-fit:contain;pointer-events:none;';
+		const src = (action?.image && action.image !== 'null')
+			? (action.image.indexOf('/') === 0 ? action.image : '/' + action.image)
+			: '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg';
+		img.src = src;
+		img.onerror = () => { img.src = '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'; };
+		circle.appendChild(img);
+		const label = document.createElement('div');
+		label.className = 'gwt-Label summaryLabel';
+		// Always single line — truncate long titles with an ellipsis (e.g. "Group P...").
+		label.style.cssText = 'margin-top:4px;width:100%;max-width:100%;box-sizing:border-box;font-size:11px;color:#333;text-align:center;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;';
+		label.title = action?.link_title || action?.title || '';
+		label.textContent = action?.link_title || action?.title || '';
+		btn.appendChild(circle);
+		btn.appendChild(label);
+		if(!isDone)
+		{
+			btn.onclick = (ev) => { ev.stopPropagation(); this.onSummaryFooterAction(action); };
+		}
+		return btn;
+	}
+
+	private buildDoneButton(): HTMLElement
+	{
+		// Match the action-button UI; use the Summary folder image the parent app ships.
+		const doneAction: any = { link_title: 'Done', title: 'Done', image: '/ibase/images/Summary/summary_done.png' };
+		const btn = this.buildDirectActionButton(doneAction, true);
+		btn.onclick = (ev) => { ev.stopPropagation(); this.closeSummaryPage(); };
+		return btn;
+	}
+
+	diagnoseOverlays(): any[]
+	{
+		const report: any[] = [];
+		const scan = (doc: Document | null, label: string) => {
+			if(!doc || !doc.body) return;
+			const view = doc.defaultView || window;
+			doc.body.querySelectorAll('*').forEach((el: Element) => {
+				if(!(el instanceof HTMLElement)) return;
+				let style: CSSStyleDeclaration;
+				try { style = view.getComputedStyle(el); } catch { return; }
+				if(style.position !== 'fixed' && style.position !== 'absolute') return;
+				if(style.display === 'none' || style.visibility === 'hidden') return;
+				const opacity = parseFloat(style.opacity || '1');
+				if(opacity === 0) return;
+				const rect = el.getBoundingClientRect();
+				if(rect.width < 400 || rect.height < 300) return;
+				report.push({
+					context: label, tag: el.tagName, id: el.id, class: el.className,
+					zIndex: style.zIndex, position: style.position,
+					size: rect.width + 'x' + rect.height,
+					background: style.backgroundColor, opacity: style.opacity
+				});
+			});
+		};
+		try { scan(document, 'iframe'); } catch {}
+		try { scan(window.parent?.document || null, 'parent'); } catch(e:any) { console.log('parent scan blocked:', e?.message); }
+		try { scan(window.top?.document || null, 'top'); } catch(e:any) { console.log('top scan blocked:', e?.message); }
+		console.table(report);
+		return report;
+	}
+
+	private hideParentChrome(): void
+	{
+		const hit = this.applyChromeHide();
+		console.log('[Summary] hideParentChrome initial hiddenNodes=', hit);
+		try
+		{
+			const observerTarget = document.body;
+			this.summaryChromeObserver = new MutationObserver(() => { this.applyChromeHide(); });
+			this.summaryChromeObserver.observe(observerTarget, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
+		}
+		catch(e:any) { console.log('[Summary] MutationObserver failed:', e?.message); }
+		this.summaryChromeReapplyTimer = setInterval(() => { this.applyChromeHide(); }, 500);
+	}
+
+	private restoreParentChrome(): void
+	{
+		if(this.summaryChromeObserver) { try { this.summaryChromeObserver.disconnect(); } catch {} this.summaryChromeObserver = null; }
+		if(this.summaryChromeReapplyTimer) { clearInterval(this.summaryChromeReapplyTimer); this.summaryChromeReapplyTimer = null; }
+		const bodies: HTMLElement[] = [];
+		const add = (b: HTMLElement | null | undefined) => { if(b && !bodies.includes(b)) bodies.push(b); };
+		add(document?.body);
+		try { add(window.parent?.document?.body); } catch {}
+		try { add(window.top?.document?.body); } catch {}
+		for(const b of bodies) b.classList.remove('se-summary-active');
+		for(const b of bodies)
+		{
+			const doc = b.ownerDocument;
+			if(!doc) continue;
+			for(const sel of this.summaryChromeSelectors)
+			{
+				doc.querySelectorAll(sel).forEach((n: any) => {
+					if(!(n instanceof HTMLElement)) return;
+					n.style.removeProperty('display');
+					n.style.removeProperty('visibility');
+					n.style.removeProperty('pointer-events');
+				});
+			}
+		}
+		this.hiddenParentChromeElements = [];
+	}
+
+	buildSummaryFooterActions(): void
+	{
+		console.log('[SummaryFooter] ==== START ====');
+		this.summaryFooterActions = [];
+		this.summaryFooterFormNo = 0;
+		if(!this.objSqlModelData || !Array.isArray(this.objSqlModelData) || this.objSqlModelData.length === 0)
+		{
+			console.log('[SummaryFooter] objSqlModelData missing/empty');
+			return;
+		}
+		console.log('[SummaryFooter] objSqlModelData length=', this.objSqlModelData.length);
+		let maxFormNo = 0;
+		if(this.objFormDetailsJson)
+		{
+			for(const k of Object.keys(this.objFormDetailsJson))
+			{
+				const n = parseInt(k, 10);
+				if(!isNaN(n) && n > maxFormNo) maxFormNo = n;
+			}
+			console.log('[SummaryFooter] maxFormNo from objFormDetailsJson keys=', maxFormNo);
+		}
+		if(maxFormNo === 0)
+		{
+			maxFormNo = this.objSqlModelData.length - 1;
+			console.log('[SummaryFooter] maxFormNo fallback (sqlModels.length - 1)=', maxFormNo);
+		}
+		const summaryEntry = this.objSqlModelData.find((e: any) => {
+			const n = parseInt(e?.sql_model?.form_no, 10);
+			return !isNaN(n) && n > maxFormNo;
+		});
+		if(!summaryEntry)
+		{
+			console.log('[SummaryFooter] no sql_model with form_no > maxFormNo — no summary actions');
+			return;
+		}
+		const sqlModel = summaryEntry.sql_model;
+		const summaryFormNo = parseInt(sqlModel?.form_no, 10);
+		console.log('[SummaryFooter] summary sql_model form_no=', summaryFormNo, 'has actions=', !!sqlModel?.actions);
+		const actions = sqlModel?.actions;
+		if(!actions)
+		{
+			console.log('[SummaryFooter] summary sql_model has no actions');
+			return;
+		}
+		const actionList: any[] = Array.isArray(actions) ? actions : [actions];
+		console.log('[SummaryFooter] summary actionList length=', actionList.length, 'sample[0]=', actionList[0]);
+		this.summaryFooterFormNo = summaryFormNo;
+		this.summaryFooterActions = _.sortBy(actionList, [(a: any) => parseInt(a?.line_no ?? a?.LineNo, 10) || 0]);
+		console.log('[SummaryFooter] summaryFooterFormNo=', this.summaryFooterFormNo, 'actions count=', this.summaryFooterActions.length);
+		console.log('[SummaryFooter] final summaryFooterActions:', this.summaryFooterActions);
+		console.log('[SummaryFooter] ==== END ====');
+	}
+
+	onSummaryFooterAction(action: any): void
+	{
+		const formNo = this.summaryFooterFormNo;
+		const detailKey = 'Detail' + formNo;
+		const detailData = (this.allformValues && Array.isArray(this.allformValues[detailKey])) ? this.allformValues[detailKey] : [];
+		const rowIndex = detailData.length > 0 ? 0 : '';
+		console.log('[SummaryAction] click formNo=', formNo, 'action=', action, 'detailDataLen=', detailData.length, 'rowIndex=', rowIndex);
+		this.ngZone.run(() => {
+			try
+			{
+				// Hide summary UI first so the user sees it close, then dispatch the action while
+				// the iframe is still alive, then close the outer popup. Calling closeOuterPopup
+				// before invoke would destroy the iframe/JS context and drop the GWT dispatch.
+				this.showSummaryPage = false;
+				this.summaryHtmlSafe = '';
+				this.summaryFooterActions = [];
+				this.summaryFooterFormNo = 0;
+				this.removeSummaryDirectHost();
+				this.restoreParentChrome();
+				this.cdr.markForCheck();
+
+				this.invokeSummaryActionAsLink(action, formNo, detailData);
+
+				this.closeOuterPopup();
+			}
+			catch(e: any)
+			{
+				console.log('[SummaryAction] invoke threw:', e?.message);
+			}
+		});
+	}
+
+	private invokeSummaryActionAsLink(action: any, formNo: number, detailData: any[]): void
+	{
+		// Build firstFormData (header fields) for invokeLink's feedData contract.
+		const firstFormData: any = {};
+		for(const key in this.allformValues)
+		{
+			if(!key.startsWith('Detail'))
+			{
+				try { firstFormData[key] = JSON.parse(JSON.stringify(this.allformValues[key])); } catch { firstFormData[key] = this.allformValues[key]; }
+			}
+		}
+		// feedData: prefer the summary row if any, else header fields.
+		let rowFeedData: any = null;
+		if(detailData && detailData.length > 0)
+		{
+			try { rowFeedData = JSON.parse(JSON.stringify(detailData[0])); } catch { rowFeedData = detailData[0]; }
+		}
+		if(!rowFeedData) rowFeedData = firstFormData;
+
+		// Normalize the action into the shape invokeLink expects. Mirrors the snake_case → PascalCase
+		// mapping in performLinksActions for link_type data.
+		const linkData: any = { ...action };
+		if(action?.link_arg != undefined) linkData.LinkArg = action.link_arg;
+		if(action?.link_title != undefined) linkData.LinkTitle = action.link_title;
+		if(action?.title != undefined && !linkData.LinkTitle) linkData.LinkTitle = action.title;
+		if(action?.link_type != undefined) linkData.LinkType = action.link_type;
+		else if(action?.action_type != undefined) linkData.LinkType = action.action_type; // S / U / etc.
+		if(action?.link_form != undefined) linkData.LinkForm = action.link_form;
+		if(action?.link_uri != undefined) linkData.LinkUri = action.link_uri;
+		if(action?.link_id != undefined) linkData.linkId = action.link_id;
+		else if(action?.action_id != undefined) linkData.linkId = action.action_id;
+		if(action?.target_object != undefined) linkData.TargetObject = action.target_object;
+		if(action?.update_flag != undefined) linkData.UpdateFlag = action.update_flag;
+		if(action?.display_mode != undefined) linkData.DisplayMode = action.display_mode;
+		if(action?.show_confirm != undefined) linkData.ShowConfirm = action.show_confirm;
+		// For system actions the rights char isn't sent separately — it's the action_id / id
+		// (e.g. "A" for Add, "E" for Edit). Fall back so GWT actionInfo.right_char has a value.
+		const rightsCharVal = action?.rights_char ?? action?.right_char ?? action?.action_id ?? action?.id;
+		if(rightsCharVal != undefined)
+		{
+			linkData.RightsChar = rightsCharVal;
+			linkData.right_char = rightsCharVal;
+		}
+		if(action?.record_specific != undefined) linkData.RecordSpecific = action.record_specific;
+		if(action?.auto_invoke != undefined) linkData.AutoInvoke = action.auto_invoke;
+		if(action?.show_in_panel != undefined) linkData.ShowInPanel = action.show_in_panel;
+		if(action?.shortcut_char != undefined) linkData.ShortcutChar = action.shortcut_char;
+		if(action?.form_no != undefined) linkData.FormNo = action.form_no.toString();
+		else linkData.FormNo = formNo.toString();
+		// GWT performAction() reads formNo (lowercase) off actionInfo — mirror it.
+		linkData.formNo = linkData.FormNo;
+		if(action?.field_name != undefined) linkData.FieldName = action.field_name;
+		if(action?.line_no != undefined) linkData.LineNo = action.line_no;
+		if(action?.image != undefined) linkData.Image = action.image;
+		if(action?.page_context != undefined) linkData.pageContext = action.page_context;
+		// Surface the action_id + action_type so GWT can dispatch the system action (A/E/V/D/C).
+		if(action?.action_id != undefined) linkData.action_id = action.action_id;
+		if(action?.action_type != undefined) linkData.action_type = action.action_type;
+		// Provide the just-saved transaction ID so the parent editor opens on the right record.
+		if(this.lastSavedTranId)
+		{
+			linkData.PK_VALUES = this.lastSavedTranId;
+			linkData.pkValues = this.lastSavedTranId;
+		}
+		// Sanitize "null"/null → '' so GWT doesn't receive literal "null" strings.
+		for(const k in linkData)
+		{
+			if(linkData[k] === 'null' || linkData[k] === null) linkData[k] = '';
+		}
+		console.log('[SummaryAction] invokeDashboardAction linkData=', linkData, 'feedData=', rowFeedData);
+		this._extractTempletService.invokeAction(linkData, rowFeedData, this.objName, formNo, firstFormData, this.currentDomID);
+	}
+
+	buildSummaryHtml(xmlStr: string, xslStr: string): string
+	{
+		const parser = new DOMParser();
+		const xmlDoc = parser.parseFromString(xmlStr, 'text/xml');
+		if(xmlDoc.getElementsByTagName('parsererror').length > 0)
+		{
+			console.log('Summary XML parse error, xml snippet:', xmlStr.substring(0, 200));
+			return '';
+		}
+		const xslDoc = parser.parseFromString(xslStr, 'application/xml');
+		if(xslDoc.getElementsByTagName('parsererror').length > 0)
+		{
+			console.log('Summary XSL parse error');
+			return '';
+		}
+		const proc = new XSLTProcessor();
+		proc.importStylesheet(xslDoc);
+		const frag = proc.transformToFragment(xmlDoc, document);
+		const host = document.createElement('div');
+		host.appendChild(frag);
+		return host.innerHTML;
+	}
+
+	closeSummaryPage(): void
+	{
+		this.showSummaryPage = false;
+		this.summaryHtmlSafe = '';
+		this.summaryFooterActions = [];
+		this.summaryFooterFormNo = 0;
+		this.removeSummaryDirectHost();
+		this.restoreParentChrome();
+		this.cdr.markForCheck();
+		this.closeOuterPopup();
+	}
+
+	private removeSummaryDirectHost(): void
+	{
+		// The host may live in the iframe's, parent's, or top's document — sweep all reachable ones.
+		const docs: Document[] = [document];
+		try { if(window.parent && window.parent !== window && window.parent.document) docs.push(window.parent.document); } catch {}
+		try { if(window.top && window.top !== window && window.top.document && !docs.includes(window.top.document)) docs.push(window.top.document); } catch {}
+		for(const d of docs)
+		{
+			try { const el = d.getElementById('se-summary-direct-host'); if(el) el.remove(); } catch {}
+		}
 	}
 
 	closeOuterPopup()

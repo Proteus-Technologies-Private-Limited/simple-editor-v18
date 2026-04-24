@@ -3184,3 +3184,121 @@ ul.suggestions li.selected {
     color: #fff !important;
 }
 
+.se-summary-page {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    z-index: 2147483000;
+    overflow: hidden;
+}
+
+.se-summary-body {
+    flex: 1 1 auto;
+    width: 100%;
+    overflow: auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.se-summary-body > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
+
+.se-summary-body table {
+    width: 100% !important;
+}
+
+.se-summary-body [style*="overflow:auto"],
+.se-summary-body [style*="overflow: auto"],
+.se-summary-body [style*="overflow:scroll"],
+.se-summary-body [style*="overflow: scroll"] {
+    overflow: visible !important;
+}
+
+.se-summary-footer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 20px 12px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+}
+
+.se-summary-footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+}
+
+.se-summary-action {
+    flex: 0 0 70px;
+    width: 70px;
+    box-sizing: border-box;
+    padding: 0 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.se-summary-action .circle_BG {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primaryDark, #1976d2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    transition: transform 120ms ease, background 120ms ease;
+}
+
+.se-summary-action:hover .circle_BG {
+    transform: scale(1.05);
+    background: var(--primary, #2196f3);
+}
+
+.se-summary-action .circle_Icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.se-summary-action .summaryLabel {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #333;
+    text-align: center;
+    line-height: 1.2;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    /* Always single line — truncate long titles with an ellipsis. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.se-summary-action-done {
+    margin-left: auto;
+}
+
+.se-summary-action-done .circle_BG {
+    background: #2e7d32;
+}
+
+.se-summary-action-done:hover .circle_BG {
+    background: #388e3c;
+}
+

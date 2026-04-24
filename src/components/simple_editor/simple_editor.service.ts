@@ -10,6 +10,7 @@ declare let getBBHostURL: any;
 declare let invokeDashboardLink: any;
 declare let invokeSimpleLayoutLink:any;
 declare let involeSimpleLayoutAction:any;
+declare let invokeDashboardAction:any;
 const serviceUrl = '/ibase/rest/VisionOBJService';
 
 @Injectable({
@@ -870,7 +871,128 @@ export class SimpleEditorService
             console.warn("invokeSimpleLayoutLink is NOT available on window, window.parent, or window.top");
         }
     }
-   
+
+    invokeAction(link: any, feedData: any, objName: any, formNum: any, firstFormData: any, domId?: any)
+    {
+        let pkFieldValue = '';
+        // GWT performAction() reads formNo / field_name in snake/lowercase from actionInfo,
+        // so do NOT strip them here (unlike invokeLink which converts to PascalCase).
+        if(feedData)
+        {
+            let linkArgStr = (link.LinkArg || link.link_arg || '').trim();
+            if(linkArgStr && linkArgStr.length > 0)
+            {
+                let linkArgArray = linkArgStr.split(',');
+                linkArgArray.forEach(
+                    (arg: any) => {
+                        let trimmedArg = arg.trim();
+                        if(trimmedArg && trimmedArg.indexOf('.') > 0)
+                        {
+                            let colName = trimmedArg.substring(0, trimmedArg.indexOf('.'));
+                            let colValue = feedData[colName];
+                            pkFieldValue = pkFieldValue + (colValue != null ? colValue : '') + ':';
+                        }
+                    }
+                );
+            }
+        }
+
+        // System actions (summary page Add/Edit/etc.) don't carry link_arg, so the loop above
+        // leaves pkFieldValue empty. Fall back to the PK the caller already stamped onto the
+        // link (e.g. lastSavedTranId set as PK_VALUES/pkValues in invokeSummaryActionAsLink).
+        if(!pkFieldValue || pkFieldValue.length === 0)
+        {
+            let pkFallback = link && (link.PK_VALUES || link.pkValues || link.pk_values);
+            if(pkFallback != null && String(pkFallback).length > 0)
+            {
+                pkFieldValue = String(pkFallback) + ':';
+            }
+        }
+
+        let feedDataStr: any = {};
+        if (feedData) {
+            for (const key in feedData) {
+                feedDataStr[key] = (feedData[key] != null && feedData[key] !== undefined) ? String(feedData[key]) : '';
+            }
+        }
+        let firstFormDataStr: any = {};
+        if (firstFormData) {
+            for (const key in firstFormData) {
+                firstFormDataStr[key] = (firstFormData[key] != null && firstFormData[key] !== undefined) ? String(firstFormData[key]) : '';
+            }
+        }
+
+        // GWT reads actionInfo fields via .isString().stringValue(); numbers/booleans throw NPE.
+        // Coerce all primitive values (recursively for nested objects like service_code) to strings.
+        const stringifyPrimitives = (val: any): any => {
+            if (val === null || val === undefined) return '';
+            if (typeof val === 'object') {
+                if (Array.isArray(val)) return val.map(stringifyPrimitives);
+                const out: any = {};
+                for (const k in val) out[k] = stringifyPrimitives(val[k]);
+                return out;
+            }
+            return String(val);
+        };
+        let linkStr: any = link ? stringifyPrimitives(link) : link;
+
+        let response = {
+                "actionInfo" : linkStr,
+                "pkFieldValue" : pkFieldValue,
+                "objName" : objName,
+                "isAnyRowSelected": true,
+                "feedData" : JSON.stringify(feedDataStr),
+                "domId" : domId,
+                "formNo":formNum.toString(),
+                "firstFormData" : firstFormDataStr,
+                "isFocusOrBlur":false
+        }
+        console.log("invokeAction response:", JSON.stringify(response));
+        let actionInvoked = false;
+        if (typeof invokeDashboardAction !== 'undefined')
+        {
+            console.log("invokeAction: calling invokeDashboardAction from current window");
+            invokeDashboardAction(response);
+            actionInvoked = true;
+        }
+        if (!actionInvoked)
+        {
+            try
+            {
+                if (window.parent && window.parent !== window && typeof (<any>window.parent).invokeDashboardAction === 'function')
+                {
+                    console.log("invokeAction: calling invokeDashboardAction from window.parent");
+                    (<any>window.parent).invokeDashboardAction(response);
+                    actionInvoked = true;
+                }
+            }
+            catch(e)
+            {
+                console.warn("invokeAction: error accessing window.parent.invokeDashboardAction:", e);
+            }
+        }
+        if (!actionInvoked)
+        {
+            try
+            {
+                if (window.top && window.top !== window && typeof (<any>window.top).invokeDashboardAction === 'function')
+                {
+                    console.log("invokeAction: calling invokeDashboardAction from window.top");
+                    (<any>window.top).invokeDashboardAction(response);
+                    actionInvoked = true;
+                }
+            }
+            catch(e)
+            {
+                console.warn("invokeAction: error accessing window.top.invokeDashboardAction:", e);
+            }
+        }
+        if (!actionInvoked)
+        {
+            console.warn("invokeDashboardAction is NOT available on window, window.parent, or window.top");
+        }
+    }
+
     getAllItemCode()
     {
         this.urlPath = this.getHostURL() + '/ibase/WebITMDocumentHandlerServlet?ACTION=GET_ALL_ITEM_CODE_LIST';
@@ -1291,7 +1413,14 @@ export class SimpleEditorService
             this.typeofAlertList = [];
             this.errorColumnNameList = [];
 
-            let resp = JSON.parse(response);
+            // Server may pack a summary payload as "<saveJson>~#~<xsl>~#~<xml>". Parse only the JSON prefix.
+            let jsonPart = response;
+            if(typeof response === 'string')
+            {
+                const sep = response.indexOf('~#~');
+                if(sep !== -1) jsonPart = response.substring(0, sep);
+            }
+            let resp = JSON.parse(jsonPart);
 
             // Handle token expired / Reject response
             if(resp['status'] && resp['status'] == 'Reject')

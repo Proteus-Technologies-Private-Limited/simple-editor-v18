@@ -1,7 +1,26 @@
 <div *ngIf="isLoading" class="sl-loading-overlay">
 	<div class="sl-loading-spinner"></div>
 </div>
-<div *ngIf="objFormDetailsJson" id="simple-layout-ctr_simple_editor" class="simple-layout-ctr">
+<div *ngIf="showSummaryPage" class="se-summary-page">
+	<div class="se-summary-body sum_Container" [innerHTML]="summaryHtmlSafe"></div>
+	<div class="se-summary-footer trnsbtnPanel">
+		<div class="se-summary-footer-actions">
+			<div *ngFor="let action of summaryFooterActions" class="se-summary-action" (click)="onSummaryFooterAction(action)" [attr.title]="action.link_title || action.title">
+				<div class="circle_BG">
+					<img class="gwt-Image circle_Icon" [src]="action.image && action.image !== 'null' ? '/' + action.image : '/ibase/E12BROWSER/simpleditorplugin/assets/images/error.svg'">
+				</div>
+				<div class="gwt-Label summaryLabel">{{ action.link_title || action.title }}</div>
+			</div>
+		</div>
+		<div class="se-summary-action se-summary-action-done" (click)="closeSummaryPage()" title="Done">
+			<div class="circle_BG">
+				<img class="gwt-Image circle_Icon" src="/ibase/images/Summary/summary_done.png">
+			</div>
+			<div class="gwt-Label summaryLabel">Done</div>
+		</div>
+	</div>
+</div>
+<div *ngIf="objFormDetailsJson && !showSummaryPage" id="simple-layout-ctr_simple_editor" class="simple-layout-ctr">
 	<div *ngIf="showHeaderForm && transMode !== 'I'" id="simple_editor_simple_headerDiv" class="sl-visualHeaderDiv">
 		<div id="simple_editor_simple_headerPnl" class="sl-headerPanel">
 			<div class="sl-headerInnerPnl">

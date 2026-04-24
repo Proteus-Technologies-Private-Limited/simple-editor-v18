@@ -3,3 +3,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ag-grid-community/styles/ag-grid.css";
 @import "~ag-grid-community/styles/ag-theme-alpine.css";
+
+body.se-summary-active #e12popUpPnl-close,
+body.se-summary-active .headerCloseBtn,
+body.se-summary-active .gwt-Label.close,
+body.se-summary-active #E12TransEditorContainer-layoutBtn,
+body.se-summary-active .multLayoutButtonNew,
+body.se-summary-active .angPopupclose,
+body.se-summary-active .angPopupclose-explore,
+body.se-summary-active .angPopupClose-assistant,
+body.se-summary-active .angMobPopupclose,
+body.se-summary-active .angPopupMaximize-assistant,
+body.se-summary-active .popupMaximize-assistant,
+body.se-summary-active .show-more-ctr,
+body.se-summary-active .show-more-btn {
+    display: none !important;
+    visibility: hidden !important;
+}
