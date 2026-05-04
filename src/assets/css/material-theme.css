@@ -351,7 +351,7 @@
 	width: 133.33333%
 }
 
-.mat-form-field-can-float .mat-input-server[label]:not (:label-shown )+.mat-form-field-label-wrapper .mat-form-field-label
+.mat-form-field-can-float .mat-input-server[label]:not(:label-shown)+.mat-form-field-label-wrapper .mat-form-field-label
 	{
 	transform: translateY(-1.34374em) scale(.75);
 	width: 133.33334%
@@ -401,8 +401,7 @@
 	width: 133.33334%
 }
 
-.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server[label]:not
-	(:label-shown )+.mat-form-field-label-wrapper .mat-form-field-label {
+.mat-form-field-appearance-legacy.mat-form-field-can-float .mat-input-server[label]:not(:label-shown)+.mat-form-field-label-wrapper .mat-form-field-label {
 	transform: translateY(-1.28125em) scale(.75) perspective(100px)
 		translateZ(.00102px);
 	-ms-transform: translateY(-1.28123em) scale(.75);
@@ -438,8 +437,7 @@
 	width: 133.33333%
 }
 
-.mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server[label]:not
-	(:label-shown )+.mat-form-field-label-wrapper .mat-form-field-label {
+.mat-form-field-appearance-fill.mat-form-field-can-float .mat-input-server[label]:not(:label-shown)+.mat-form-field-label-wrapper .mat-form-field-label {
 	transform: translateY(-.59374em) scale(.75);
 	width: 133.33334%
 }
@@ -464,8 +462,7 @@
 	width: 133.33333%
 }
 
-.mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server[label]:not
-	(:label-shown )+.mat-form-field-label-wrapper .mat-form-field-label {
+.mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server[label]:not(:label-shown)+.mat-form-field-label-wrapper .mat-form-field-label {
 	transform: translateY(-1.59374em) scale(.75);
 	width: 133.33334%
 }
@@ -817,7 +814,7 @@ input.mat-input-element {
 	animation-name: cdk-text-field-autofill-start
 }
 
-.cdk-text-field-autofill-monitored:not (:-webkit-autofill ){
+.cdk-text-field-autofill-monitored:not(:-webkit-autofill){
 	animation-name: cdk-text-field-autofill-end
 }
 
@@ -840,13 +837,11 @@ textarea.cdk-textarea-autosize-measuring {
 	color: rgba(0, 0, 0, .87)
 }
 
-.mat-option:focus:not (.mat-option-disabled ), .mat-option:hover:not (.mat-option-disabled
-	){
+.mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled){
 	background: rgba(0, 0, 0, .04)
 }
 
-.mat-option.mat-selected:not (.mat-option-multiple ):not (.mat-option-disabled
-	){
+.mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled){
 	background: rgba(0, 0, 0, .04)
 }
 
@@ -859,15 +854,15 @@ textarea.cdk-textarea-autosize-measuring {
 	color: rgba(0, 0, 0, .38)
 }
 
-.mat-primary .mat-option.mat-selected:not (.mat-option-disabled ){
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
 	color: var(--primary)
 }
 
-.mat-accent .mat-option.mat-selected:not (.mat-option-disabled ){
+.mat-accent .mat-option.mat-selected:not(.mat-option-disabled){
 	color: var(--primary);
 }
 
-.mat-warn .mat-option.mat-selected:not (.mat-option-disabled ){
+.mat-warn .mat-option.mat-selected:not(.mat-option-disabled){
 	color: #f44336
 }
 
@@ -921,13 +916,11 @@ textarea.cdk-textarea-autosize-measuring {
 	color: rgba(0, 0, 0, .87)
 }
 
-.mat-autocomplete-panel .mat-option.mat-selected:not (.mat-active ):not
-	(:hover ){
+.mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover){
 	background: #fff
 }
 
-.mat-autocomplete-panel .mat-option.mat-selected:not (.mat-active ):not
-	(:hover ):not (.mat-option-disabled ){
+.mat-autocomplete-panel .mat-option.mat-selected:not(.mat-active):not(:hover):not(.mat-option-disabled){
 	color: rgba(0, 0, 0, .87)
 }
 
@@ -1484,7 +1477,7 @@ textarea.cdk-textarea-autosize-measuring {
 	background-color: #b0b0b0
 }
 
-.mat-checkbox-disabled:not (.mat-checkbox-checked ) .mat-checkbox-frame
+.mat-checkbox-disabled:not(.mat-checkbox-checked) .mat-checkbox-frame
 	{
 	border-color: #b0b0b0
 }
@@ -1493,17 +1486,17 @@ textarea.cdk-textarea-autosize-measuring {
 	color: #b0b0b0
 }
 
-.mat-checkbox:not (.mat-checkbox-disabled ).mat-primary .mat-checkbox-ripple .mat-ripple-element
+.mat-checkbox:not(.mat-checkbox-disabled).mat-primary .mat-checkbox-ripple .mat-ripple-element
 	{
 	background-color: rgba(63, 81, 181, .26)
 }
 
-.mat-checkbox:not (.mat-checkbox-disabled ).mat-accent .mat-checkbox-ripple .mat-ripple-element
+.mat-checkbox:not(.mat-checkbox-disabled).mat-accent .mat-checkbox-ripple .mat-ripple-element
 	{
 	background-color: rgba(255, 64, 129, .26)
 }
 
-.mat-checkbox:not (.mat-checkbox-disabled ).mat-warn .mat-checkbox-ripple .mat-ripple-element
+.mat-checkbox:not(.mat-checkbox-disabled).mat-warn .mat-checkbox-ripple .mat-ripple-element
 	{
 	background-color: rgba(244, 67, 54, .26)
 }
@@ -1613,25 +1606,19 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	border-color: transparent
 }
 
-.mat-calendar-body-disabled>.mat-calendar-body-cell-content:not (.mat-calendar-body-selected
-	){
+.mat-calendar-body-disabled>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected){
 	color: rgba(0, 0, 0, .38)
 }
 
-.cdk-keyboard-focused .mat-calendar-body-active>.mat-calendar-body-cell-content:not
-	(.mat-calendar-body-selected ), .cdk-program-focused .mat-calendar-body-active>.mat-calendar-body-cell-content:not
-	(.mat-calendar-body-selected ), .mat-calendar-body-cell:not (.mat-calendar-body-disabled
-	):hover>.mat-calendar-body-cell-content:not (.mat-calendar-body-selected
-	){
+.cdk-keyboard-focused .mat-calendar-body-active>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected), .cdk-program-focused .mat-calendar-body-active>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected), .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected){
 	background-color: rgba(0, 0, 0, .04)
 }
 
-.mat-calendar-body-today:not (.mat-calendar-body-selected ){
+.mat-calendar-body-today:not(.mat-calendar-body-selected){
 	border-color: rgba(0, 0, 0, .38)
 }
 
-.mat-calendar-body-disabled>.mat-calendar-body-today:not (.mat-calendar-body-selected
-	){
+.mat-calendar-body-disabled>.mat-calendar-body-today:not(.mat-calendar-body-selected){
 	border-color: rgba(0, 0, 0, .18)
 }
 
@@ -1717,11 +1704,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	border-top-color: rgba(0, 0, 0, .12)
 }
 
-.mat-expansion-panel:not (.mat-expanded ) .mat-expansion-panel-header:not
-	([aria-disabled=true] ).cdk-keyboard-focused, .mat-expansion-panel:not
-	(.mat-expanded ) .mat-expansion-panel-header:not ([aria-disabled=true]
-	).cdk-program-focused, .mat-expansion-panel:not (.mat-expanded ) .mat-expansion-panel-header:not
-	([aria-disabled=true] ):hover {
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]).cdk-keyboard-focused, .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]).cdk-program-focused, .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled=true]):hover {
 	background: rgba(0, 0, 0, .04)
 }
 
@@ -1978,14 +1961,13 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	color: rgba(0, 0, 0, .38)
 }
 
-.mat-menu-item .mat-icon:not ([color] ), .mat-menu-item-submenu-trigger::after
+.mat-menu-item .mat-icon:not([color]), .mat-menu-item-submenu-trigger::after
 	{
 	color: rgba(0, 0, 0, .54)
 }
 
-.mat-menu-item-highlighted:not ([disabled] ), .mat-menu-item.cdk-keyboard-focused:not
-	([disabled] ), .mat-menu-item.cdk-program-focused:not ([disabled] ),
-	.mat-menu-item:hover:not ([disabled] ){
+.mat-menu-item-highlighted:not([disabled]), .mat-menu-item.cdk-keyboard-focused:not([disabled]), .mat-menu-item.cdk-program-focused:not([disabled]),
+	.mat-menu-item:hover:not([disabled]){
 	background: rgba(0, 0, 0, .04)
 }
 
@@ -2135,7 +2117,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	color: rgba(0, 0, 0, .54)
 }
 
-.mat-select-panel .mat-option.mat-selected:not (.mat-option-multiple ){
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple){
 	background: rgba(0, 0, 0, .12)
 }
 
@@ -2177,17 +2159,17 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(0, 0, 0, .6)
 }
 
-.mat-slide-toggle.mat-checked:not (.mat-disabled ) .mat-slide-toggle-thumb
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb
 	{
 	background-color: #e91e63
 }
 
-.mat-slide-toggle.mat-checked:not (.mat-disabled ) .mat-slide-toggle-bar
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar
 	{
 	background-color: rgba(233, 30, 99, .5)
 }
 
-.mat-slide-toggle:not (.mat-checked ) .mat-ripple-element {
+.mat-slide-toggle:not(.mat-checked) .mat-ripple-element {
 	background-color: rgba(0, 0, 0, .06)
 }
 
@@ -2195,17 +2177,17 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(233, 30, 99, .12)
 }
 
-.mat-slide-toggle.mat-primary.mat-checked:not (.mat-disabled ) .mat-slide-toggle-thumb
+.mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb
 	{
 	background-color: var(--primary)
 }
 
-.mat-slide-toggle.mat-primary.mat-checked:not (.mat-disabled ) .mat-slide-toggle-bar
+.mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar
 	{
 	background-color: rgba(63, 81, 181, .5)
 }
 
-.mat-slide-toggle.mat-primary:not (.mat-checked ) .mat-ripple-element {
+.mat-slide-toggle.mat-primary:not(.mat-checked) .mat-ripple-element {
 	background-color: rgba(0, 0, 0, .06)
 }
 
@@ -2213,17 +2195,17 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(63, 81, 181, .12)
 }
 
-.mat-slide-toggle.mat-warn.mat-checked:not (.mat-disabled ) .mat-slide-toggle-thumb
+.mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb
 	{
 	background-color: #f44336
 }
 
-.mat-slide-toggle.mat-warn.mat-checked:not (.mat-disabled ) .mat-slide-toggle-bar
+.mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar
 	{
 	background-color: rgba(244, 67, 54, .5)
 }
 
-.mat-slide-toggle.mat-warn:not (.mat-checked ) .mat-ripple-element {
+.mat-slide-toggle.mat-warn:not(.mat-checked) .mat-ripple-element {
 	background-color: rgba(0, 0, 0, .06)
 }
 
@@ -2312,20 +2294,20 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(0, 0, 0, .26)
 }
 
-.mat-slider-min-value:not (.mat-slider-thumb-label-showing ) .mat-slider-thumb
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing) .mat-slider-thumb
 	{
 	border-color: rgba(0, 0, 0, .26);
 	background-color: transparent
 }
 
-.mat-slider-min-value:not (.mat-slider-thumb-label-showing ).cdk-focused .mat-slider-thumb,
-	.mat-slider-min-value:not (.mat-slider-thumb-label-showing ):hover .mat-slider-thumb
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing).cdk-focused .mat-slider-thumb,
+	.mat-slider-min-value:not(.mat-slider-thumb-label-showing):hover .mat-slider-thumb
 	{
 	border-color: rgba(0, 0, 0, .38)
 }
 
-.mat-slider-min-value:not (.mat-slider-thumb-label-showing ).cdk-focused.mat-slider-disabled .mat-slider-thumb,
-	.mat-slider-min-value:not (.mat-slider-thumb-label-showing ):hover.mat-slider-disabled .mat-slider-thumb
+.mat-slider-min-value:not(.mat-slider-thumb-label-showing).cdk-focused.mat-slider-disabled .mat-slider-thumb,
+	.mat-slider-min-value:not(.mat-slider-thumb-label-showing):hover.mat-slider-disabled .mat-slider-thumb
 	{
 	border-color: rgba(0, 0, 0, .26)
 }
@@ -2413,10 +2395,10 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	border-top: none
 }
 
-.mat-tab-group.mat-primary .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-group.mat-primary .mat-tab-link:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-primary .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-primary .mat-tab-link:not (.mat-tab-disabled ):focus
+.mat-tab-group.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-group.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-primary .mat-tab-link:not(.mat-tab-disabled):focus
 	{
 	background-color: rgba(197, 202, 233, .3)
 }
@@ -2431,10 +2413,10 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: #fff
 }
 
-.mat-tab-group.mat-accent .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-group.mat-accent .mat-tab-link:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-accent .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-accent .mat-tab-link:not (.mat-tab-disabled ):focus
+.mat-tab-group.mat-accent .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-group.mat-accent .mat-tab-link:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-accent .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-accent .mat-tab-link:not(.mat-tab-disabled):focus
 	{
 	background-color: rgba(255, 128, 171, .3)
 }
@@ -2449,10 +2431,10 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: #fff
 }
 
-.mat-tab-group.mat-warn .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-group.mat-warn .mat-tab-link:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-warn .mat-tab-label:not (.mat-tab-disabled ):focus,
-	.mat-tab-nav-bar.mat-warn .mat-tab-link:not (.mat-tab-disabled ):focus
+.mat-tab-group.mat-warn .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-group.mat-warn .mat-tab-link:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-warn .mat-tab-label:not(.mat-tab-disabled):focus,
+	.mat-tab-nav-bar.mat-warn .mat-tab-link:not(.mat-tab-disabled):focus
 	{
 	background-color: rgba(255, 205, 210, .3)
 }
@@ -2467,11 +2449,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: #fff
 }
 
-.mat-tab-group.mat-background-primary .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-group.mat-background-primary .mat-tab-link:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-primary .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-primary .mat-tab-link:not (.mat-tab-disabled
-	):focus {
+.mat-tab-group.mat-background-primary .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-group.mat-background-primary .mat-tab-link:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-primary .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-primary .mat-tab-link:not(.mat-tab-disabled):focus {
 	background-color: rgba(197, 202, 233, .3)
 }
 
@@ -2512,11 +2490,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(255, 255, 255, .12)
 }
 
-.mat-tab-group.mat-background-accent .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-group.mat-background-accent .mat-tab-link:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-accent .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-accent .mat-tab-link:not (.mat-tab-disabled
-	):focus {
+.mat-tab-group.mat-background-accent .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-group.mat-background-accent .mat-tab-link:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-accent .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-accent .mat-tab-link:not(.mat-tab-disabled):focus {
 	background-color: rgba(255, 128, 171, .3)
 }
 
@@ -2556,11 +2530,7 @@ mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell,
 	background-color: rgba(255, 255, 255, .12)
 }
 
-.mat-tab-group.mat-background-warn .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-group.mat-background-warn .mat-tab-link:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-warn .mat-tab-label:not (.mat-tab-disabled
-	):focus, .mat-tab-nav-bar.mat-background-warn .mat-tab-link:not (.mat-tab-disabled
-	):focus {
+.mat-tab-group.mat-background-warn .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-group.mat-background-warn .mat-tab-link:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-warn .mat-tab-label:not(.mat-tab-disabled):focus, .mat-tab-nav-bar.mat-background-warn .mat-tab-link:not(.mat-tab-disabled):focus {
 	background-color: rgba(255, 205, 210, .3)
 }
 

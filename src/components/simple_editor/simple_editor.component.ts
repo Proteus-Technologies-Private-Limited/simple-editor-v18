@@ -28,6 +28,7 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 declare let closeEditor: any;
 
 @Component({
+  standalone: false,
 	selector: 'simple_editor',
 	templateUrl: './simple_editor.component.html',
 	styleUrls: ['./simple_editor.component.css'],

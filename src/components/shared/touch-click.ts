@@ -1,6 +1,7 @@
 import {Directive, HostListener, EventEmitter, Output} from "@angular/core";
 
 @Directive({
+  standalone: false,
     selector: "[touch-click]"
 })
 export class TouchClick

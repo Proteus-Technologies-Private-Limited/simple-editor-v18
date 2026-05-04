@@ -2,6 +2,7 @@ import { HttpClient }          from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
+  standalone: false,
   name: 'currencyformat'
 })
 export class CurrencyFormatPipe implements PipeTransform {

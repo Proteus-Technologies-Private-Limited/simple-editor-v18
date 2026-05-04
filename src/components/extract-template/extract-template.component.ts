@@ -37,6 +37,7 @@ declare var saveDocInContentLibrary: any;
 //Comente By pravin K on 6-OCT-20 END 
 // Added by Pravin K  on 15-JUL-20 END
 @Component({
+  standalone: false,
 	selector: 'sorderform',
 	templateUrl: './extract-template.component.html',
 	styleUrls: ['./extract-template.component.css'],

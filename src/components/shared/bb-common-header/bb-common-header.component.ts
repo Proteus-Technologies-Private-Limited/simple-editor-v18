@@ -4,6 +4,7 @@ import { getHostURL, getOS } from '../hostUrl';
 //import { getHostURL, getOS } from '../../../shared/hostUrl';
 
 @Component({
+  standalone: false,
   selector: 'bb-common-header',
   templateUrl: './bb-common-header.component.html',
   styleUrls: ['./bb-common-header.component.css']

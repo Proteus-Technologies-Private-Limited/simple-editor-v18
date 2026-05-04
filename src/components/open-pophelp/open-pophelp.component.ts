@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { ExtractTemplateService } from '../extract-template/extract-template.service'
 
 @Component({
+  standalone: false,
   selector: 'open-pophelp',
   templateUrl: './open-pophelp.component.html',
   styleUrls: ['./open-pophelp.component.css'],

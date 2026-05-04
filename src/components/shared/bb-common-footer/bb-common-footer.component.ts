@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 // ort { getHostURL, getOS } from '../hostUrl';
 
 @Component({
+  standalone: false,
   selector: 'bb-common-footer',
   templateUrl: './bb-common-footer.component.html',
   styleUrls: ['./bb-common-footer.component.css']

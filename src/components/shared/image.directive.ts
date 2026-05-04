@@ -1,6 +1,7 @@
 import { Directive, Input, OnChanges, HostBinding, HostListener,NgModule } from '@angular/core';
 
 @Directive({
+  standalone: false,
 selector: "img[customImage]",
 host: {
     '(error)': 'onError()'

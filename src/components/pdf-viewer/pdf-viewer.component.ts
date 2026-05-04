@@ -5,6 +5,7 @@ import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 //metaData
 
 @Component({
+  standalone: false,
   selector: 'pdf-viewer-editor',
   templateUrl: './pdf-viewer.component.html',
   styleUrls: ['./pdf-viewer.component.css'],

@@ -1,6 +1,7 @@
 import { Component, OnInit , ViewEncapsulation , AfterViewChecked ,ChangeDetectorRef ,Input} from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'pophelp-layout-display',
   template: `  <span [innerHTML] = "parsedHTML" ></span>`,
   encapsulation: ViewEncapsulation.None, 

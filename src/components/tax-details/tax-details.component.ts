@@ -8,6 +8,7 @@ import { BBProgressSpinnerComponent } from 'base-blocks';
 
 
 @Component({
+  standalone: false,
   selector: 'tax-details',
   templateUrl: './tax-details.component.html',
   styleUrls: ['./tax-details.component.css'],

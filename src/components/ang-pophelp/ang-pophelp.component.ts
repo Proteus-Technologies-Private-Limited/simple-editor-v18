@@ -5,6 +5,7 @@ import { PophelpService } from './ang-pophelp.service';
 import { DatamodelService } from './datamodel.service';
 
 @Component({
+  standalone: false,
   selector: 'ang-pophelp',
   templateUrl: './ang-pophelp.component.html',
   styleUrls: ['./ang-pophelp.component.css']

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
+  standalone: false,
   selector: 'confirm-box',
   template: ``,
 })

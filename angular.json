@@ -28,6 +28,16 @@
             "main": "src/main.ts",
             "polyfills":"src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "moment",
+              "hammerjs",
+              "rxjs-compat",
+              "chartjs-color",
+              "chartjs-color-string",
+              "chart.js",
+              "color"
+            ],
             "assets": [
               "src/assets",
              "src/favicon.ico",

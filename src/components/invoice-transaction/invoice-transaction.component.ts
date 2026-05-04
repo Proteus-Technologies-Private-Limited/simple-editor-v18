@@ -17,6 +17,7 @@ declare var saveDocInContentLibrary:any;
 declare let destroyComponent: any;
 
 @Component({
+  standalone: false,
   	selector: 'invoice-transaction',
   	templateUrl: './invoice-transaction.component.html',
   	styleUrls: ['./invoice-transaction.component.css'],

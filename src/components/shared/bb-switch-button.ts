@@ -45,6 +45,7 @@ export abstract class ValueAccessorBase<T> implements ControlValueAccessor {
 }
 
 @Component( {
+  standalone: false,
     selector: 'bb-switch',
     template: `
     
