@@ -182,10 +182,11 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	jSessionID: any = '';
 	formWiseMap: any = {};
 	objFormWiseJson: any = {};
-	private pendingFieldChangePromise: Promise<void> | null = null;
+	private fieldChangeQueue: Promise<void> = Promise.resolve();
 	private pendingFieldChangeResolve: (() => void) | null = null;
 	private pendingClickTarget: HTMLElement | null = null;
 	private focusNextAfterItemChange: boolean = false;
+	private itm_defaultedit_called_by_focus: boolean = false;
 	
     constructor(public _extractTempletService: SimpleEditorService, public datePipe: DatePipe, public dialog: MatDialog, private overlay: Overlay, private viewContainerRef: ViewContainerRef, public renderer: Renderer2, private itemChangeUtils:ItemChangeUtils,private transActionUtility: TransActionUtility, private cdr: ChangeDetectorRef, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private ngZone: NgZone, private overlayContainer: OverlayContainer)
 	{
@@ -3027,16 +3028,23 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		}
 
 		let formNo = currentDetail[currentDetail.length - 1];
-		if (this.currentValidationRow && this.currentValidationRow.length > 0) 
+		if (this.currentValidationRow && this.currentValidationRow.length > 0)
 		{
 			let rowData = formNo + "_" + selectedIndex;
-			if (rowData != this.currentValidationRow[0]) 
+			console.log('[rowSelected] currentValidationRow.length > 0. rowData:', rowData, 'currentValidationRow[0]:', this.currentValidationRow[0], 'match?', rowData == this.currentValidationRow[0]);
+			if (rowData != this.currentValidationRow[0])
 			{
+				console.log('[rowSelected] Different row — calling editDetail. selectedDomID:', selectedDomID, 'currentDomID:', this.currentDomID);
 				this.editDetail(currentDetail, formNo, selectedIndex, selectedDomID);
+			}
+			else
+			{
+				console.log('[rowSelected] Same row as currentValidationRow — editDetail SKIPPED.');
 			}
 		}
 		else
 		{
+			console.log('[rowSelected] currentValidationRow is empty — calling editDetail. selectedDomID:', selectedDomID, 'currentDomID:', this.currentDomID);
 			this.editDetail(currentDetail, formNo, selectedIndex, selectedDomID);
 		}
 		this.setKeyNavigation(formNo);
@@ -3996,8 +4004,9 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 				{
 					this.addNewDetailRow(currentFormNo, selectedIndex, isFromAttachPdf, detailDataFromPdf);
 				}
-				else 
+				else
 				{
+					console.log('[callPreValidate callback] PATH: validation passed — calling itm_defaultedit. currentFormNo:', currentFormNo, 'selectedIndex:', selectedIndex, 'currentRowDomId:', currentRowDomId);
 					this.updateChgStr(currentFormNo, selectedIndex);
 					// this.callLocalItemChange('itm_defaultedit', '', currentFormNo, 'upper', selectedIndex);
 					this.getFieldItemChange('itm_defaultedit','',currentRowDomId,currentFormNo,selectedIndex);
@@ -4925,14 +4934,21 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 
 	editDetail(currentDetail:any, formNo:any, selectedIndex:any, selectedDomID:any)
 	{
+		console.log('[editDetail] ENTER formNo:', formNo, 'selectedIndex:', selectedIndex, 'selectedDomID:', selectedDomID, 'currentValidationRow:', JSON.stringify(this.currentValidationRow), 'currentDomID:', this.currentDomID, 'editFlag:', this.editFlag, 'itm_defaultedit_called_by_focus:', this.itm_defaultedit_called_by_focus);
 		this.waitForPendingFieldChange().then(() => {
+		console.log('[editDetail] AFTER waitForPendingFieldChange formNo:', formNo, 'selectedIndex:', selectedIndex, 'currentValidationRow:', JSON.stringify(this.currentValidationRow), 'currentDomID:', this.currentDomID, 'itm_defaultedit_called_by_focus:', this.itm_defaultedit_called_by_focus);
 		let rowData = formNo + "_" + selectedIndex;
 		if(formNo == '1')
 		{
+			console.log('[editDetail] PATH: formNo==1 — calling callPreValidate');
 			this.callPreValidate(false, selectedDomID, formNo, selectedIndex, null, false, false);
 		}
-		else if (this.currentValidationRow && this.currentValidationRow.length == 0) 
+		else if (this.currentValidationRow && this.currentValidationRow.length == 0)
 		{
+			// Reached only when rowSelected fires before setFocusFormNo pushed rowData (e.g. click on row background).
+			// If setFocusFormNo already handled it (editFlag==E path), currentValidationRow would be non-empty
+			// and we wouldn't be in this branch.
+			console.log('[editDetail] PATH: currentValidationRow empty — calling itm_default/itm_defaultedit directly. editFlag:', this.editFlag, 'itm_defaultedit_called_by_focus:', this.itm_defaultedit_called_by_focus);
 			this.updateChgStr(formNo, selectedIndex);
 			if(this.editFlag == 'A')
 			{
@@ -4948,8 +4964,9 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			{
 				this.currentValidationRow.push(rowData);
 			}
+			this.itm_defaultedit_called_by_focus = false;
 		}
-		else 
+		else
 		{
 			let previousDomId = 1;
 			if(this.currentValidationRow && this.currentValidationRow.length > 0)
@@ -4967,10 +4984,23 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					}
 				}
 			}
+			console.log('[editDetail] PATH: else — currentDomID:', this.currentDomID, 'previousDomId:', previousDomId, 'match:', this.currentDomID == previousDomId, 'editFlag:', this.editFlag, 'itm_defaultedit_called_by_focus:', this.itm_defaultedit_called_by_focus);
 			if(this.currentDomID != previousDomId)
 			{
+				console.log('[editDetail] PATH: else — currentDomID != previousDomId — calling validateCurrentDetail');
 				this.validateCurrentDetail(formNo, previousDomId, formNo, selectedIndex, false, false, null, false,false);
-			}		
+			}
+			else if(this.editFlag == 'E' && selectedDomID && !this.itm_defaultedit_called_by_focus)
+			{
+				console.log('[editDetail] PATH: else — same domID, editFlag==E, itm_defaultedit NOT yet called — calling itm_defaultedit now');
+				this.updateChgStr(formNo, selectedIndex);
+				this.getFieldItemChange('itm_defaultedit','',selectedDomID,formNo,selectedIndex);
+			}
+			else
+			{
+				console.log('[editDetail] PATH: else — itm_defaultedit SKIPPED. editFlag:', this.editFlag, 'selectedDomID:', selectedDomID, 'itm_defaultedit_called_by_focus:', this.itm_defaultedit_called_by_focus);
+			}
+			this.itm_defaultedit_called_by_focus = false;
 		}
 		this.cdr.markForCheck();
 		});
@@ -5316,6 +5346,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	private detailFocusInfo: any = null;
 
 	onDetailFieldFocus(currentFormNo:any, id:any, index?: any, colName?: any) {
+		console.log('[onDetailFieldFocus] formNo:', currentFormNo, 'id:', id, 'index:', index, 'currentValidationRow:', JSON.stringify(this.currentValidationRow), 'currentDomID:', this.currentDomID, 'editFlag:', this.editFlag);
 		this.isDetailInputFocused = true;
 		// Store initial value to detect changes on blur
 		let detailNo = 'Detail' + currentFormNo;
@@ -5352,9 +5383,15 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 
 		this.setSelectedText(event, id, displayLabel, dataType);
 
-		// Call item change after reattach if value changed
+		// Call item change after reattach if value changed.
+		// When valueChanged=true, always fire item change regardless of isPreventItemChange.
+		// Rationale: autoSuggSelectedData updates detailFocusInfo.initialValue on autosuggest
+		// selection, so valueChanged would be false if autosuggest already handled it.
+		// valueChanged=true here means the user changed the value without an autosuggest
+		// selection (e.g. typed and tabbed), so item change must fire even if the autosuggest
+		// dropdown was open and had set isPreventItemChange=true.
 		if(this.detailFocusInfo && this.detailFocusInfo.colName) {
-			if(valueChanged && !this.isPreventItemChange && !this.isPreventEnterKeyItemChange) {
+			if(valueChanged) {
 				let fi = this.detailFocusInfo;
 				let detailNo = 'Detail' + fi.formNo;
 				let fldValue: any = '';
@@ -5365,6 +5402,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 				}
 				let parts = fi.id.split('.');
 				let domID = parts.length > 1 ? parts[1] : '1';
+				this.isPreventItemChange = false;
+				this.isPreventEnterKeyItemChange = false;
 				this.getFieldItemChange(fi.colName, fldValue, domID, fi.formNo, fi.index);
 			} else {
 				this.isPreventItemChange = false;
@@ -5408,39 +5447,52 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			this.currentFormNumber = "";
 			this.currentFormNumber = focusColDetails[0].charAt(focusColDetails[0].length - 1);
 			this.currentDomID = "";
-			currentRowDomId = focusColDetails[1]; 
+			currentRowDomId = focusColDetails[1];
 			this.currentDomID = focusColDetails[1];
 			fieldName = focusColDetails[2];
 			this.currentRowIndex = index;
 			this.fieldName = focusColDetails[2];
 		}
-		if (this.currentValidationRow && this.currentValidationRow.length > 0) 
+		// Reset flag at the start so stale value from a previous focus event doesn't affect editDetail
+		this.itm_defaultedit_called_by_focus = false;
+		console.log('[setFocusFormNo] START previousFormNumber:', previousFormNumber, 'currentFormNo:', currentFormNo, 'previousFormDomID:', previousFormDomID, 'newCurrentDomID:', this.currentDomID, 'currentValidationRow:', JSON.stringify(this.currentValidationRow), 'editFlag:', this.editFlag, 'isAddDetail:', this.isAddDetail, 'checkValidationError:', this.checkValidationError);
+		if (this.currentValidationRow && this.currentValidationRow.length > 0)
 		{
 			if(previousFormNumber == '1' && currentFormNo != previousFormNumber)
 			{
+				console.log('[setFocusFormNo] PATH: form1→detail. isAddDetail:', this.isAddDetail, 'checkValidationError:', this.checkValidationError);
 				// let rowID = previousFormNumber + "_" + index;
 				if(this.isAddDetail != true && this.checkValidationError == false)
 				{
+					// callPreValidate already calls itm_defaultedit in its success callback (line 4003).
+					// Do NOT call getFieldItemChange here — it would create a pendingFieldChangePromise
+					// that callPreValidate's callback would then orphan by creating a second promise.
+					console.log('[setFocusFormNo] PATH: form1→detail — calling callPreValidate. itm_defaultedit will fire from its callback.');
 					this.callPreValidate(false, currentRowDomId, currentFormNo, index, null, false, false);
+					// itm_defaultedit_called_by_focus stays false so editDetail won't double-call it
+					// (callPreValidate callback is the authoritative caller for this path)
 				}
-				else 
+				else
 				{
+					console.log('[setFocusFormNo] PATH: form1→detail SKIPPED (isAddDetail or checkValidationError). itm_defaultedit will be called from editDetail.');
 					this.isAddDetail = false;
 					this.checkValidationError = false;
 				}
 			}
 			else if(previousFormNumber != currentFormNo || (previousFormNumber == currentFormNo && previousFormDomID != this.currentDomID))
 			{
+				console.log('[setFocusFormNo] PATH: row/form switch. previousFormDomID:', previousFormDomID, 'newDomID:', this.currentDomID);
 				// In view mode, skip validation and validateAndDone API call
 				if(this.editFlag === 'V')
 				{
-					// do nothing
+					console.log('[setFocusFormNo] PATH: row/form switch SKIPPED (view mode).');
 				}
 				else
 				{
 					let requiredExists = this.validateMandatoryFields(this.currentFormNumber, this.currentDomID);
 					if(requiredExists == true)
 					{
+						console.log('[setFocusFormNo] PATH: row/form switch BLOCKED by mandatory field validation.');
 						return;
 					}
 					if(this.isAddDetail != true && this.checkValidationError == false)
@@ -5449,20 +5501,51 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						if(this.editFlag == 'E' && this.currentDomID)
 						{
 							// this.callLocalItemChange('itm_defaultedit', '', currentFormNo, 'upper', index);
+							this.itm_defaultedit_called_by_focus = true;
+							console.log('[setFocusFormNo] PATH: row/form switch — calling itm_defaultedit. domID:', this.currentDomID, 'formNo:', currentFormNo, 'index:', index);
 							this.getFieldItemChange('itm_defaultedit','',this.currentDomID,currentFormNo,index);
+						}
+						else
+						{
+							console.log('[setFocusFormNo] PATH: row/form switch — itm_defaultedit SKIPPED (editFlag:', this.editFlag, 'currentDomID:', this.currentDomID, ')');
 						}
 					}
 					else
 					{
+						console.log('[setFocusFormNo] PATH: row/form switch SKIPPED (isAddDetail or checkValidationError). itm_defaultedit will be called from editDetail.');
 						this.isAddDetail = false;
 						this.checkValidationError = false;
 					}
 				}
 			}
-			else 
+			else
 			{
+				console.log('[setFocusFormNo] PATH: same row, same form — no itm_defaultedit.');
 				this.isAddDetail = false;
 				this.checkValidationError = false;
+			}
+		}
+		else
+		{
+			// currentValidationRow is empty — this is the FIRST time any detail row is being entered.
+			// rowSelected may not fire when the user clicks directly on an input (cdr.detach() in the
+			// focus handler can absorb the click before it bubbles to the <tr> click binding).
+			// Call itm_defaultedit here so it always fires, regardless of whether rowSelected runs.
+			if(currentFormNo != '1' && this.editFlag == 'E' && currentRowDomId)
+			{
+				let rowData = currentFormNo + "_" + index;
+				console.log('[setFocusFormNo] currentValidationRow empty + editFlag==E — calling itm_defaultedit directly and pushing rowData:', rowData);
+				this.updateChgStr(currentFormNo, index);
+				this.itm_defaultedit_called_by_focus = true;
+				this.getFieldItemChange('itm_defaultedit', '', currentRowDomId, currentFormNo, index);
+				if(this.transMode != 'I')
+				{
+					this.currentValidationRow.push(rowData);
+				}
+			}
+			else
+			{
+				console.log('[setFocusFormNo] currentValidationRow empty — itm_defaultedit will be handled by editDetail. editFlag:', this.editFlag, 'formNo:', currentFormNo);
 			}
 		}
 		let currentDetail = 'Detail' + this.currentFormNumber;
@@ -10590,7 +10673,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 			console.log('print signalName:::::',signalName);
 			// For date fields, ngModel already has the correct Date object -
 			// do not overwrite it with a string from event.target.value
-			if(signalName && signalName.includes('_date') && this.checkIsDateFormat(signalName, formNo))
+			if(signalName && this.checkIsDateFormat(signalName, formNo))
 			{
 				return;
 			}
@@ -11090,16 +11173,13 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 	private waitForPendingFieldChange(): Promise<void> {
 		// Action method was reached via click, so the click was NOT swallowed — no need to re-click
 		this.pendingClickTarget = null;
-		if (this.pendingFieldChangePromise) {
-			console.log('[waitForPendingFieldChange] Waiting for pending field change to complete...');
-		}
-		return this.pendingFieldChangePromise || Promise.resolve();
+		// fieldChangeQueue is a chained promise — resolves only after all queued getFieldItemChange calls complete
+		return this.fieldChangeQueue;
 	}
 
 	private completeFieldChange(): void {
 		if (this.pendingFieldChangeResolve) {
 			this.pendingFieldChangeResolve();
-			this.pendingFieldChangePromise = null;
 			this.pendingFieldChangeResolve = null;
 		}
 		// If the click was swallowed (e.g. loading overlay covered the button),
@@ -11142,10 +11222,11 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 					tempParam['FORM_NO'] = formNo;
 					let paramString = this._extractTempletService.getEncodedParamString(tempParam);
 					this._extractTempletService.setLoading(true);
-					this.pendingFieldChangePromise = new Promise<void>((resolve) => {
+					// Chain onto the serial queue so concurrent calls execute one-at-a-time in order.
+					// Each entry waits for the previous to complete before starting its API call.
+					this.fieldChangeQueue = this.fieldChangeQueue.then(() => new Promise<void>((resolve) => {
 						this.pendingFieldChangeResolve = resolve;
-					});
-					this._extractTempletService.getFieldItemChange( paramString).subscribe({ next: (response:any)=> {
+						this._extractTempletService.getFieldItemChange( paramString).subscribe({ next: (response:any)=> {
 					this._extractTempletService.setLoading(false);
 					this._extractTempletService.checkErrorExceptionJson(response, (result:any) =>{
 							if(result == true && this._extractTempletService.isForceSave())
@@ -11200,7 +11281,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 													if(!detailKey.startsWith('Detail')) continue;
 													let curFormData = rootData[detailKey];
 													if(!curFormData || typeof curFormData != 'object') continue;
-													let respDomID = curFormData['domID'];
+													let rawDomID = curFormData['domID'];
+													let respDomID = (rawDomID && typeof rawDomID == 'object') ? (rawDomID['content'] ?? rawDomID) : rawDomID;
 													let curFormNo = detailKey.replace('Detail', '');
 													for(let key of Object.keys(curFormData))
 													{
@@ -11211,11 +11293,15 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 															let targetIndex = -1;
 															for(let ri = 0; ri < this.allformValues[detailKey].length; ri++)
 															{
-																if(this.allformValues[detailKey][ri]['domID'] == respDomID)
+																if(String(this.allformValues[detailKey][ri]['domID']) == String(respDomID))
 																{
 																	targetIndex = ri;
 																	break;
 																}
+															}
+															if(targetIndex == -1 && detailKey == 'Detail' + formNo && index != null && index != undefined && this.allformValues[detailKey][index] != undefined)
+															{
+																targetIndex = index;
 															}
 															if(targetIndex == -1) continue;
 															if(curFormData[key]['content'] != undefined) {
@@ -11225,6 +11311,21 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 																	contentVal = this.convertStringToDate(contentVal);
 																}
 																this.allformValues[detailKey][targetIndex][key] = contentVal;
+																if(this.detailFocusInfo && this.detailFocusInfo.colName === key &&
+																	String(this.detailFocusInfo.formNo) === String(curFormNo) &&
+																	String(this.allformValues[detailKey][targetIndex]['domID']) === String(this.detailFocusInfo.id?.split('.')?.[1]))
+																{
+																	this.detailFocusInfo.initialValue = contentVal;
+																}
+															}
+															else {
+																this.allformValues[detailKey][targetIndex][key] = '';
+																if(this.detailFocusInfo && this.detailFocusInfo.colName === key &&
+																	String(this.detailFocusInfo.formNo) === String(curFormNo) &&
+																	String(this.allformValues[detailKey][targetIndex]['domID']) === String(this.detailFocusInfo.id?.split('.')?.[1]))
+																{
+																	this.detailFocusInfo.initialValue = '';
+																}
 															}
 															if(curFormData[key]['protect'] != undefined) { this.allformValues[detailKey][targetIndex][key+"_protect"] = curFormData[key]['protect'].toString(); }
 															if(curFormData[key]['visible'] != undefined) { this.allformValues[detailKey][targetIndex][key+"_visible"] = curFormData[key]['visible'].toString(); }
@@ -11237,14 +11338,33 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 																if(this.checkIsDateFormat(key, curFormNo)) {
 																	contentVal3 = this.convertStringToDate(contentVal3);
 																}
+																this.allformValues[key] = signal('');
 																this.allformValues[key] = contentVal3;
+															}
+															else {
+																this.allformValues[key] = signal('');
+																this.allformValues[key] = '';
 															}
 															if(curFormData[key]['protect'] != undefined) { this.allformValues[key+"_protect"] = curFormData[key]['protect'].toString(); }
 															if(curFormData[key]['visible'] != undefined) { this.allformValues[key+"_visible"] = curFormData[key]['visible'].toString(); }
 														}
 													}
 												}
+												if(this.isDetailInputFocused && this.detailFocusInfo && this.detailFocusInfo.colName) {
+													const fi = this.detailFocusInfo;
+													const detailNo = 'Detail' + fi.formNo;
+													const targetRow = this.allformValues[detailNo]?.[fi.index];
+													if(targetRow && targetRow[fi.colName + '_protect'] === '1') {
+														const elemId = 'Detail' + fi.formNo + '.' + String(targetRow['domID']) + '.' + fi.colName;
+														const el = document.getElementById(elemId) as HTMLInputElement | null;
+														if(el) {
+															el.value = String(targetRow[fi.colName] ?? '');
+															el.blur();
+														}
+													}
+												}
 												this.disabledFieldCache.clear();
+												this.cdr.markForCheck();
 												this.cdr.detectChanges();
 											}
 											this.completeFieldChange();
@@ -11329,7 +11449,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										if(!detailKey.startsWith('Detail')) continue;
 										let curFormData = rootData[detailKey];
 										if(!curFormData || typeof curFormData != 'object') continue;
-										let respDomID = curFormData['domID'];
+										let rawDomID = curFormData['domID'];
+										let respDomID = (rawDomID && typeof rawDomID == 'object') ? (rawDomID['content'] ?? rawDomID) : rawDomID;
 										let curFormNo = detailKey.replace('Detail', '');
 										for(let key of Object.keys(curFormData))
 										{
@@ -11340,11 +11461,15 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 												let targetIndex = -1;
 												for(let ri = 0; ri < this.allformValues[detailKey].length; ri++)
 												{
-													if(this.allformValues[detailKey][ri]['domID'] == respDomID)
+													if(String(this.allformValues[detailKey][ri]['domID']) == String(respDomID))
 													{
 														targetIndex = ri;
 														break;
 													}
+												}
+												if(targetIndex == -1 && detailKey == 'Detail' + formNo && index != null && index != undefined && this.allformValues[detailKey][index] != undefined)
+												{
+													targetIndex = index;
 												}
 												if(targetIndex == -1) continue;
 												if(curFormData[key]['content'] != undefined)
@@ -11355,6 +11480,24 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 														contentVal = this.convertStringToDate(contentVal);
 													}
 													this.allformValues[detailKey][targetIndex][key] = contentVal;
+													// If this field is currently focused, sync initialValue so that
+													// the blur does not treat this server-side update as a user change.
+													if(this.detailFocusInfo && this.detailFocusInfo.colName === key &&
+														String(this.detailFocusInfo.formNo) === String(curFormNo) &&
+														String(this.allformValues[detailKey][targetIndex]['domID']) === String(this.detailFocusInfo.id?.split('.')?.[1]))
+													{
+														this.detailFocusInfo.initialValue = contentVal;
+													}
+												}
+												else
+												{
+													this.allformValues[detailKey][targetIndex][key] = '';
+													if(this.detailFocusInfo && this.detailFocusInfo.colName === key &&
+														String(this.detailFocusInfo.formNo) === String(curFormNo) &&
+														String(this.allformValues[detailKey][targetIndex]['domID']) === String(this.detailFocusInfo.id?.split('.')?.[1]))
+													{
+														this.detailFocusInfo.initialValue = '';
+													}
 												}
 												if(curFormData[key]['protect'] != undefined)
 												{
@@ -11374,7 +11517,13 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 													if(this.checkIsDateFormat(key, curFormNo)) {
 														contentVal2 = this.convertStringToDate(contentVal2);
 													}
+													this.allformValues[key] = signal('');
 													this.allformValues[key] = contentVal2;
+												}
+												else
+												{
+													this.allformValues[key] = signal('');
+													this.allformValues[key] = '';
 												}
 												if(curFormData[key]['protect'] != undefined)
 												{
@@ -11393,7 +11542,21 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 									{
 										this.currentFeedData = this.allformValues[detailNo][index];
 									}
+									if(this.isDetailInputFocused && this.detailFocusInfo && this.detailFocusInfo.colName) {
+										const fi = this.detailFocusInfo;
+										const detailNo = 'Detail' + fi.formNo;
+										const targetRow = this.allformValues[detailNo]?.[fi.index];
+										if(targetRow && targetRow[fi.colName + '_protect'] === '1') {
+											const elemId = 'Detail' + fi.formNo + '.' + String(targetRow['domID']) + '.' + fi.colName;
+											const el = document.getElementById(elemId) as HTMLInputElement | null;
+											if(el) {
+												el.value = String(targetRow[fi.colName] ?? '');
+												el.blur();
+											}
+										}
+									}
 									this.disabledFieldCache.clear();
+									this.cdr.markForCheck();
 									this.cdr.detectChanges();
 								}
 								this.completeFieldChange();
@@ -11441,6 +11604,8 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						this.completeFieldChange();
 						console.error('getFieldItemChange HTTP error:', err);
 					}});
+					// NOTE: the Promise resolves via completeFieldChange(), called inside subscribe above
+				}));
 				}
 			}
 		}
@@ -11524,7 +11689,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 							};
 							// return;
 						}
-						else if(key.includes('_date'))
+						else if(this.checkIsDateFormat(key, formNo))
 						{
 							let value = row[key];
 								let formattedDate = '';
@@ -11582,7 +11747,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 						};
 						// return;
 					}
-					else if(key.includes('_date'))
+					else if(this.checkIsDateFormat(key, formNo))
 					{
 						let value = data[key];
 						// console.log('print value 8733:::::',value);
@@ -11617,7 +11782,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		// console.log('print formatDateToDDMMYY typeof date::::',typeof date);
 		if(date && typeof date == 'string' && date.includes('/'))
 		{
-			return date;
+			return date.split(' ')[0];
 		}
 		else
 		{
