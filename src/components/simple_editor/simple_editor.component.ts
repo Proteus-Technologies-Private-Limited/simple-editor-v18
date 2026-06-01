@@ -5836,7 +5836,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 										{
 											this._extractTempletService.setLoading(false);
 											this.lastSavedTranId = rootData['TranID'] || '';
-											if(this.tryShowSummaryPage(packed.transactionXml, packed.summaryXsl))
+											if(this.loadSummaryFromApi(this.lastSavedTranId, rootData['MsgOnSave']))
 											{
 												return;
 											}
@@ -5985,7 +5985,7 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 								{
 									this._extractTempletService.setLoading(false);
 									this.lastSavedTranId = rootData['TranID'] || '';
-									if(this.tryShowSummaryPage(packed.transactionXml, packed.summaryXsl))
+									if(this.loadSummaryFromApi(this.lastSavedTranId, rootData['MsgOnSave']))
 									{
 										return;
 									}
@@ -6061,6 +6061,67 @@ export class SimpleEditorComponent implements OnInit, OnDestroy, DoCheck, Contro
 		}
 		try { return { saveJson: JSON.parse(raw), transactionXml: '', summaryXsl: '' }; }
 		catch { return empty; }
+	}
+
+	// Render the summary shell (chrome + footer actions) with a blank body, then asynchronously
+	// fetch the rendered HTML via /getSummaryHtml. The body stays blank until the response arrives.
+	// On API failure, the shell is dismissed and the caller's success-alert fallback runs.
+	loadSummaryFromApi(tranId: string, msgOnSave: string): boolean
+	{
+		if(!tranId || String(tranId).trim().length === 0)
+		{
+			return false;
+		}
+		try
+		{
+			this.buildSummaryFooterActions();
+			this.showSummaryPage = true;
+			this.isLoading = false;
+			this._extractTempletService.setLoading(false);
+			this.renderSummaryDirect('');
+			try { this.cdr.detectChanges(); } catch { this.cdr.markForCheck(); }
+
+			this._extractTempletService.getSummaryHtml(this.objName, tranId, this.editorId || '').subscribe(
+				(html: any) => {
+					const htmlStr = (typeof html === 'string') ? html : '';
+					this.updateSummaryBodyHtml(htmlStr);
+				},
+				(err: any) => {
+					console.log('[Summary] getSummaryHtml API failed:', err?.message);
+					this.closeSummaryPage();
+					const successMsg = (tranId || '') + ' - ' + (msgOnSave || '');
+					this.bbconfirmBox.alert('Success', successMsg, '').subscribe((resp: any) => {
+						if(resp) this.closeOuterPopup();
+					});
+				}
+			);
+			return true;
+		}
+		catch(e: any)
+		{
+			console.log('[Summary] loadSummaryFromApi threw:', e?.message);
+			return false;
+		}
+	}
+
+	private updateSummaryBodyHtml(html: string): void
+	{
+		const docs: Document[] = [document];
+		try { if(window.parent && window.parent !== window && window.parent.document) docs.push(window.parent.document); } catch {}
+		try { if(window.top && window.top !== window && window.top.document && !docs.includes(window.top.document)) docs.push(window.top.document); } catch {}
+		for(const d of docs)
+		{
+			try
+			{
+				const host = d.getElementById('se-summary-direct-host');
+				if(host)
+				{
+					const bodyEl = host.querySelector('.se-summary-body') as HTMLElement | null;
+					if(bodyEl) bodyEl.innerHTML = html || '';
+				}
+			}
+			catch {}
+		}
 	}
 
 	tryShowSummaryPage(xmlStr: string, xslStr: string): boolean

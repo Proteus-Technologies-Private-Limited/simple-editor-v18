@@ -1243,6 +1243,19 @@ export class SimpleEditorService
         return this.http.post(URL, paramString, { headers, responseType: 'text', withCredentials: true });
     }
 
+    getSummaryHtml(objName: string, tranId: string, editorId: string): Observable<any>
+    {
+        let headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded',
+            'TOKEN_ID' : this.tokenID,
+            'JSESSIONID' : this.jSessionId
+        });
+        let body = 'OBJ_NAME=' + encodeURIComponent(objName || '')
+            + '&TRAN_ID=' + encodeURIComponent(tranId || '')
+            + '&EDITOR_ID=' + encodeURIComponent(editorId || '');
+        let URL = this.getHostURL() + '/ibase/rest/VisionOBJService/getSummaryHtml';
+        return this.http.post(URL, body, { headers, responseType: 'text', withCredentials: true });
+    }
+
     private SERVICE_URL4 = '/ibase/rest/VisionOBJService/getXmlDataDetails?';
     getXmlDataDetails(objName:any, formNo: any, objContext: any, editorId: any, editFlag: any, action: any, pkValues: any, formType: any, lastDomId: any, pageContext: any, pgCtx: any, callBack:any): any
     {
